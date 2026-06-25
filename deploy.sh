@@ -24,6 +24,14 @@ fi
 echo "→ regenerating character data…"
 npm run generate
 
+# Build the Kannada dictionary once (gitignored, ~6 MB). Best-effort: the app works
+# without it, and it only changes when the pinned Alar version is bumped — so a dead
+# download link can never break a deploy.
+if [ ! -f data/dictionary.json ]; then
+  echo "→ building dictionary (first run)…"
+  npm run dictionary || echo "⚠ dictionary build failed — continuing without auto-meanings"
+fi
+
 echo "→ restarting '$SESSION' service…"
 tmux kill-session -t "$SESSION" 2>/dev/null || true
 tmux new-session -d -s "$SESSION" "$(pwd)/run.sh"

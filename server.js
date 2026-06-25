@@ -12,6 +12,7 @@ const CHARACTERS_FILE = path.join(DATA_DIR, 'characters.json');
 const PROGRESS_FILE = path.join(DATA_DIR, 'progress.json');
 const TEXTS_FILE = path.join(DATA_DIR, 'texts.json');            // bundled samples
 const USER_TEXTS_FILE = path.join(DATA_DIR, 'texts-user.json');  // imported texts
+const DICTIONARY_FILE = path.join(DATA_DIR, 'dictionary.json');  // Alar Kn→En
 
 // Progress is keyed by generic item id (a character today, a word later) so the
 // same store works once the Reading & Vocabulary module lands. See DESIGN.md §3.
@@ -70,6 +71,33 @@ function readJson(file, fallback) {
   }
 }
 
+// Kannada → English dictionary (built from Alar via `npm run dictionary`).
+// Loaded once; used to auto-fill meanings for imported texts. Empty if not built.
+const DICTIONARY = readJson(DICTIONARY_FILE, {});
+console.log(`Dictionary: ${Object.keys(DICTIONARY).length} entries`);
+
+// Common inflectional suffixes, longest first — best-effort stemming so inflected
+// surface forms still resolve to their dictionary headword.
+const SUFFIXES = ['ಗಳನ್ನು', 'ಗಳಲ್ಲಿ', 'ಗಳಿಗೆ', 'ವನ್ನು', 'ಯನ್ನು', 'ನ್ನು', 'ಗಳು', 'ಗಳ', 'ದಲ್ಲಿ', 'ಯಲ್ಲಿ', 'ಅಲ್ಲಿ', 'ಲ್ಲಿ', 'ದಿಂದ', 'ಯಿಂದ', 'ಇಂದ', 'ಕ್ಕೆ', 'ಗೆ'];
+function lookupMeaning(word) {
+  if (DICTIONARY[word]) return DICTIONARY[word];
+  for (const suf of SUFFIXES) {
+    if (word.length > suf.length + 1 && word.endsWith(suf)) {
+      const base = word.slice(0, -suf.length);
+      if (DICTIONARY[base]) return DICTIONARY[base];
+    }
+  }
+  return '';
+}
+function buildGlossary(body) {
+  const glossary = {};
+  for (const w of new Set(body.match(/[ಀ-೿]+/g) || [])) {
+    const m = lookupMeaning(w);
+    if (m) glossary[w] = m;
+  }
+  return glossary;
+}
+
 // Bundled sample texts + any imported by the user.
 app.get('/api/texts', (req, res) => {
   const bundled = readJson(TEXTS_FILE, { texts: [] }).texts || [];
@@ -90,7 +118,7 @@ app.post('/api/texts', (req, res) => {
     source: 'imported',
     user: true,
     body,
-    glossary: {}, // meanings can be enriched later (e.g. via the Claude API)
+    glossary: buildGlossary(body), // auto-filled from the bundled dictionary
   };
   store.texts.push(text);
   fs.mkdir(DATA_DIR, { recursive: true }, () => {

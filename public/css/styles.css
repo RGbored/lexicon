@@ -251,11 +251,13 @@ body {
   padding: 0.7rem 0.9rem; border-radius: 12px; margin-bottom: 1rem;
   text-align: left; min-height: 1.4em;
 }
-.read-body { font-size: 1.5rem; line-height: 2.3; }
-.rw { cursor: pointer; border-radius: 4px; padding: 0 1px; }
-.rw.known { color: var(--ink); }
-.rw.unknown { color: var(--accent); border-bottom: 2px solid var(--accent-soft); }
-.rw:active { background: var(--accent-soft); }
+.read-legend { display: flex; gap: 0.5rem; margin-bottom: 0.9rem; align-items: center; }
+.read-body { font-size: 1.5rem; line-height: 2.5; }
+.rw { cursor: pointer; border-radius: 5px; padding: 1px 4px; }
+.rw.known { color: var(--ink); }                                              /* learned — readable */
+.rw.learning { color: var(--accent); border-bottom: 2px dotted var(--accent); } /* in progress */
+.rw.unknown { color: var(--accent); background: var(--accent-soft); }           /* not yet learned */
+.rw:active { outline: 2px solid var(--accent); }
 
 /* footer action */
 .foot { padding: 1.2rem 0 1.6rem; }

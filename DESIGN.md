@@ -238,11 +238,18 @@ Built as a separate **Reading** section (own tab). Implemented:
 - **Read-it-yourself** view with known/unknown highlighting + tap-to-reveal.
 - Server: `GET/POST /api/texts`; imported texts persisted to `data/texts-user.json`.
 
+Meaning enrichment (no LLM):
+- Imported texts are auto-glossed server-side from a bundled **Kannada→English
+  dictionary** built from the open **Alar** dataset (`scripts/build-dictionary.js` →
+  `data/dictionary.json`, ~106k headwords). `server.js` loads it once and fills each
+  text's `glossary` on import, with best-effort **suffix stemming** so inflected forms
+  (case endings, postpositions) resolve to their headword.
+
 Still open:
-- **Meaning enrichment for imported texts** — bundled texts have curated meanings;
-  user imports currently get transliteration only. Next: an optional server endpoint
-  that calls the **Claude API** to fill `glossary` (lemma + meaning) when a key is set.
-- **Lemmatization** (group inflected forms) and **PDF/OCR import** remain future work.
+- Glosses are descriptive (Alar style) and sometimes verbose; **verb conjugations**
+  and complex inflections still miss (stemming only covers noun suffixes). An optional
+  LLM pass could refine glosses / handle verbs later.
+- **PDF/OCR import** remains future work.
 
 ---
 

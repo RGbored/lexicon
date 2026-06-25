@@ -186,9 +186,9 @@ const Reading = (() => {
     for (const part of t.body.split(/([ಀ-೿]+)/)) {
       if (!part) continue;
       if (/[ಀ-೿]/.test(part)) {
-        const it = Data.peek(wid(part));
-        const known = (it ? it.lessons : 0) >= READ_FULL;
-        const span = el(`<span class="rw ${known ? 'known' : 'unknown'}">${part}</span>`);
+        const lessons = Data.peek(wid(part))?.lessons || 0;
+        const cls = lessons >= READ_FULL ? 'known' : lessons >= 1 ? 'learning' : 'unknown';
+        const span = el(`<span class="rw ${cls}">${part}</span>`);
         span.onclick = () => {
           TTS.speak(part);
           const meaning = (t.glossary && t.glossary[part]) || '';
@@ -204,6 +204,7 @@ const Reading = (() => {
     back.onclick = () => { location.hash = `#/text/${encodeURIComponent(id)}`; };
 
     root.appendChild(info);
+    root.appendChild(el('<div class="read-legend hint"><span class="rw unknown">new</span><span class="rw learning">learning</span><span class="rw known">known</span></div>'));
     root.appendChild(body);
     const foot = el('<div class="foot"></div>');
     foot.appendChild(back);

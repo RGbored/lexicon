@@ -26,6 +26,9 @@ See [`DESIGN.md`](DESIGN.md) for the full design and roadmap.
 - **Reading mode** (separate tab) — import a Kannada text (or pick a bundled story),
   learn its words in frequency order with the same exercises, track a coverage bar
   ("how much can I read"), and read it yourself with tap-to-reveal pronunciation/meaning.
+  Imported texts are auto-glossed from a bundled **Kannada–English dictionary** (the
+  open [Alar](https://github.com/alar-dict/data) dataset), with best-effort stemming
+  for inflected forms — no LLM required.
 
 ## Requirements
 
@@ -50,6 +53,7 @@ Open <http://localhost:3000> and start with the first Vowels lesson.
 | Command | What it does |
 |---|---|
 | `npm run generate` | Generate the character set (vowels, consonants, kagunita) into `data/characters.json` |
+| `npm run dictionary` | (Re)build `data/dictionary.json` from the open Alar Kannada–English dictionary |
 | `npm start` | Start the server (honors `PORT`, default `3000`) |
 
 ## Running on a phone (Termux)
