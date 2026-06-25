@@ -136,6 +136,7 @@ body {
   cursor: pointer;
 }
 .option.glyph { font-size: 1.8rem; }
+.option.meaning { font-size: 1.1rem; word-break: break-word; }
 .option:active { transform: scale(0.98); }
 .option.correct { border-color: var(--green); background: var(--green-soft); color: var(--green); }
 .option.wrong { border-color: var(--red); background: var(--red-soft); color: var(--red); }

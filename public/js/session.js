@@ -209,23 +209,33 @@ const Session = (() => {
       const target = Data.get(ctx.ex.id);
       const recognize = ctx.ex.mode === 'recognize';
       const isWord = target.category === 'word';
-      // For words, the English meaning is always on screen while practicing.
-      const meaningLine = isWord && target.meaning ? `<div class="word-meaning">“${target.meaning}”</div>` : '';
+      // Word MCQs test the English MEANING (so hearing the word doesn't reveal the
+      // answer). Without a meaning (un-enriched imports) they fall back to reading.
+      const useMeaning = isWord && !!target.meaning;
+      const answerOf = (it) => (useMeaning ? (it.meaning || it.roman) : it.roman);
+
+      const recogHint = useMeaning ? 'What does it mean?' : (isWord ? 'How do you read this?' : 'Which sound is this?');
+      const recallHint = useMeaning ? 'Which word means this?' : (isWord ? 'Which word is this?' : 'Which character is this?');
       const prompt = recognize
-        ? `<div class="big-glyph${isWord ? ' word' : ''}">${target.glyph}</div>${meaningLine}<button class="speak">🔊</button><p class="hint">${isWord ? 'How do you read this?' : 'Which sound is this?'}</p>`
-        : `<div class="big-roman">${target.roman}</div>${meaningLine}<p class="hint">${isWord ? 'Which word is this?' : 'Which character is this?'}</p>`;
+        ? `<div class="big-glyph${isWord ? ' word' : ''}">${target.glyph}</div><button class="speak">🔊</button><p class="hint">${recogHint}</p>`
+        : `<div class="big-roman">${answerOf(target)}</div><p class="hint">${recallHint}</p>`;
       const node = el(`<div class="mc">${prompt}<div class="options"></div></div>`);
       const optsEl = node.querySelector('.options');
       ctx.exEl.appendChild(node);
+
       if (recognize) {
         node.querySelector('.speak').onclick = () => TTS.speak(target.glyph);
-        TTS.speak(target.glyph); // sound plays, with romanization options visible
+        // Auto-play only when it can't give away the answer — never when the answer
+        // is the word's own transliteration.
+        if (useMeaning || !isWord) TTS.speak(target.glyph);
       }
 
       let answered = false;
       for (const oid of optionsFor(target.id)) {
         const o = Data.get(oid);
-        const b = el(`<button class="option${recognize ? '' : ' glyph'}">${recognize ? o.roman : o.glyph}</button>`);
+        const label = recognize ? answerOf(o) : o.glyph;
+        const cls = recognize ? (useMeaning ? 'meaning' : '') : 'glyph';
+        const b = el(`<button class="option ${cls}">${label}</button>`);
         b.dataset.id = oid;
         b.onclick = () => {
           if (answered) return;
