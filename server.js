@@ -22,7 +22,11 @@ const DEFAULT_PROGRESS = {
 };
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+// no-cache so the browser revalidates every load and always picks up the latest
+// deploy (a normal refresh suffices; no hard-refresh needed on mobile).
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders: (res) => res.setHeader('Cache-Control', 'no-cache'),
+}));
 
 app.get('/api/characters', (req, res) => {
   fs.readFile(CHARACTERS_FILE, 'utf8', (err, data) => {
