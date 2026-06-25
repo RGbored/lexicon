@@ -23,12 +23,15 @@ See [`DESIGN.md`](DESIGN.md) for the full design and roadmap.
   API), always shown alongside the romanization.
 - **Durable progress** — saved server-side to a JSON file, so it survives across
   browsers and devices.
+- **Daily streak & points** — each completed session gives points and extends a
+  daily streak; missed days are bridged by streak freezes (2 granted per week, max 5).
 - **Reading mode** (separate tab) — import a Kannada text (or pick a bundled story),
   learn its words in frequency order with the same exercises, track a coverage bar
   ("how much can I read"), and read it yourself with tap-to-reveal pronunciation/meaning.
   Imported texts are auto-glossed from a bundled **Kannada–English dictionary** (the
   open [Alar](https://github.com/alar-dict/data) dataset), with best-effort stemming
-  for inflected forms — no LLM required.
+  for inflected forms — no LLM required. Import by pasting or uploading a `.txt` file.
+  Words learned in one text carry their strength into any other text that uses them.
 
 ## Requirements
 

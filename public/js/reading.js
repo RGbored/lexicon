@@ -85,8 +85,22 @@ const Reading = (() => {
         <h2>Import a text</h2>
         <input class="text-title" placeholder="Title (optional)" />
         <textarea class="text-body" rows="4" placeholder="Paste Kannada text here…"></textarea>
+        <label class="text-file-label">📄 …or upload a .txt file
+          <input type="file" class="text-file" accept=".txt,text/plain" hidden />
+        </label>
         <button class="action add-text">Add text</button>
       </section>`);
+    imp.querySelector('.text-file').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        imp.querySelector('.text-body').value = reader.result;
+        const ti = imp.querySelector('.text-title');
+        if (!ti.value.trim()) ti.value = file.name.replace(/\.txt$/i, '');
+      };
+      reader.readAsText(file);
+    });
     imp.querySelector('.add-text').onclick = () => {
       const title = imp.querySelector('.text-title').value.trim();
       const body = imp.querySelector('.text-body').value.trim();

@@ -39,18 +39,36 @@ body {
 }
 .status { margin: 0.3rem 0 0; font-size: 0.82rem; color: var(--muted); }
 
-/* section tabs */
-.tabs { display: flex; gap: 0.4rem; margin-top: 0.6rem; }
+/* section tabs — full-width segmented control */
+.tabs { display: flex; gap: 0.4rem; margin-top: 0.7rem; }
 .tabs a {
-  font-size: 0.9rem;
+  flex: 1;
+  text-align: center;
+  font-size: 0.92rem;
   font-weight: 600;
   color: var(--muted);
   text-decoration: none;
-  padding: 0.3rem 0.8rem;
-  border-radius: 999px;
+  padding: 0.55rem 0;
+  border-radius: 11px;
   border: 1px solid var(--line);
+  background: var(--card);
 }
 .tabs a.active { color: #fff; background: var(--accent); border-color: var(--accent); }
+
+/* streak / points / freezes */
+.statsbar { display: flex; gap: 1rem; margin-top: 0.6rem; }
+.statsbar .stat { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+.statsbar .stat.flame.on { color: var(--accent); }
+.statsbar:empty { display: none; }
+
+/* import: file upload label */
+.text-file-label {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--accent);
+  cursor: pointer;
+  margin-bottom: 0.7rem;
+}
 
 .content { padding: 1rem; max-width: 640px; margin: 0 auto; }
 

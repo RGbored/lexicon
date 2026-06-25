@@ -24,6 +24,7 @@ const Data = (() => {
     progress.items = progress.items || {};
     progress.units = progress.units || {};
     progress.settings = progress.settings || { romanizationStyle: 'iso15919' };
+    Stats.ensure(progress);
   }
 
   const all = () => characters; // alphabet only (curriculum + dashboard)

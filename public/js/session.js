@@ -416,6 +416,7 @@ const Session = (() => {
     }
     for (const id of encountered) SRS.encounter(Data.item(id));
 
+    const st = Stats.recordLesson(Data.progressData()); // +points, streak, freezes
     if (onComplete) onComplete(stats);
 
     const pct = stats.total ? Math.round((stats.correct / stats.total) * 100) : 100;
@@ -424,6 +425,7 @@ const Session = (() => {
         <div class="big-glyph">🎉</div>
         <h2>${title} complete</h2>
         <p class="hint">${stats.correct}/${stats.total} correct${stats.total ? ` · ${pct}%` : ''}</p>
+        <p class="hint">+${Stats.POINTS_PER} points · 🔥 ${st.streak} day${st.streak === 1 ? '' : 's'}</p>
         <div class="foot"></div>
       </div>`;
     const btn = el('<button class="action">Back to map</button>');

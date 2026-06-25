@@ -20,6 +20,7 @@ const DEFAULT_PROGRESS = {
   items: {},                                   // id -> { lessons, seen, lastSeen, due }
   units: {},                                   // unit -> { lessonsDone }
   settings: { romanizationStyle: 'iso15919' },
+  stats: { points: 0, streak: 0, lastDay: null, freezes: 0, freezeWeek: null },
 };
 
 app.use(express.json());

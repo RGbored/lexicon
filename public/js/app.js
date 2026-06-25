@@ -139,10 +139,22 @@ const App = (() => {
     });
   }
 
+  function renderStats() {
+    const bar = document.getElementById('stats');
+    if (!bar || !Data.progressData()) return;
+    const s = Stats.ensure(Data.progressData());
+    const done = Stats.todayDone(Data.progressData());
+    bar.innerHTML =
+      `<span class="stat flame${done ? ' on' : ''}">🔥 ${s.streak}</span>` +
+      `<span class="stat">⭐ ${s.points}</span>` +
+      `<span class="stat">❄️ ${s.freezes}</span>`;
+  }
+
   function route() {
     const hash = location.hash || '#/';
     const parts = hash.split('/'); // ['#', 'text', 'id', 'lesson', '0']
     setActiveTab(hash);
+    renderStats();
     if (parts[1] === 'lesson' && parts[2] != null && parts[3] != null) {
       startLesson(parts[2], parseInt(parts[3], 10));
     } else if (parts[1] === 'review') {
