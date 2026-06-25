@@ -21,6 +21,7 @@ const DEFAULT_PROGRESS = {
   units: {},                                   // unit -> { lessonsDone }
   settings: { romanizationStyle: 'iso15919' },
   stats: { points: 0, streak: 0, lastDay: null, freezes: 0, freezeWeek: null },
+  ottakshara: [],                              // derived conjunct curriculum order
 };
 
 app.use(express.json());

@@ -31,6 +31,24 @@ const Reading = (() => {
     texts = r.texts || [];
   }
 
+  // Conjuncts (ottakshara) found across all texts: consonant + virama + consonant,
+  // captured with a lookahead so overlapping clusters (C்C்C) are all counted.
+  // Returns Map(conjunct glyph → frequency). Used to build the alphabet's
+  // Ottakshara section from real content.
+  const CONJUNCT = /([ಕ-ಹ])್(?=([ಕ-ಹ]))/g;
+  function conjunctFrequencies() {
+    const freq = new Map();
+    for (const t of texts) {
+      CONJUNCT.lastIndex = 0;
+      let m;
+      while ((m = CONJUNCT.exec(t.body)) !== null) {
+        const c = m[1] + '್' + m[2];
+        freq.set(c, (freq.get(c) || 0) + 1);
+      }
+    }
+    return freq;
+  }
+
   // Tokenize → frequency-rank → word items + lesson path. Registers items so the
   // shared engine can resolve them. Cached per text.
   function derive(text) {
@@ -241,5 +259,5 @@ const Reading = (() => {
     }
   }
 
-  return { load, home, text, startLesson, read, derive, coverage };
+  return { load, home, text, startLesson, read, derive, coverage, conjunctFrequencies };
 })();

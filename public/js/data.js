@@ -24,6 +24,7 @@ const Data = (() => {
     progress.items = progress.items || {};
     progress.units = progress.units || {};
     progress.settings = progress.settings || { romanizationStyle: 'iso15919' };
+    progress.ottakshara = progress.ottakshara || []; // derived conjunct curriculum order
     Stats.ensure(progress);
   }
 

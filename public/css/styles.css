@@ -175,6 +175,8 @@ body {
 .lesson.done { border-color: var(--green); background: var(--green-soft); }
 .lesson.open { border-color: var(--accent); }
 .lesson.locked { cursor: default; color: var(--muted); }
+.lesson.review { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.lesson.review.section-review { margin-top: 0.8rem; width: 100%; justify-content: center; }
 .lesson-glyphs { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .lesson-tag { font-size: 0.85rem; color: var(--muted); flex: none; }
 

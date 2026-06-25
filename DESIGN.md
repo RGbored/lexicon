@@ -36,7 +36,8 @@ programmatically** (`scripts/generate-characters.js`) rather than hand-typed.
 1. **Swaragalu** — independent vowels (13) + yogavaahaka (anusvara ಂ, visarga ಃ).
 2. **Vyanjanagalu** — consonants (34), grouped by *varga* (ಕ-varga … avargeeya).
 3. **Kagunita** — each consonant × each vowel sign (matra): ಕ → ಕಾ ಕಿ ಕೀ … (408 forms).
-4. **Ottakshara** — stacked conjuncts `consonant + virama (್) + consonant`. *Planned (M4).*
+4. **Ottakshara** — stacked conjuncts `consonant + virama (್) + consonant` (e.g. ಸ್ತ).
+   **Auto-derived from the reading texts** rather than the full ~1,150-pair space (see §6).
 
 ### Item shape
 ```js
@@ -61,7 +62,10 @@ load. Consolidation adds a matching exercise and (for characters) a tracing pass
 - Strength reflects **exposure**: an item gains strength each distinct lesson/review it
   appears in, reaching full (5/5) after ~15 sessions.
 - Each session pushes the item's next-review time further out, so well-known items
-  resurface less often. Review sessions surface the most-due items.
+  resurface less often.
+- **Review lessons** (no new items, drills covered ones — due first, then weakest) are
+  available as a tile at the end of each unit and per section, plus the global due-based
+  review banner. They award points/streak but don't advance lesson progress.
 
 > **Item-agnostic SRS.** The engine (`srs.js`) tracks generic *items* by id — a character
 > or a word — and never assumes which. This is what lets reading-mode words reuse the
@@ -104,7 +108,12 @@ everything at once:
 ```
 
 Sections/units unlock sequentially (a unit opens once all earlier ones are complete).
-Ottakshara will slot in as just one more section card.
+
+The **Ottakshara** section is dynamic: conjuncts (`C + ್ + C`) are extracted from all
+reading texts, frequency-ranked, and registered as character-like items (so they get the
+normal exercises incl. tracing). The curriculum order is persisted (`progress.ottakshara`)
+and **append-only**, so importing new texts adds new conjuncts as new lessons without
+reshuffling completed ones. New imports show up after the next load.
 
 ---
 
@@ -191,12 +200,6 @@ lexicon/
 ---
 
 ## 9. Roadmap (remaining)
-
-### M4 — Ottakshara (conjuncts)
-Generate conjunct forms (`consonant + virama + consonant`) and add them as a new section,
-taught with the existing exercises. The combinatorial space is large (~1,150 pairs), so
-teach a **curated common set** (doubles ಕ್ಕ ತ್ತ ನ್ನ ಲ್ಲ ಮ್ಮ, frequent clusters ಸ್ತ ಸ್ವ ಕ್ಷ ಜ್ಞ …) —
-optionally seeded from conjuncts that actually appear in the reading texts.
 
 ### Multi-user — SQLite + accounts
 Let other people use the app with their own accounts and progress.

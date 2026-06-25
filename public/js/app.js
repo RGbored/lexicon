@@ -33,6 +33,33 @@ const App = (() => {
     return out;
   }
   const unitsOf = (sid) => units.filter((u) => u.section === sid);
+
+  // Ottakshara (M4): conjuncts auto-derived from the reading texts. Each conjunct
+  // (e.g. ಸ್ತ) is registered as a character-like item so it gets the normal
+  // exercises incl. tracing. The curriculum order is persisted and append-only,
+  // so importing new texts adds new conjuncts as new lessons without reshuffling.
+  function buildOttaksharaUnit() {
+    const freq = Reading.conjunctFrequencies();
+    const progress = Data.progressData();
+    let order = progress.ottakshara || [];
+    const fresh = [...freq.keys()]
+      .filter((g) => !order.includes(g))
+      .sort((a, b) => freq.get(b) - freq.get(a) || a.localeCompare(b));
+    if (fresh.length) {
+      order = order.concat(fresh);
+      progress.ottakshara = order;
+      Data.save();
+    }
+    if (!order.length) return null;
+
+    Data.registerItems(order.map((g) => ({
+      id: 'ott:' + g, glyph: g, roman: Translit.word(g), category: 'ottakshara', group: 'ottakshara',
+    })));
+    const ids = order.map((g) => 'ott:' + g);
+    const lessons = [];
+    for (let i = 0; i < ids.length; i += 5) lessons.push({ ids: ids.slice(i, i + 5) });
+    return { id: 'ottakshara', section: 'ottakshara', title: 'Ottakshara', lessons };
+  }
   const unitDone = (u) => Data.unit(u.id).lessonsDone >= u.lessons.length;
 
   // Index of the first not-yet-complete unit; everything up to it is unlocked.
@@ -123,6 +150,8 @@ const App = (() => {
         grid.appendChild(tile);
       }
       root.appendChild(grid);
+      const rt = reviewTile(sUnits.flatMap((u) => u.lessons.flatMap((l) => l.ids)), `${SECTION_TITLES[sid] || sid} review`);
+      if (rt) { rt.classList.add('section-review'); root.appendChild(rt); }
     }
     statusEl().textContent = SECTION_TITLES[sid] || sid;
   }
@@ -150,6 +179,8 @@ const App = (() => {
       else node.disabled = true;
       map.appendChild(node);
     });
+    const rt = reviewTile(u.lessons.flatMap((l) => l.ids), `${u.title} review`);
+    if (rt) map.appendChild(rt);
     root.appendChild(map);
   }
 
@@ -214,6 +245,39 @@ const App = (() => {
     });
   }
 
+  // A review lesson: drills already-covered (seen) items only, no new ones.
+  // Prioritizes due items, then the weakest. Returns up to 15 ids.
+  function pickReview(ids) {
+    const now = Date.now();
+    return ids
+      .filter((id) => Data.peek(id)?.seen)
+      .sort((a, b) => {
+        const da = SRS.isDue(Data.peek(a), now) ? 0 : 1;
+        const db = SRS.isDue(Data.peek(b), now) ? 0 : 1;
+        return da - db || SRS.strength(Data.peek(a)) - SRS.strength(Data.peek(b));
+      })
+      .slice(0, 15);
+  }
+
+  function startScopedReview(ids, title) {
+    const pool = pickReview(ids);
+    if (!pool.length) return;
+    Session.start({
+      title,
+      queue: Session.buildReviewQueue(pool),
+      returnTo: location.hash || '#/',
+      onComplete: () => Data.saveNow(),
+    });
+  }
+
+  // A "🔁 Review" tile that drills the covered items in `ids`, if any.
+  function reviewTile(ids, title) {
+    if (!ids.some((id) => Data.peek(id)?.seen)) return null;
+    const tile = el('<button class="lesson review"><span class="lesson-glyphs">🔁 Review</span><span class="lesson-tag">↻</span></button>');
+    tile.onclick = () => startScopedReview(ids, title);
+    return tile;
+  }
+
   // ── routing ───────────────────────────────────────────────────────────────
   function setActiveTab(hash) {
     const reading = hash.startsWith('#/reading') || hash.startsWith('#/text');
@@ -256,6 +320,8 @@ const App = (() => {
     try {
       await Promise.all([Data.load(), Reading.load()]);
       units = Curriculum.build(Data.all());
+      const ott = buildOttaksharaUnit(); // conjuncts derived from reading texts
+      if (ott) units.push(ott);
       window.addEventListener('hashchange', route);
       document.getElementById('home-link').onclick = (e) => { e.preventDefault(); location.hash = '#/'; };
       route();
