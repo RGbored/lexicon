@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+
+# runtime progress (per-user state, not source)
+data/progress.json
+
+# logs
+*.log
+npm-debug.log*
+
+# os / editor
+.DS_Store
+.idea/
+.vscode/

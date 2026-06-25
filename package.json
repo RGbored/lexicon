@@ -1,0 +1,14 @@
+{
+  "name": "lexicon",
+  "version": "0.1.0",
+  "description": "Self-hosted Kannada alphabet learner",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "generate": "node scripts/generate-characters.js",
+    "generate:all": "node scripts/generate-characters.js --all"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

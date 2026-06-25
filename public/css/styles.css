@@ -1,0 +1,212 @@
+:root {
+  --bg: #faf7f2;
+  --card: #ffffff;
+  --ink: #2b2b2b;
+  --muted: #8a8378;
+  --accent: #d97706;
+  --accent-soft: #fde9cf;
+  --line: #ece6dc;
+  --green: #58a65c;
+  --green-soft: #e7f5e9;
+  --red: #d9534f;
+  --red-soft: #fbe9e8;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Noto Sans Kannada", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ── header ─────────────────────────────────────────── */
+.app-header {
+  padding: 1rem 1rem 0.6rem;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.home-link {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+.status { margin: 0.3rem 0 0; font-size: 0.82rem; color: var(--muted); }
+
+.content { padding: 1rem; max-width: 640px; margin: 0 auto; }
+
+/* ── home / lesson map ──────────────────────────────── */
+.review-banner {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 0.85rem 1.1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  cursor: pointer;
+}
+.review-banner .count { font-weight: 400; opacity: 0.9; }
+
+.unit { margin-bottom: 1.6rem; }
+.unit.locked { opacity: 0.5; }
+.unit h2 { font-size: 1rem; margin: 0 0 0.6rem; display: flex; gap: 0.5rem; align-items: baseline; }
+.unit-prog { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+
+.lesson-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.6rem; }
+.lesson {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.7rem 0.8rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  text-align: left;
+}
+.lesson:active { transform: scale(0.97); }
+.lesson.done { border-color: var(--green); background: var(--green-soft); }
+.lesson.open { border-color: var(--accent); }
+.lesson.locked { cursor: default; color: var(--muted); }
+.lesson-glyphs { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.lesson-tag { font-size: 0.85rem; color: var(--muted); flex: none; }
+
+/* ── session ────────────────────────────────────────── */
+.session { display: flex; flex-direction: column; min-height: 70vh; }
+.progressbar { height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; margin-bottom: 1.6rem; }
+.progressbar span { display: block; height: 100%; background: var(--accent); transition: width 0.25s ease; }
+
+.exercise { flex: 1; }
+.hint { color: var(--muted); font-size: 0.9rem; text-align: center; }
+
+.big-glyph { font-size: 4.5rem; text-align: center; line-height: 1.1; }
+.big-roman { font-size: 2.4rem; text-align: center; color: var(--accent); }
+
+.intro { text-align: center; padding-top: 1.5rem; }
+.speak {
+  margin-top: 0.8rem;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: none;
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.speak.big { font-size: 1.8rem; padding: 1rem 1.6rem; display: block; margin: 1.5rem auto 0; }
+
+/* multiple choice */
+.mc { padding-top: 1rem; }
+.options { display: grid; gap: 0.6rem; margin-top: 1.5rem; }
+.option {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 0.9rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+.option.glyph { font-size: 1.8rem; }
+.option:active { transform: scale(0.98); }
+.option.correct { border-color: var(--green); background: var(--green-soft); color: var(--green); }
+.option.wrong { border-color: var(--red); background: var(--red-soft); color: var(--red); }
+.option:disabled { cursor: default; }
+
+/* match */
+.match { padding-top: 1rem; }
+.cols { display: flex; gap: 0.8rem; margin-top: 1.2rem; }
+.col { flex: 1; display: flex; flex-direction: column; gap: 0.55rem; }
+.token {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+  padding: 0.85rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.token.sel { border-color: var(--accent); background: var(--accent-soft); }
+.token.done { border-color: var(--green); background: var(--green-soft); opacity: 0.55; }
+.token.miss { border-color: var(--red); background: var(--red-soft); }
+
+/* tracing */
+.tracing { padding-top: 0.5rem; text-align: center; }
+.canvas-wrap {
+  margin: 0.8rem auto 0;
+  width: 300px;
+  max-width: 86vw;
+}
+.trace-canvas {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--card);
+  border: 1.5px dashed var(--line);
+  border-radius: 16px;
+  touch-action: none; /* let us draw without the page scrolling */
+  cursor: crosshair;
+}
+.trace-tools { display: flex; gap: 0.6rem; justify-content: center; margin-top: 0.7rem; }
+.trace-tools .clear {
+  background: var(--card);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.trace-result { min-height: 1.2em; margin-top: 0.5rem; }
+
+/* strength dashboard */
+.strength-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 0.5rem;
+}
+.scell {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.45rem 0.3rem;
+  text-align: center;
+}
+.scell.unseen { opacity: 0.4; }
+.scell .sg { display: block; font-size: 1.5rem; line-height: 1.1; }
+.scell .sr { display: block; font-size: 0.7rem; color: var(--muted); }
+.scell .meter { display: flex; gap: 2px; justify-content: center; margin-top: 0.3rem; }
+.scell .meter i {
+  width: 7px; height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+}
+.scell .meter i.on { background: var(--green); }
+
+/* footer action */
+.foot { padding: 1.2rem 0 1.6rem; }
+.action {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.action:active { transform: scale(0.99); }
+
+.summary { text-align: center; align-items: center; }
+.summary h2 { margin: 0.5rem 0 0; }

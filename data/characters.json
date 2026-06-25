@@ -1,0 +1,349 @@
+{
+  "generatedAt": "2026-06-24T14:09:44.387Z",
+  "count": 49,
+  "characters": [
+    {
+      "id": "a",
+      "glyph": "ಅ",
+      "roman": "a",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "aa",
+      "glyph": "ಆ",
+      "roman": "ā",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "i",
+      "glyph": "ಇ",
+      "roman": "i",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "ii",
+      "glyph": "ಈ",
+      "roman": "ī",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "u",
+      "glyph": "ಉ",
+      "roman": "u",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "uu",
+      "glyph": "ಊ",
+      "roman": "ū",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "ru",
+      "glyph": "ಋ",
+      "roman": "r̥",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "e",
+      "glyph": "ಎ",
+      "roman": "e",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "ee",
+      "glyph": "ಏ",
+      "roman": "ē",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "ai",
+      "glyph": "ಐ",
+      "roman": "ai",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "o",
+      "glyph": "ಒ",
+      "roman": "o",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "oo",
+      "glyph": "ಓ",
+      "roman": "ō",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "au",
+      "glyph": "ಔ",
+      "roman": "au",
+      "category": "vowel",
+      "group": "vowels"
+    },
+    {
+      "id": "am",
+      "glyph": "ಅಂ",
+      "roman": "aṁ",
+      "category": "yogavaahaka",
+      "group": "yogavaahaka"
+    },
+    {
+      "id": "ah",
+      "glyph": "ಅಃ",
+      "roman": "aḥ",
+      "category": "yogavaahaka",
+      "group": "yogavaahaka"
+    },
+    {
+      "id": "ka",
+      "glyph": "ಕ",
+      "roman": "ka",
+      "category": "consonant",
+      "group": "ka-varga"
+    },
+    {
+      "id": "kha",
+      "glyph": "ಖ",
+      "roman": "kha",
+      "category": "consonant",
+      "group": "ka-varga"
+    },
+    {
+      "id": "ga",
+      "glyph": "ಗ",
+      "roman": "ga",
+      "category": "consonant",
+      "group": "ka-varga"
+    },
+    {
+      "id": "gha",
+      "glyph": "ಘ",
+      "roman": "gha",
+      "category": "consonant",
+      "group": "ka-varga"
+    },
+    {
+      "id": "nga",
+      "glyph": "ಙ",
+      "roman": "ṅa",
+      "category": "consonant",
+      "group": "ka-varga"
+    },
+    {
+      "id": "ca",
+      "glyph": "ಚ",
+      "roman": "ca",
+      "category": "consonant",
+      "group": "ca-varga"
+    },
+    {
+      "id": "cha",
+      "glyph": "ಛ",
+      "roman": "cha",
+      "category": "consonant",
+      "group": "ca-varga"
+    },
+    {
+      "id": "ja",
+      "glyph": "ಜ",
+      "roman": "ja",
+      "category": "consonant",
+      "group": "ca-varga"
+    },
+    {
+      "id": "jha",
+      "glyph": "ಝ",
+      "roman": "jha",
+      "category": "consonant",
+      "group": "ca-varga"
+    },
+    {
+      "id": "nya",
+      "glyph": "ಞ",
+      "roman": "ña",
+      "category": "consonant",
+      "group": "ca-varga"
+    },
+    {
+      "id": "tta",
+      "glyph": "ಟ",
+      "roman": "ṭa",
+      "category": "consonant",
+      "group": "tta-varga"
+    },
+    {
+      "id": "ttha",
+      "glyph": "ಠ",
+      "roman": "ṭha",
+      "category": "consonant",
+      "group": "tta-varga"
+    },
+    {
+      "id": "dda",
+      "glyph": "ಡ",
+      "roman": "ḍa",
+      "category": "consonant",
+      "group": "tta-varga"
+    },
+    {
+      "id": "ddha",
+      "glyph": "ಢ",
+      "roman": "ḍha",
+      "category": "consonant",
+      "group": "tta-varga"
+    },
+    {
+      "id": "nna",
+      "glyph": "ಣ",
+      "roman": "ṇa",
+      "category": "consonant",
+      "group": "tta-varga"
+    },
+    {
+      "id": "ta",
+      "glyph": "ತ",
+      "roman": "ta",
+      "category": "consonant",
+      "group": "ta-varga"
+    },
+    {
+      "id": "tha",
+      "glyph": "ಥ",
+      "roman": "tha",
+      "category": "consonant",
+      "group": "ta-varga"
+    },
+    {
+      "id": "da",
+      "glyph": "ದ",
+      "roman": "da",
+      "category": "consonant",
+      "group": "ta-varga"
+    },
+    {
+      "id": "dha",
+      "glyph": "ಧ",
+      "roman": "dha",
+      "category": "consonant",
+      "group": "ta-varga"
+    },
+    {
+      "id": "na",
+      "glyph": "ನ",
+      "roman": "na",
+      "category": "consonant",
+      "group": "ta-varga"
+    },
+    {
+      "id": "pa",
+      "glyph": "ಪ",
+      "roman": "pa",
+      "category": "consonant",
+      "group": "pa-varga"
+    },
+    {
+      "id": "pha",
+      "glyph": "ಫ",
+      "roman": "pha",
+      "category": "consonant",
+      "group": "pa-varga"
+    },
+    {
+      "id": "ba",
+      "glyph": "ಬ",
+      "roman": "ba",
+      "category": "consonant",
+      "group": "pa-varga"
+    },
+    {
+      "id": "bha",
+      "glyph": "ಭ",
+      "roman": "bha",
+      "category": "consonant",
+      "group": "pa-varga"
+    },
+    {
+      "id": "ma",
+      "glyph": "ಮ",
+      "roman": "ma",
+      "category": "consonant",
+      "group": "pa-varga"
+    },
+    {
+      "id": "ya",
+      "glyph": "ಯ",
+      "roman": "ya",
+      "category": "consonant",
+      "group": "avargeeya"
+    },
+    {
+      "id": "ra",
+      "glyph": "ರ",
+      "roman": "ra",
+      "category": "consonant",
+      "group": "avargeeya"
+    },
+    {
+      "id": "la",
+      "glyph": "ಲ",
+      "roman": "la",
+      "category": "consonant",
+      "group": "avargeeya"
+    },
+    {
+      "id": "va",
+      "glyph": "ವ",
+      "roman": "va",
+      "category": "consonant",
+      "group": "avargeeya"
+    },
+    {
+      "id": "sha",
+      "glyph": "ಶ",
+      "roman": "śa",
+      "category": "consonant",
+      "group": "avargeeya"
+    },
+    {
+      "id": "ssha",
+      "glyph": "ಷ",
+      "roman": "ṣa",
+      "category": "consonant",
+      "group": "avargeeya"
+    },
+    {
+      "id": "sa",
+      "glyph": "ಸ",
+      "roman": "sa",
+      "category": "consonant",
+      "group": "avargeeya"
+    },
+    {
+      "id": "ha",
+      "glyph": "ಹ",
+      "roman": "ha",
+      "category": "consonant",
+      "group": "avargeeya"
+    },
+    {
+      "id": "lla",
+      "glyph": "ಳ",
+      "roman": "ḷa",
+      "category": "consonant",
+      "group": "avargeeya"
+    }
+  ]
+}
