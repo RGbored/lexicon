@@ -1,8 +1,9 @@
 # dependencies
 node_modules/
 
-# runtime progress (per-user state, not source)
+# runtime state (per-user, not source)
 data/progress.json
+data/texts-user.json
 
 # logs
 *.log

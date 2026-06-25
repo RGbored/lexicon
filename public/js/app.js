@@ -71,20 +71,22 @@ const App = (() => {
     statusEl().textContent = `${learned} characters seen` + (due.length ? ` · ${due.length} due for review` : '');
   }
 
-  // Per-character strength (0–5) shown as a 5-segment meter. Seen characters are
-  // highlighted; unseen ones stay faint.
+  // Per-character strength (0–5) shown as a 5-segment meter. Strength grows with
+  // the number of lessons a character has appeared in (full at SRS.FULL_LESSONS).
+  // Seen characters are highlighted; unseen ones stay faint.
   function renderStrengthDashboard(root) {
     const section = document.createElement('section');
     section.className = 'unit';
-    section.innerHTML = '<h2>Strength</h2>';
+    section.innerHTML = `<h2>Strength <span class="unit-prog">full at ${SRS.FULL_LESSONS} lessons</span></h2>`;
     const grid = document.createElement('div');
     grid.className = 'strength-grid';
     for (const c of Data.all()) {
       const it = Data.peek(c.id);
-      const s = it ? it.strength : 0;
-      const seen = !!(it && it.seen);
+      const s = SRS.strength(it);
+      const lessons = it ? it.lessons : 0;
       const cell = document.createElement('div');
-      cell.className = 'scell' + (seen ? '' : ' unseen');
+      cell.className = 'scell' + (it && it.seen ? '' : ' unseen');
+      cell.title = `${lessons} lesson${lessons === 1 ? '' : 's'}`;
       const meter = [0, 1, 2, 3, 4].map((i) => `<i class="${i < s ? 'on' : ''}"></i>`).join('');
       cell.innerHTML =
         `<span class="sg">${c.glyph}</span>` +
@@ -130,13 +132,28 @@ const App = (() => {
   }
 
   // ── routing ───────────────────────────────────────────────────────────────
+  function setActiveTab(hash) {
+    const reading = hash.startsWith('#/reading') || hash.startsWith('#/text');
+    document.querySelectorAll('.tabs a').forEach((a) => {
+      a.classList.toggle('active', (a.dataset.tab === 'reading') === reading);
+    });
+  }
+
   function route() {
     const hash = location.hash || '#/';
-    const parts = hash.split('/');
+    const parts = hash.split('/'); // ['#', 'text', 'id', 'lesson', '0']
+    setActiveTab(hash);
     if (parts[1] === 'lesson' && parts[2] != null && parts[3] != null) {
       startLesson(parts[2], parseInt(parts[3], 10));
     } else if (parts[1] === 'review') {
       startReview();
+    } else if (parts[1] === 'reading') {
+      Reading.home(contentEl());
+    } else if (parts[1] === 'text' && parts[2] != null) {
+      const id = decodeURIComponent(parts[2]);
+      if (parts[3] === 'lesson' && parts[4] != null) Reading.startLesson(id, parseInt(parts[4], 10));
+      else if (parts[3] === 'read') Reading.read(id, contentEl());
+      else Reading.text(id, contentEl());
     } else {
       home();
     }
@@ -144,7 +161,7 @@ const App = (() => {
 
   async function boot() {
     try {
-      await Data.load();
+      await Promise.all([Data.load(), Reading.load()]);
       units = Curriculum.build(Data.all());
       window.addEventListener('hashchange', route);
       document.getElementById('home-link').onclick = (e) => {

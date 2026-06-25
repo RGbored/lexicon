@@ -5,8 +5,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "generate": "node scripts/generate-characters.js",
-    "generate:all": "node scripts/generate-characters.js --all"
+    "generate": "node scripts/generate-characters.js"
   },
   "dependencies": {
     "express": "^4.19.2"

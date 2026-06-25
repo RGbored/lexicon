@@ -26,9 +26,21 @@ const Data = (() => {
     progress.settings = progress.settings || { romanizationStyle: 'iso15919' };
   }
 
-  const all = () => characters;
+  const all = () => characters; // alphabet only (curriculum + dashboard)
   const get = (id) => byId.get(id);
   const progressData = () => progress;
+
+  // Ad-hoc items (e.g. words from the Reading module) are resolvable via get()
+  // and itemsByCategory() but kept out of all(), so they don't leak into the
+  // alphabet curriculum or strength dashboard.
+  function registerItems(items) {
+    for (const it of items) byId.set(it.id, it);
+  }
+  function itemsByCategory(category) {
+    const out = [];
+    for (const it of byId.values()) if (it.category === category) out.push(it);
+    return out;
+  }
 
   // Get-or-create the SRS record for an id.
   function item(id) {
@@ -58,5 +70,5 @@ const Data = (() => {
     return post();
   }
 
-  return { load, all, get, progressData, item, peek, unit, save, saveNow };
+  return { load, all, get, progressData, item, peek, unit, save, saveNow, registerItems, itemsByCategory };
 })();

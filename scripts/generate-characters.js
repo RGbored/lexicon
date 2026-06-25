@@ -89,9 +89,9 @@ function buildKagunita() {
 
 // ── Emit ─────────────────────────────────────────────────────────────────────
 function main() {
-  const includeAll = process.argv.includes('--all');
-  const characters = buildBase();
-  if (includeAll) characters.push(...buildKagunita());
+  // Base (vowels + consonants) and the kagunita grid are always generated.
+  // Ottakshara (conjuncts) will arrive in M4 behind --all.
+  const characters = buildBase().concat(buildKagunita());
 
   // Sanity: ids must be unique.
   const seen = new Set();
@@ -105,7 +105,7 @@ function main() {
   const outFile = path.join(dataDir, 'characters.json');
   const payload = { generatedAt: new Date().toISOString(), count: characters.length, characters };
   fs.writeFileSync(outFile, JSON.stringify(payload, null, 2));
-  console.log(`Wrote ${characters.length} characters to ${outFile}${includeAll ? ' (incl. kagunita)' : ''}`);
+  console.log(`Wrote ${characters.length} characters to ${outFile}`);
 }
 
 main();

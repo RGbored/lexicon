@@ -80,9 +80,12 @@ Each **lesson** introduces 3–5 new characters, then drills them mixed with rev
 previously learned characters. Completing a lesson unlocks the next.
 
 ### Spaced repetition / mastery
-- Each character carries a **strength score** (lightweight Leitner-style box or 0–N score).
-- Correct answers raise strength; mistakes lower it and reschedule the character sooner.
-- **Review sessions** surface the weakest / most-due characters across all unlocked units.
+- Strength reflects **exposure**: a character grows stronger each distinct lesson/
+  review session it appears in, reaching **full strength after 15 sessions** (shown
+  as a 0–5 meter on the home dashboard).
+- Each session pushes a character's next-review time further out the more often it
+  has been seen, so well-known characters resurface less often.
+- **Review sessions** surface the most-due characters across all unlocked units.
 
 > **Design note — item-type-agnostic SRS.** The scheduling engine tracks generic
 > *items* keyed by id, where an item is a *character* today. The future Reading &
@@ -143,7 +146,7 @@ Node server (Termux)
 ### Persistence model (`progress.json`)
 ```js
 {
-  characters: { "ka": { strength: 3, lastSeen: 1719230000, due: 1719300000 }, ... },
+  items: { "ka": { lessons: 3, seen: true, lastSeen: 1719230000, due: 1719300000 }, ... },
   units: { vowels: { lessonsDone: 4 }, consonants: { lessonsDone: 2 }, ... },
   settings: { romanizationStyle: "iso15919" }
 }
@@ -179,7 +182,7 @@ lexicon/
 
 - **M1 — Foundation:** ✅ character generator, Node server, progress persistence, character data for vowels + consonants.
 - **M2 — Core loop (vowels + consonants):** ✅ unit/lesson map, Phase-1 exercises (intro, MC recognize/recall, audio, match), SRS, review sessions. *End-to-end usable here.*
-- **M3 — Kagunita:** generate the grid, progressive vowel-sign introduction.
+- **M3 — Kagunita:** ✅ generate the 408-cell grid; one unit per consonant series (ಕ → ಕಾ ಕಿ ಕೀ …), 6 forms per lesson.
 - **M4 — Ottakshara:** common conjuncts.
 - **M5 — Tracing:** canvas exercises with progressive scaffolding (Phase 2).
 - **M6 — Audio upgrade (optional):** generate + verify baked-in clips, swap TTS for files.
@@ -222,9 +225,24 @@ are just items with a strength score, like characters.
      largely sidestepping the morphology problem. Needs network + costs at import time.
    - **Hybrid:** local dictionary first, LLM for misses — keeps cost and latency down.
 
-### Status
-Future module. Not in the M1–M6 roadmap above; revisit once the alphabet learner is
-usable. The only thing actioned now is keeping the SRS item-type-agnostic.
+### Status — v1 shipped
+Built as a separate **Reading** section (own tab). Implemented:
+- Import a Kannada text (paste); bundled sample stories with curated glossaries.
+- Tokenize → frequency-rank → path of lessons (most frequent first).
+- Words are items (category `word`, id `w:<word>`) reusing the SRS + exercises.
+  The English meaning is always shown during word exercises, and there's a
+  **word ↔ meaning** matching exercise. Tracing is excluded for words (the canvas
+  is too small for multi-character words). Deterministic transliteration (`translit.js`).
+- Per-text **coverage** bar, frequency-weighted and based on lessons-encountered
+  (so it moves after the first lesson; full credit after 3 lessons with a word).
+- **Read-it-yourself** view with known/unknown highlighting + tap-to-reveal.
+- Server: `GET/POST /api/texts`; imported texts persisted to `data/texts-user.json`.
+
+Still open:
+- **Meaning enrichment for imported texts** — bundled texts have curated meanings;
+  user imports currently get transliteration only. Next: an optional server endpoint
+  that calls the **Claude API** to fill `glossary` (lemma + meaning) when a key is set.
+- **Lemmatization** (group inflected forms) and **PDF/OCR import** remain future work.
 
 ---
 

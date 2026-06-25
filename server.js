@@ -10,11 +10,13 @@ const PORT = process.env.PORT || 3000;
 const DATA_DIR = path.join(__dirname, 'data');
 const CHARACTERS_FILE = path.join(DATA_DIR, 'characters.json');
 const PROGRESS_FILE = path.join(DATA_DIR, 'progress.json');
+const TEXTS_FILE = path.join(DATA_DIR, 'texts.json');            // bundled samples
+const USER_TEXTS_FILE = path.join(DATA_DIR, 'texts-user.json');  // imported texts
 
 // Progress is keyed by generic item id (a character today, a word later) so the
 // same store works once the Reading & Vocabulary module lands. See DESIGN.md §3.
 const DEFAULT_PROGRESS = {
-  items: {},                                   // id -> { strength, lastSeen, due }
+  items: {},                                   // id -> { lessons, seen, lastSeen, due }
   units: {},                                   // unit -> { lessonsDone }
   settings: { romanizationStyle: 'iso15919' },
 };
@@ -52,6 +54,45 @@ app.post('/api/progress', (req, res) => {
     fs.writeFile(PROGRESS_FILE, JSON.stringify(body, null, 2), (wErr) => {
       if (wErr) return res.status(500).json({ error: 'Could not save progress.' });
       res.json({ ok: true });
+    });
+  });
+});
+
+function readJson(file, fallback) {
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch {
+    return fallback;
+  }
+}
+
+// Bundled sample texts + any imported by the user.
+app.get('/api/texts', (req, res) => {
+  const bundled = readJson(TEXTS_FILE, { texts: [] }).texts || [];
+  const user = readJson(USER_TEXTS_FILE, { texts: [] }).texts || [];
+  res.json({ texts: [...bundled, ...user] });
+});
+
+app.post('/api/texts', (req, res) => {
+  const { title, body } = req.body || {};
+  if (!body || typeof body !== 'string' || !/[ಀ-೿]/.test(body)) {
+    return res.status(400).json({ error: 'Body must contain Kannada text.' });
+  }
+  const store = readJson(USER_TEXTS_FILE, { texts: [] });
+  if (!Array.isArray(store.texts)) store.texts = [];
+  const text = {
+    id: `user-${Date.now()}`,
+    title: (typeof title === 'string' && title.trim()) || 'Untitled',
+    source: 'imported',
+    user: true,
+    body,
+    glossary: {}, // meanings can be enriched later (e.g. via the Claude API)
+  };
+  store.texts.push(text);
+  fs.mkdir(DATA_DIR, { recursive: true }, () => {
+    fs.writeFile(USER_TEXTS_FILE, JSON.stringify(store, null, 2), (err) => {
+      if (err) return res.status(500).json({ error: 'Could not save text.' });
+      res.json({ text });
     });
   });
 });

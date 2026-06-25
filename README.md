@@ -8,7 +8,8 @@ See [`DESIGN.md`](DESIGN.md) for the full design and roadmap.
 
 ## Features
 
-- **Progressive units** — Vowels → Consonants (by varga), unlocked lesson by lesson.
+- **Progressive units** — Vowels → Consonants (by varga) → Kagunita (per consonant
+  series), unlocked lesson by lesson.
 - **Interleaved teaching** — new characters are introduced one at a time, each
   followed by drills, so you never meet two new characters back-to-back.
 - **Four exercise types** — intro cards, multiple-choice (recognize & recall),
@@ -22,6 +23,9 @@ See [`DESIGN.md`](DESIGN.md) for the full design and roadmap.
   API), always shown alongside the romanization.
 - **Durable progress** — saved server-side to a JSON file, so it survives across
   browsers and devices.
+- **Reading mode** (separate tab) — import a Kannada text (or pick a bundled story),
+  learn its words in frequency order with the same exercises, track a coverage bar
+  ("how much can I read"), and read it yourself with tap-to-reveal pronunciation/meaning.
 
 ## Requirements
 
@@ -45,8 +49,7 @@ Open <http://localhost:3000> and start with the first Vowels lesson.
 
 | Command | What it does |
 |---|---|
-| `npm run generate` | Generate vowels + consonants into `data/characters.json` |
-| `npm run generate:all` | Also generate the kagunita grid (consonant × vowel-sign) |
+| `npm run generate` | Generate the character set (vowels, consonants, kagunita) into `data/characters.json` |
 | `npm start` | Start the server (honors `PORT`, default `3000`) |
 
 ## Running on a phone (Termux)
@@ -95,6 +98,6 @@ lexicon/
 
 ## Status
 
-Vowels + consonants are fully playable (milestones M1–M2). Next up: the kagunita
-grid (M3), conjuncts (M4), and an audio upgrade to pre-recorded clips. See
-[`DESIGN.md`](DESIGN.md) §7 for the roadmap.
+Vowels, consonants, and the kagunita grid are fully playable (milestones M1–M3).
+Next up: conjuncts/ottakshara (M4), tracing already shipped, and an audio upgrade to
+pre-recorded clips. See [`DESIGN.md`](DESIGN.md) §7 for the roadmap.

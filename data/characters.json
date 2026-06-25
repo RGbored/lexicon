@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-06-24T14:09:44.387Z",
-  "count": 49,
+  "generatedAt": "2026-06-25T20:09:48.262Z",
+  "count": 457,
   "characters": [
     {
       "id": "a",
@@ -344,6 +344,2862 @@
       "roman": "ḷa",
       "category": "consonant",
       "group": "avargeeya"
+    },
+    {
+      "id": "ka_aa",
+      "glyph": "ಕಾ",
+      "roman": "kā",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_i",
+      "glyph": "ಕಿ",
+      "roman": "ki",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_ii",
+      "glyph": "ಕೀ",
+      "roman": "kī",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_u",
+      "glyph": "ಕು",
+      "roman": "ku",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_uu",
+      "glyph": "ಕೂ",
+      "roman": "kū",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_ru",
+      "glyph": "ಕೃ",
+      "roman": "kr̥",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_e",
+      "glyph": "ಕೆ",
+      "roman": "ke",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_ee",
+      "glyph": "ಕೇ",
+      "roman": "kē",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_ai",
+      "glyph": "ಕೈ",
+      "roman": "kai",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_o",
+      "glyph": "ಕೊ",
+      "roman": "ko",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_oo",
+      "glyph": "ಕೋ",
+      "roman": "kō",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "ka_au",
+      "glyph": "ಕೌ",
+      "roman": "kau",
+      "category": "kagunita",
+      "group": "ka-kagunita"
+    },
+    {
+      "id": "kha_aa",
+      "glyph": "ಖಾ",
+      "roman": "khā",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_i",
+      "glyph": "ಖಿ",
+      "roman": "khi",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_ii",
+      "glyph": "ಖೀ",
+      "roman": "khī",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_u",
+      "glyph": "ಖು",
+      "roman": "khu",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_uu",
+      "glyph": "ಖೂ",
+      "roman": "khū",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_ru",
+      "glyph": "ಖೃ",
+      "roman": "khr̥",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_e",
+      "glyph": "ಖೆ",
+      "roman": "khe",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_ee",
+      "glyph": "ಖೇ",
+      "roman": "khē",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_ai",
+      "glyph": "ಖೈ",
+      "roman": "khai",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_o",
+      "glyph": "ಖೊ",
+      "roman": "kho",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_oo",
+      "glyph": "ಖೋ",
+      "roman": "khō",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "kha_au",
+      "glyph": "ಖೌ",
+      "roman": "khau",
+      "category": "kagunita",
+      "group": "kha-kagunita"
+    },
+    {
+      "id": "ga_aa",
+      "glyph": "ಗಾ",
+      "roman": "gā",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_i",
+      "glyph": "ಗಿ",
+      "roman": "gi",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_ii",
+      "glyph": "ಗೀ",
+      "roman": "gī",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_u",
+      "glyph": "ಗು",
+      "roman": "gu",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_uu",
+      "glyph": "ಗೂ",
+      "roman": "gū",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_ru",
+      "glyph": "ಗೃ",
+      "roman": "gr̥",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_e",
+      "glyph": "ಗೆ",
+      "roman": "ge",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_ee",
+      "glyph": "ಗೇ",
+      "roman": "gē",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_ai",
+      "glyph": "ಗೈ",
+      "roman": "gai",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_o",
+      "glyph": "ಗೊ",
+      "roman": "go",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_oo",
+      "glyph": "ಗೋ",
+      "roman": "gō",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "ga_au",
+      "glyph": "ಗೌ",
+      "roman": "gau",
+      "category": "kagunita",
+      "group": "ga-kagunita"
+    },
+    {
+      "id": "gha_aa",
+      "glyph": "ಘಾ",
+      "roman": "ghā",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_i",
+      "glyph": "ಘಿ",
+      "roman": "ghi",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_ii",
+      "glyph": "ಘೀ",
+      "roman": "ghī",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_u",
+      "glyph": "ಘು",
+      "roman": "ghu",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_uu",
+      "glyph": "ಘೂ",
+      "roman": "ghū",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_ru",
+      "glyph": "ಘೃ",
+      "roman": "ghr̥",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_e",
+      "glyph": "ಘೆ",
+      "roman": "ghe",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_ee",
+      "glyph": "ಘೇ",
+      "roman": "ghē",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_ai",
+      "glyph": "ಘೈ",
+      "roman": "ghai",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_o",
+      "glyph": "ಘೊ",
+      "roman": "gho",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_oo",
+      "glyph": "ಘೋ",
+      "roman": "ghō",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "gha_au",
+      "glyph": "ಘೌ",
+      "roman": "ghau",
+      "category": "kagunita",
+      "group": "gha-kagunita"
+    },
+    {
+      "id": "nga_aa",
+      "glyph": "ಙಾ",
+      "roman": "ṅā",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_i",
+      "glyph": "ಙಿ",
+      "roman": "ṅi",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_ii",
+      "glyph": "ಙೀ",
+      "roman": "ṅī",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_u",
+      "glyph": "ಙು",
+      "roman": "ṅu",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_uu",
+      "glyph": "ಙೂ",
+      "roman": "ṅū",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_ru",
+      "glyph": "ಙೃ",
+      "roman": "ṅr̥",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_e",
+      "glyph": "ಙೆ",
+      "roman": "ṅe",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_ee",
+      "glyph": "ಙೇ",
+      "roman": "ṅē",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_ai",
+      "glyph": "ಙೈ",
+      "roman": "ṅai",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_o",
+      "glyph": "ಙೊ",
+      "roman": "ṅo",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_oo",
+      "glyph": "ಙೋ",
+      "roman": "ṅō",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "nga_au",
+      "glyph": "ಙೌ",
+      "roman": "ṅau",
+      "category": "kagunita",
+      "group": "nga-kagunita"
+    },
+    {
+      "id": "ca_aa",
+      "glyph": "ಚಾ",
+      "roman": "cā",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_i",
+      "glyph": "ಚಿ",
+      "roman": "ci",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_ii",
+      "glyph": "ಚೀ",
+      "roman": "cī",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_u",
+      "glyph": "ಚು",
+      "roman": "cu",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_uu",
+      "glyph": "ಚೂ",
+      "roman": "cū",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_ru",
+      "glyph": "ಚೃ",
+      "roman": "cr̥",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_e",
+      "glyph": "ಚೆ",
+      "roman": "ce",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_ee",
+      "glyph": "ಚೇ",
+      "roman": "cē",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_ai",
+      "glyph": "ಚೈ",
+      "roman": "cai",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_o",
+      "glyph": "ಚೊ",
+      "roman": "co",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_oo",
+      "glyph": "ಚೋ",
+      "roman": "cō",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "ca_au",
+      "glyph": "ಚೌ",
+      "roman": "cau",
+      "category": "kagunita",
+      "group": "ca-kagunita"
+    },
+    {
+      "id": "cha_aa",
+      "glyph": "ಛಾ",
+      "roman": "chā",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_i",
+      "glyph": "ಛಿ",
+      "roman": "chi",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_ii",
+      "glyph": "ಛೀ",
+      "roman": "chī",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_u",
+      "glyph": "ಛು",
+      "roman": "chu",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_uu",
+      "glyph": "ಛೂ",
+      "roman": "chū",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_ru",
+      "glyph": "ಛೃ",
+      "roman": "chr̥",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_e",
+      "glyph": "ಛೆ",
+      "roman": "che",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_ee",
+      "glyph": "ಛೇ",
+      "roman": "chē",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_ai",
+      "glyph": "ಛೈ",
+      "roman": "chai",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_o",
+      "glyph": "ಛೊ",
+      "roman": "cho",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_oo",
+      "glyph": "ಛೋ",
+      "roman": "chō",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "cha_au",
+      "glyph": "ಛೌ",
+      "roman": "chau",
+      "category": "kagunita",
+      "group": "cha-kagunita"
+    },
+    {
+      "id": "ja_aa",
+      "glyph": "ಜಾ",
+      "roman": "jā",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_i",
+      "glyph": "ಜಿ",
+      "roman": "ji",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_ii",
+      "glyph": "ಜೀ",
+      "roman": "jī",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_u",
+      "glyph": "ಜು",
+      "roman": "ju",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_uu",
+      "glyph": "ಜೂ",
+      "roman": "jū",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_ru",
+      "glyph": "ಜೃ",
+      "roman": "jr̥",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_e",
+      "glyph": "ಜೆ",
+      "roman": "je",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_ee",
+      "glyph": "ಜೇ",
+      "roman": "jē",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_ai",
+      "glyph": "ಜೈ",
+      "roman": "jai",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_o",
+      "glyph": "ಜೊ",
+      "roman": "jo",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_oo",
+      "glyph": "ಜೋ",
+      "roman": "jō",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "ja_au",
+      "glyph": "ಜೌ",
+      "roman": "jau",
+      "category": "kagunita",
+      "group": "ja-kagunita"
+    },
+    {
+      "id": "jha_aa",
+      "glyph": "ಝಾ",
+      "roman": "jhā",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_i",
+      "glyph": "ಝಿ",
+      "roman": "jhi",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_ii",
+      "glyph": "ಝೀ",
+      "roman": "jhī",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_u",
+      "glyph": "ಝು",
+      "roman": "jhu",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_uu",
+      "glyph": "ಝೂ",
+      "roman": "jhū",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_ru",
+      "glyph": "ಝೃ",
+      "roman": "jhr̥",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_e",
+      "glyph": "ಝೆ",
+      "roman": "jhe",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_ee",
+      "glyph": "ಝೇ",
+      "roman": "jhē",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_ai",
+      "glyph": "ಝೈ",
+      "roman": "jhai",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_o",
+      "glyph": "ಝೊ",
+      "roman": "jho",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_oo",
+      "glyph": "ಝೋ",
+      "roman": "jhō",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "jha_au",
+      "glyph": "ಝೌ",
+      "roman": "jhau",
+      "category": "kagunita",
+      "group": "jha-kagunita"
+    },
+    {
+      "id": "nya_aa",
+      "glyph": "ಞಾ",
+      "roman": "ñā",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_i",
+      "glyph": "ಞಿ",
+      "roman": "ñi",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_ii",
+      "glyph": "ಞೀ",
+      "roman": "ñī",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_u",
+      "glyph": "ಞು",
+      "roman": "ñu",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_uu",
+      "glyph": "ಞೂ",
+      "roman": "ñū",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_ru",
+      "glyph": "ಞೃ",
+      "roman": "ñr̥",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_e",
+      "glyph": "ಞೆ",
+      "roman": "ñe",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_ee",
+      "glyph": "ಞೇ",
+      "roman": "ñē",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_ai",
+      "glyph": "ಞೈ",
+      "roman": "ñai",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_o",
+      "glyph": "ಞೊ",
+      "roman": "ño",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_oo",
+      "glyph": "ಞೋ",
+      "roman": "ñō",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "nya_au",
+      "glyph": "ಞೌ",
+      "roman": "ñau",
+      "category": "kagunita",
+      "group": "nya-kagunita"
+    },
+    {
+      "id": "tta_aa",
+      "glyph": "ಟಾ",
+      "roman": "ṭā",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_i",
+      "glyph": "ಟಿ",
+      "roman": "ṭi",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_ii",
+      "glyph": "ಟೀ",
+      "roman": "ṭī",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_u",
+      "glyph": "ಟು",
+      "roman": "ṭu",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_uu",
+      "glyph": "ಟೂ",
+      "roman": "ṭū",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_ru",
+      "glyph": "ಟೃ",
+      "roman": "ṭr̥",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_e",
+      "glyph": "ಟೆ",
+      "roman": "ṭe",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_ee",
+      "glyph": "ಟೇ",
+      "roman": "ṭē",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_ai",
+      "glyph": "ಟೈ",
+      "roman": "ṭai",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_o",
+      "glyph": "ಟೊ",
+      "roman": "ṭo",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_oo",
+      "glyph": "ಟೋ",
+      "roman": "ṭō",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "tta_au",
+      "glyph": "ಟೌ",
+      "roman": "ṭau",
+      "category": "kagunita",
+      "group": "tta-kagunita"
+    },
+    {
+      "id": "ttha_aa",
+      "glyph": "ಠಾ",
+      "roman": "ṭhā",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_i",
+      "glyph": "ಠಿ",
+      "roman": "ṭhi",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_ii",
+      "glyph": "ಠೀ",
+      "roman": "ṭhī",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_u",
+      "glyph": "ಠು",
+      "roman": "ṭhu",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_uu",
+      "glyph": "ಠೂ",
+      "roman": "ṭhū",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_ru",
+      "glyph": "ಠೃ",
+      "roman": "ṭhr̥",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_e",
+      "glyph": "ಠೆ",
+      "roman": "ṭhe",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_ee",
+      "glyph": "ಠೇ",
+      "roman": "ṭhē",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_ai",
+      "glyph": "ಠೈ",
+      "roman": "ṭhai",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_o",
+      "glyph": "ಠೊ",
+      "roman": "ṭho",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_oo",
+      "glyph": "ಠೋ",
+      "roman": "ṭhō",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "ttha_au",
+      "glyph": "ಠೌ",
+      "roman": "ṭhau",
+      "category": "kagunita",
+      "group": "ttha-kagunita"
+    },
+    {
+      "id": "dda_aa",
+      "glyph": "ಡಾ",
+      "roman": "ḍā",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_i",
+      "glyph": "ಡಿ",
+      "roman": "ḍi",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_ii",
+      "glyph": "ಡೀ",
+      "roman": "ḍī",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_u",
+      "glyph": "ಡು",
+      "roman": "ḍu",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_uu",
+      "glyph": "ಡೂ",
+      "roman": "ḍū",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_ru",
+      "glyph": "ಡೃ",
+      "roman": "ḍr̥",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_e",
+      "glyph": "ಡೆ",
+      "roman": "ḍe",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_ee",
+      "glyph": "ಡೇ",
+      "roman": "ḍē",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_ai",
+      "glyph": "ಡೈ",
+      "roman": "ḍai",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_o",
+      "glyph": "ಡೊ",
+      "roman": "ḍo",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_oo",
+      "glyph": "ಡೋ",
+      "roman": "ḍō",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "dda_au",
+      "glyph": "ಡೌ",
+      "roman": "ḍau",
+      "category": "kagunita",
+      "group": "dda-kagunita"
+    },
+    {
+      "id": "ddha_aa",
+      "glyph": "ಢಾ",
+      "roman": "ḍhā",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_i",
+      "glyph": "ಢಿ",
+      "roman": "ḍhi",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_ii",
+      "glyph": "ಢೀ",
+      "roman": "ḍhī",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_u",
+      "glyph": "ಢು",
+      "roman": "ḍhu",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_uu",
+      "glyph": "ಢೂ",
+      "roman": "ḍhū",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_ru",
+      "glyph": "ಢೃ",
+      "roman": "ḍhr̥",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_e",
+      "glyph": "ಢೆ",
+      "roman": "ḍhe",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_ee",
+      "glyph": "ಢೇ",
+      "roman": "ḍhē",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_ai",
+      "glyph": "ಢೈ",
+      "roman": "ḍhai",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_o",
+      "glyph": "ಢೊ",
+      "roman": "ḍho",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_oo",
+      "glyph": "ಢೋ",
+      "roman": "ḍhō",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "ddha_au",
+      "glyph": "ಢೌ",
+      "roman": "ḍhau",
+      "category": "kagunita",
+      "group": "ddha-kagunita"
+    },
+    {
+      "id": "nna_aa",
+      "glyph": "ಣಾ",
+      "roman": "ṇā",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_i",
+      "glyph": "ಣಿ",
+      "roman": "ṇi",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_ii",
+      "glyph": "ಣೀ",
+      "roman": "ṇī",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_u",
+      "glyph": "ಣು",
+      "roman": "ṇu",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_uu",
+      "glyph": "ಣೂ",
+      "roman": "ṇū",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_ru",
+      "glyph": "ಣೃ",
+      "roman": "ṇr̥",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_e",
+      "glyph": "ಣೆ",
+      "roman": "ṇe",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_ee",
+      "glyph": "ಣೇ",
+      "roman": "ṇē",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_ai",
+      "glyph": "ಣೈ",
+      "roman": "ṇai",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_o",
+      "glyph": "ಣೊ",
+      "roman": "ṇo",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_oo",
+      "glyph": "ಣೋ",
+      "roman": "ṇō",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "nna_au",
+      "glyph": "ಣೌ",
+      "roman": "ṇau",
+      "category": "kagunita",
+      "group": "nna-kagunita"
+    },
+    {
+      "id": "ta_aa",
+      "glyph": "ತಾ",
+      "roman": "tā",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_i",
+      "glyph": "ತಿ",
+      "roman": "ti",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_ii",
+      "glyph": "ತೀ",
+      "roman": "tī",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_u",
+      "glyph": "ತು",
+      "roman": "tu",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_uu",
+      "glyph": "ತೂ",
+      "roman": "tū",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_ru",
+      "glyph": "ತೃ",
+      "roman": "tr̥",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_e",
+      "glyph": "ತೆ",
+      "roman": "te",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_ee",
+      "glyph": "ತೇ",
+      "roman": "tē",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_ai",
+      "glyph": "ತೈ",
+      "roman": "tai",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_o",
+      "glyph": "ತೊ",
+      "roman": "to",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_oo",
+      "glyph": "ತೋ",
+      "roman": "tō",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "ta_au",
+      "glyph": "ತೌ",
+      "roman": "tau",
+      "category": "kagunita",
+      "group": "ta-kagunita"
+    },
+    {
+      "id": "tha_aa",
+      "glyph": "ಥಾ",
+      "roman": "thā",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_i",
+      "glyph": "ಥಿ",
+      "roman": "thi",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_ii",
+      "glyph": "ಥೀ",
+      "roman": "thī",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_u",
+      "glyph": "ಥು",
+      "roman": "thu",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_uu",
+      "glyph": "ಥೂ",
+      "roman": "thū",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_ru",
+      "glyph": "ಥೃ",
+      "roman": "thr̥",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_e",
+      "glyph": "ಥೆ",
+      "roman": "the",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_ee",
+      "glyph": "ಥೇ",
+      "roman": "thē",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_ai",
+      "glyph": "ಥೈ",
+      "roman": "thai",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_o",
+      "glyph": "ಥೊ",
+      "roman": "tho",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_oo",
+      "glyph": "ಥೋ",
+      "roman": "thō",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "tha_au",
+      "glyph": "ಥೌ",
+      "roman": "thau",
+      "category": "kagunita",
+      "group": "tha-kagunita"
+    },
+    {
+      "id": "da_aa",
+      "glyph": "ದಾ",
+      "roman": "dā",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_i",
+      "glyph": "ದಿ",
+      "roman": "di",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_ii",
+      "glyph": "ದೀ",
+      "roman": "dī",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_u",
+      "glyph": "ದು",
+      "roman": "du",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_uu",
+      "glyph": "ದೂ",
+      "roman": "dū",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_ru",
+      "glyph": "ದೃ",
+      "roman": "dr̥",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_e",
+      "glyph": "ದೆ",
+      "roman": "de",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_ee",
+      "glyph": "ದೇ",
+      "roman": "dē",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_ai",
+      "glyph": "ದೈ",
+      "roman": "dai",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_o",
+      "glyph": "ದೊ",
+      "roman": "do",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_oo",
+      "glyph": "ದೋ",
+      "roman": "dō",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "da_au",
+      "glyph": "ದೌ",
+      "roman": "dau",
+      "category": "kagunita",
+      "group": "da-kagunita"
+    },
+    {
+      "id": "dha_aa",
+      "glyph": "ಧಾ",
+      "roman": "dhā",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_i",
+      "glyph": "ಧಿ",
+      "roman": "dhi",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_ii",
+      "glyph": "ಧೀ",
+      "roman": "dhī",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_u",
+      "glyph": "ಧು",
+      "roman": "dhu",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_uu",
+      "glyph": "ಧೂ",
+      "roman": "dhū",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_ru",
+      "glyph": "ಧೃ",
+      "roman": "dhr̥",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_e",
+      "glyph": "ಧೆ",
+      "roman": "dhe",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_ee",
+      "glyph": "ಧೇ",
+      "roman": "dhē",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_ai",
+      "glyph": "ಧೈ",
+      "roman": "dhai",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_o",
+      "glyph": "ಧೊ",
+      "roman": "dho",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_oo",
+      "glyph": "ಧೋ",
+      "roman": "dhō",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "dha_au",
+      "glyph": "ಧೌ",
+      "roman": "dhau",
+      "category": "kagunita",
+      "group": "dha-kagunita"
+    },
+    {
+      "id": "na_aa",
+      "glyph": "ನಾ",
+      "roman": "nā",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_i",
+      "glyph": "ನಿ",
+      "roman": "ni",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_ii",
+      "glyph": "ನೀ",
+      "roman": "nī",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_u",
+      "glyph": "ನು",
+      "roman": "nu",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_uu",
+      "glyph": "ನೂ",
+      "roman": "nū",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_ru",
+      "glyph": "ನೃ",
+      "roman": "nr̥",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_e",
+      "glyph": "ನೆ",
+      "roman": "ne",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_ee",
+      "glyph": "ನೇ",
+      "roman": "nē",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_ai",
+      "glyph": "ನೈ",
+      "roman": "nai",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_o",
+      "glyph": "ನೊ",
+      "roman": "no",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_oo",
+      "glyph": "ನೋ",
+      "roman": "nō",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "na_au",
+      "glyph": "ನೌ",
+      "roman": "nau",
+      "category": "kagunita",
+      "group": "na-kagunita"
+    },
+    {
+      "id": "pa_aa",
+      "glyph": "ಪಾ",
+      "roman": "pā",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_i",
+      "glyph": "ಪಿ",
+      "roman": "pi",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_ii",
+      "glyph": "ಪೀ",
+      "roman": "pī",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_u",
+      "glyph": "ಪು",
+      "roman": "pu",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_uu",
+      "glyph": "ಪೂ",
+      "roman": "pū",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_ru",
+      "glyph": "ಪೃ",
+      "roman": "pr̥",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_e",
+      "glyph": "ಪೆ",
+      "roman": "pe",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_ee",
+      "glyph": "ಪೇ",
+      "roman": "pē",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_ai",
+      "glyph": "ಪೈ",
+      "roman": "pai",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_o",
+      "glyph": "ಪೊ",
+      "roman": "po",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_oo",
+      "glyph": "ಪೋ",
+      "roman": "pō",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pa_au",
+      "glyph": "ಪೌ",
+      "roman": "pau",
+      "category": "kagunita",
+      "group": "pa-kagunita"
+    },
+    {
+      "id": "pha_aa",
+      "glyph": "ಫಾ",
+      "roman": "phā",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_i",
+      "glyph": "ಫಿ",
+      "roman": "phi",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_ii",
+      "glyph": "ಫೀ",
+      "roman": "phī",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_u",
+      "glyph": "ಫು",
+      "roman": "phu",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_uu",
+      "glyph": "ಫೂ",
+      "roman": "phū",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_ru",
+      "glyph": "ಫೃ",
+      "roman": "phr̥",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_e",
+      "glyph": "ಫೆ",
+      "roman": "phe",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_ee",
+      "glyph": "ಫೇ",
+      "roman": "phē",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_ai",
+      "glyph": "ಫೈ",
+      "roman": "phai",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_o",
+      "glyph": "ಫೊ",
+      "roman": "pho",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_oo",
+      "glyph": "ಫೋ",
+      "roman": "phō",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "pha_au",
+      "glyph": "ಫೌ",
+      "roman": "phau",
+      "category": "kagunita",
+      "group": "pha-kagunita"
+    },
+    {
+      "id": "ba_aa",
+      "glyph": "ಬಾ",
+      "roman": "bā",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_i",
+      "glyph": "ಬಿ",
+      "roman": "bi",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_ii",
+      "glyph": "ಬೀ",
+      "roman": "bī",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_u",
+      "glyph": "ಬು",
+      "roman": "bu",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_uu",
+      "glyph": "ಬೂ",
+      "roman": "bū",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_ru",
+      "glyph": "ಬೃ",
+      "roman": "br̥",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_e",
+      "glyph": "ಬೆ",
+      "roman": "be",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_ee",
+      "glyph": "ಬೇ",
+      "roman": "bē",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_ai",
+      "glyph": "ಬೈ",
+      "roman": "bai",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_o",
+      "glyph": "ಬೊ",
+      "roman": "bo",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_oo",
+      "glyph": "ಬೋ",
+      "roman": "bō",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "ba_au",
+      "glyph": "ಬೌ",
+      "roman": "bau",
+      "category": "kagunita",
+      "group": "ba-kagunita"
+    },
+    {
+      "id": "bha_aa",
+      "glyph": "ಭಾ",
+      "roman": "bhā",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_i",
+      "glyph": "ಭಿ",
+      "roman": "bhi",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_ii",
+      "glyph": "ಭೀ",
+      "roman": "bhī",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_u",
+      "glyph": "ಭು",
+      "roman": "bhu",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_uu",
+      "glyph": "ಭೂ",
+      "roman": "bhū",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_ru",
+      "glyph": "ಭೃ",
+      "roman": "bhr̥",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_e",
+      "glyph": "ಭೆ",
+      "roman": "bhe",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_ee",
+      "glyph": "ಭೇ",
+      "roman": "bhē",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_ai",
+      "glyph": "ಭೈ",
+      "roman": "bhai",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_o",
+      "glyph": "ಭೊ",
+      "roman": "bho",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_oo",
+      "glyph": "ಭೋ",
+      "roman": "bhō",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "bha_au",
+      "glyph": "ಭೌ",
+      "roman": "bhau",
+      "category": "kagunita",
+      "group": "bha-kagunita"
+    },
+    {
+      "id": "ma_aa",
+      "glyph": "ಮಾ",
+      "roman": "mā",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_i",
+      "glyph": "ಮಿ",
+      "roman": "mi",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_ii",
+      "glyph": "ಮೀ",
+      "roman": "mī",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_u",
+      "glyph": "ಮು",
+      "roman": "mu",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_uu",
+      "glyph": "ಮೂ",
+      "roman": "mū",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_ru",
+      "glyph": "ಮೃ",
+      "roman": "mr̥",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_e",
+      "glyph": "ಮೆ",
+      "roman": "me",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_ee",
+      "glyph": "ಮೇ",
+      "roman": "mē",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_ai",
+      "glyph": "ಮೈ",
+      "roman": "mai",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_o",
+      "glyph": "ಮೊ",
+      "roman": "mo",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_oo",
+      "glyph": "ಮೋ",
+      "roman": "mō",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ma_au",
+      "glyph": "ಮೌ",
+      "roman": "mau",
+      "category": "kagunita",
+      "group": "ma-kagunita"
+    },
+    {
+      "id": "ya_aa",
+      "glyph": "ಯಾ",
+      "roman": "yā",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_i",
+      "glyph": "ಯಿ",
+      "roman": "yi",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_ii",
+      "glyph": "ಯೀ",
+      "roman": "yī",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_u",
+      "glyph": "ಯು",
+      "roman": "yu",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_uu",
+      "glyph": "ಯೂ",
+      "roman": "yū",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_ru",
+      "glyph": "ಯೃ",
+      "roman": "yr̥",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_e",
+      "glyph": "ಯೆ",
+      "roman": "ye",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_ee",
+      "glyph": "ಯೇ",
+      "roman": "yē",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_ai",
+      "glyph": "ಯೈ",
+      "roman": "yai",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_o",
+      "glyph": "ಯೊ",
+      "roman": "yo",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_oo",
+      "glyph": "ಯೋ",
+      "roman": "yō",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ya_au",
+      "glyph": "ಯೌ",
+      "roman": "yau",
+      "category": "kagunita",
+      "group": "ya-kagunita"
+    },
+    {
+      "id": "ra_aa",
+      "glyph": "ರಾ",
+      "roman": "rā",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_i",
+      "glyph": "ರಿ",
+      "roman": "ri",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_ii",
+      "glyph": "ರೀ",
+      "roman": "rī",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_u",
+      "glyph": "ರು",
+      "roman": "ru",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_uu",
+      "glyph": "ರೂ",
+      "roman": "rū",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_ru",
+      "glyph": "ರೃ",
+      "roman": "rr̥",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_e",
+      "glyph": "ರೆ",
+      "roman": "re",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_ee",
+      "glyph": "ರೇ",
+      "roman": "rē",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_ai",
+      "glyph": "ರೈ",
+      "roman": "rai",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_o",
+      "glyph": "ರೊ",
+      "roman": "ro",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_oo",
+      "glyph": "ರೋ",
+      "roman": "rō",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "ra_au",
+      "glyph": "ರೌ",
+      "roman": "rau",
+      "category": "kagunita",
+      "group": "ra-kagunita"
+    },
+    {
+      "id": "la_aa",
+      "glyph": "ಲಾ",
+      "roman": "lā",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_i",
+      "glyph": "ಲಿ",
+      "roman": "li",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_ii",
+      "glyph": "ಲೀ",
+      "roman": "lī",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_u",
+      "glyph": "ಲು",
+      "roman": "lu",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_uu",
+      "glyph": "ಲೂ",
+      "roman": "lū",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_ru",
+      "glyph": "ಲೃ",
+      "roman": "lr̥",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_e",
+      "glyph": "ಲೆ",
+      "roman": "le",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_ee",
+      "glyph": "ಲೇ",
+      "roman": "lē",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_ai",
+      "glyph": "ಲೈ",
+      "roman": "lai",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_o",
+      "glyph": "ಲೊ",
+      "roman": "lo",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_oo",
+      "glyph": "ಲೋ",
+      "roman": "lō",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "la_au",
+      "glyph": "ಲೌ",
+      "roman": "lau",
+      "category": "kagunita",
+      "group": "la-kagunita"
+    },
+    {
+      "id": "va_aa",
+      "glyph": "ವಾ",
+      "roman": "vā",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_i",
+      "glyph": "ವಿ",
+      "roman": "vi",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_ii",
+      "glyph": "ವೀ",
+      "roman": "vī",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_u",
+      "glyph": "ವು",
+      "roman": "vu",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_uu",
+      "glyph": "ವೂ",
+      "roman": "vū",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_ru",
+      "glyph": "ವೃ",
+      "roman": "vr̥",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_e",
+      "glyph": "ವೆ",
+      "roman": "ve",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_ee",
+      "glyph": "ವೇ",
+      "roman": "vē",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_ai",
+      "glyph": "ವೈ",
+      "roman": "vai",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_o",
+      "glyph": "ವೊ",
+      "roman": "vo",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_oo",
+      "glyph": "ವೋ",
+      "roman": "vō",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "va_au",
+      "glyph": "ವೌ",
+      "roman": "vau",
+      "category": "kagunita",
+      "group": "va-kagunita"
+    },
+    {
+      "id": "sha_aa",
+      "glyph": "ಶಾ",
+      "roman": "śā",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_i",
+      "glyph": "ಶಿ",
+      "roman": "śi",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_ii",
+      "glyph": "ಶೀ",
+      "roman": "śī",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_u",
+      "glyph": "ಶು",
+      "roman": "śu",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_uu",
+      "glyph": "ಶೂ",
+      "roman": "śū",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_ru",
+      "glyph": "ಶೃ",
+      "roman": "śr̥",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_e",
+      "glyph": "ಶೆ",
+      "roman": "śe",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_ee",
+      "glyph": "ಶೇ",
+      "roman": "śē",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_ai",
+      "glyph": "ಶೈ",
+      "roman": "śai",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_o",
+      "glyph": "ಶೊ",
+      "roman": "śo",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_oo",
+      "glyph": "ಶೋ",
+      "roman": "śō",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "sha_au",
+      "glyph": "ಶೌ",
+      "roman": "śau",
+      "category": "kagunita",
+      "group": "sha-kagunita"
+    },
+    {
+      "id": "ssha_aa",
+      "glyph": "ಷಾ",
+      "roman": "ṣā",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_i",
+      "glyph": "ಷಿ",
+      "roman": "ṣi",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_ii",
+      "glyph": "ಷೀ",
+      "roman": "ṣī",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_u",
+      "glyph": "ಷು",
+      "roman": "ṣu",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_uu",
+      "glyph": "ಷೂ",
+      "roman": "ṣū",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_ru",
+      "glyph": "ಷೃ",
+      "roman": "ṣr̥",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_e",
+      "glyph": "ಷೆ",
+      "roman": "ṣe",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_ee",
+      "glyph": "ಷೇ",
+      "roman": "ṣē",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_ai",
+      "glyph": "ಷೈ",
+      "roman": "ṣai",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_o",
+      "glyph": "ಷೊ",
+      "roman": "ṣo",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_oo",
+      "glyph": "ಷೋ",
+      "roman": "ṣō",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "ssha_au",
+      "glyph": "ಷೌ",
+      "roman": "ṣau",
+      "category": "kagunita",
+      "group": "ssha-kagunita"
+    },
+    {
+      "id": "sa_aa",
+      "glyph": "ಸಾ",
+      "roman": "sā",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_i",
+      "glyph": "ಸಿ",
+      "roman": "si",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_ii",
+      "glyph": "ಸೀ",
+      "roman": "sī",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_u",
+      "glyph": "ಸು",
+      "roman": "su",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_uu",
+      "glyph": "ಸೂ",
+      "roman": "sū",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_ru",
+      "glyph": "ಸೃ",
+      "roman": "sr̥",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_e",
+      "glyph": "ಸೆ",
+      "roman": "se",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_ee",
+      "glyph": "ಸೇ",
+      "roman": "sē",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_ai",
+      "glyph": "ಸೈ",
+      "roman": "sai",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_o",
+      "glyph": "ಸೊ",
+      "roman": "so",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_oo",
+      "glyph": "ಸೋ",
+      "roman": "sō",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "sa_au",
+      "glyph": "ಸೌ",
+      "roman": "sau",
+      "category": "kagunita",
+      "group": "sa-kagunita"
+    },
+    {
+      "id": "ha_aa",
+      "glyph": "ಹಾ",
+      "roman": "hā",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_i",
+      "glyph": "ಹಿ",
+      "roman": "hi",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_ii",
+      "glyph": "ಹೀ",
+      "roman": "hī",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_u",
+      "glyph": "ಹು",
+      "roman": "hu",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_uu",
+      "glyph": "ಹೂ",
+      "roman": "hū",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_ru",
+      "glyph": "ಹೃ",
+      "roman": "hr̥",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_e",
+      "glyph": "ಹೆ",
+      "roman": "he",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_ee",
+      "glyph": "ಹೇ",
+      "roman": "hē",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_ai",
+      "glyph": "ಹೈ",
+      "roman": "hai",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_o",
+      "glyph": "ಹೊ",
+      "roman": "ho",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_oo",
+      "glyph": "ಹೋ",
+      "roman": "hō",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "ha_au",
+      "glyph": "ಹೌ",
+      "roman": "hau",
+      "category": "kagunita",
+      "group": "ha-kagunita"
+    },
+    {
+      "id": "lla_aa",
+      "glyph": "ಳಾ",
+      "roman": "ḷā",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_i",
+      "glyph": "ಳಿ",
+      "roman": "ḷi",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_ii",
+      "glyph": "ಳೀ",
+      "roman": "ḷī",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_u",
+      "glyph": "ಳು",
+      "roman": "ḷu",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_uu",
+      "glyph": "ಳೂ",
+      "roman": "ḷū",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_ru",
+      "glyph": "ಳೃ",
+      "roman": "ḷr̥",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_e",
+      "glyph": "ಳೆ",
+      "roman": "ḷe",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_ee",
+      "glyph": "ಳೇ",
+      "roman": "ḷē",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_ai",
+      "glyph": "ಳೈ",
+      "roman": "ḷai",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_o",
+      "glyph": "ಳೊ",
+      "roman": "ḷo",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_oo",
+      "glyph": "ಳೋ",
+      "roman": "ḷō",
+      "category": "kagunita",
+      "group": "lla-kagunita"
+    },
+    {
+      "id": "lla_au",
+      "glyph": "ಳೌ",
+      "roman": "ḷau",
+      "category": "kagunita",
+      "group": "lla-kagunita"
     }
   ]
 }

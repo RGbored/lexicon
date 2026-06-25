@@ -40,6 +40,21 @@ const Curriculum = (() => {
     }
     units.push({ id: 'consonants', title: 'Consonants', lessons });
 
+    // Units 3+ — Kagunita, one unit per consonant series (its 12 vowel forms),
+    // 6 forms per lesson. Skipped automatically if kagunita wasn't generated.
+    const kagunita = characters.filter((c) => c.category === 'kagunita');
+    if (kagunita.length) {
+      for (const cons of consonants) {
+        const series = kagunita.filter((k) => k.group === `${cons.id}-kagunita`).map((k) => k.id);
+        if (!series.length) continue;
+        units.push({
+          id: `kagunita-${cons.id}`,
+          title: `Kagunita ${cons.glyph} (${cons.roman})`,
+          lessons: chunk(series, 6).map((ids) => ({ ids })),
+        });
+      }
+    }
+
     return units;
   }
 

@@ -1,8 +1,9 @@
 'use strict';
 
 /**
- * Runs a practice session: a queue of exercises rendered one at a time, each
- * grading the involved item(s) through the SRS. Wrong answers requeue once.
+ * Runs a practice session: a queue of exercises rendered one at a time. Wrong
+ * answers requeue once. When the session completes, every character that
+ * appeared gains one "lesson encountered" (drives strength — see srs.js).
  *
  * Exercise shapes:
  *   { type:'intro', id }                   teach a new character
@@ -11,8 +12,8 @@
  *   { type:'match', ids:[...] }            match glyphs ↔ romanizations
  *   { type:'tracing', id }                 handwrite the glyph on a canvas
  *
- * Sound always plays alongside on-screen romanization (the TTS isn't reliable
- * enough to test by ear alone), so there are no sound-only exercises.
+ * Sound always plays alongside on-screen romanization, so there are no
+ * sound-only exercises.
  */
 const Session = (() => {
   const ACCENT = '#d97706';
@@ -26,6 +27,7 @@ const Session = (() => {
     }
     return a;
   }
+  const sample = (arr, n) => shuffle(arr).slice(0, n);
 
   function el(html) {
     const t = document.createElement('template');
@@ -33,14 +35,32 @@ const Session = (() => {
     return t.content.firstElementChild;
   }
 
-  // 3 distractors for a target, preferring same-category characters.
+  // 3 distractors from the same category (characters or words); widen only if
+  // the category is too small to fill the options.
   function distractors(targetId, count = 3) {
     const target = Data.get(targetId);
-    const same = Data.all().filter((c) => c.id !== targetId && c.category === target.category);
-    const pool = same.length >= count ? same : Data.all().filter((c) => c.id !== targetId);
+    let pool = Data.itemsByCategory(target.category).filter((c) => c.id !== targetId);
+    if (pool.length < count) {
+      const wide = target.category === 'word' ? Data.itemsByCategory('word') : Data.all();
+      pool = wide.filter((c) => c.id !== targetId);
+    }
     return shuffle(pool).slice(0, count).map((c) => c.id);
   }
   const optionsFor = (targetId) => shuffle([targetId, ...distractors(targetId)]);
+
+  // Largest font that fits the glyph within the canvas (words are wider).
+  function fitFont(text, size, family) {
+    const c = document.createElement('canvas'); c.width = size; c.height = size;
+    const x = c.getContext('2d');
+    let px = size * 0.72;
+    x.font = `${px}px ${family}`;
+    const w = x.measureText(text).width;
+    if (w > size * 0.86) px *= (size * 0.86) / w;
+    return `${px}px ${family}`;
+  }
+
+  // A single drill for a character, with the type randomized for variety.
+  const randDrill = (id) => ({ type: 'mc', mode: Math.random() < 0.5 ? 'recognize' : 'recall', id });
 
   // Compare user ink against the target glyph: coverage = how much of the letter
   // was traced; accuracy = how much of the ink landed on/near the letter.
@@ -70,32 +90,38 @@ const Session = (() => {
   }
 
   // ── queue builders ─────────────────────────────────────────────────────
-  // New characters are introduced one at a time, each immediately followed by
-  // two drills, so two intros are never back-to-back (always >=2 exercises
-  // between new characters). Match, tracing and light review consolidate after.
-  function buildLessonQueue(lesson, learnedPool) {
+  // Characters accumulate: each new character is introduced, drilled once, then
+  // earlier characters from this lesson are mixed back in before the next new
+  // one. Two intros are never back-to-back, and the review load grows as you go.
+  function buildLessonQueue(lesson, learnedPool, opts = {}) {
+    const words = !!opts.words; // word lessons: match by meaning, no tracing
     const newIds = lesson.ids.slice();
     const q = [];
-    for (const id of newIds) {
+    const introduced = [];
+    newIds.forEach((id, i) => {
       q.push({ type: 'intro', id });
-      q.push({ type: 'mc', mode: 'recognize', id });
-      q.push({ type: 'mc', mode: 'recall', id });
-    }
-    q.push({ type: 'match', ids: newIds.slice(0, 5) });
-    for (const id of newIds) q.push({ type: 'tracing', id });
-    const review = shuffle(learnedPool.filter((id) => !newIds.includes(id))).slice(0, 3);
-    for (const id of review) {
-      q.push({ type: 'mc', mode: Math.random() < 0.5 ? 'recognize' : 'recall', id });
-    }
+      introduced.push(id);
+      q.push(randDrill(id)); // drill the character/word just introduced
+      if (i > 0) {
+        const prior = introduced.slice(0, -1);
+        const k = Math.min(prior.length, i === 1 ? 1 : 2); // grow, capped at 2
+        for (const pid of sample(prior, k)) q.push(randDrill(pid));
+      }
+    });
+    // Consolidation: match, (tracing for characters only), and a little review.
+    q.push({ type: 'match', ids: newIds.slice(0, 5), by: words ? 'meaning' : 'roman' });
+    if (!words) for (const id of newIds) q.push({ type: 'tracing', id });
+    for (const id of sample(learnedPool.filter((x) => !newIds.includes(x)), 3)) q.push(randDrill(id));
     return q;
   }
 
   function buildReviewQueue(dueIds) {
     return dueIds.map((id, i) => {
+      const isWord = Data.get(id)?.category === 'word'; // no tracing for words
       const r = i % 3;
       if (r === 0) return { type: 'mc', mode: 'recognize', id };
       if (r === 1) return { type: 'mc', mode: 'recall', id };
-      return { type: 'tracing', id };
+      return isWord ? { type: 'mc', mode: 'recall', id } : { type: 'tracing', id };
     });
   }
 
@@ -105,12 +131,14 @@ const Session = (() => {
   let onComplete = null;
   let stats = { correct: 0, total: 0 };
   let root = null;
+  let returnTo = '#/';
 
-  function start({ queue: q, title, onComplete: done }) {
+  function start({ queue: q, title, onComplete: done, returnTo: ret }) {
     queue = q.slice();
     idx = 0;
     stats = { correct: 0, total: 0 };
     onComplete = done;
+    returnTo = ret || '#/';
     root = document.getElementById('content');
     renderCurrent(title);
   }
@@ -139,16 +167,15 @@ const Session = (() => {
     renderCurrent(title);
   }
 
-  // Grade involved items, update stats, requeue once on a miss.
-  function record(correct, ids, ex) {
-    for (const id of ids) SRS.grade(Data.item(id), correct);
+  // Track answers for the summary; requeue a missed exercise once. Strength is
+  // not touched here — it's applied per-session at finish().
+  function record(correct, ex) {
     stats.total += 1;
     if (correct) stats.correct += 1;
     if (!correct && !ex._requeued) {
       ex._requeued = true;
       queue.push({ ...ex });
     }
-    Data.save();
   }
 
   function continueButton(footEl, title, label = 'Continue') {
@@ -162,13 +189,15 @@ const Session = (() => {
   const RENDERERS = {
     intro(ctx) {
       const c = Data.get(ctx.ex.id);
-      Data.item(c.id).seen = true;
+      const isWord = c.category === 'word';
+      const meaning = c.meaning ? `<div class="word-meaning">“${c.meaning}”</div>` : '';
       const node = el(`
         <div class="intro">
-          <div class="big-glyph">${c.glyph}</div>
+          <div class="big-glyph${isWord ? ' word' : ''}">${c.glyph}</div>
           <div class="big-roman">${c.roman}</div>
+          ${meaning}
           <button class="speak">🔊 Hear it</button>
-          <p class="hint">New character</p>
+          <p class="hint">${isWord ? 'New word' : 'New character'}</p>
         </div>`);
       node.querySelector('.speak').onclick = () => TTS.speak(c.glyph);
       ctx.exEl.appendChild(node);
@@ -179,9 +208,12 @@ const Session = (() => {
     mc(ctx) {
       const target = Data.get(ctx.ex.id);
       const recognize = ctx.ex.mode === 'recognize';
+      const isWord = target.category === 'word';
+      // For words, the English meaning is always on screen while practicing.
+      const meaningLine = isWord && target.meaning ? `<div class="word-meaning">“${target.meaning}”</div>` : '';
       const prompt = recognize
-        ? `<div class="big-glyph">${target.glyph}</div><button class="speak">🔊</button><p class="hint">Which sound is this?</p>`
-        : `<div class="big-roman">${target.roman}</div><p class="hint">Which character is this?</p>`;
+        ? `<div class="big-glyph${isWord ? ' word' : ''}">${target.glyph}</div>${meaningLine}<button class="speak">🔊</button><p class="hint">${isWord ? 'How do you read this?' : 'Which sound is this?'}</p>`
+        : `<div class="big-roman">${target.roman}</div>${meaningLine}<p class="hint">${isWord ? 'Which word is this?' : 'Which character is this?'}</p>`;
       const node = el(`<div class="mc">${prompt}<div class="options"></div></div>`);
       const optsEl = node.querySelector('.options');
       ctx.exEl.appendChild(node);
@@ -204,7 +236,7 @@ const Session = (() => {
             [...optsEl.children].find((c) => c.dataset.id === target.id)?.classList.add('correct');
           }
           [...optsEl.children].forEach((c) => (c.disabled = true));
-          record(correct, [target.id], ctx.ex);
+          record(correct, ctx.ex);
           continueButton(ctx.footEl, ctx.title);
         };
         optsEl.appendChild(b);
@@ -213,9 +245,14 @@ const Session = (() => {
 
     match(ctx) {
       const ids = ctx.ex.ids;
+      const by = ctx.ex.by || 'roman'; // 'meaning' → match words to English meanings
+      const rightLabel = (id) => {
+        const it = Data.get(id);
+        return by === 'meaning' ? (it.meaning || it.roman) : it.roman;
+      };
       const node = el(`
         <div class="match">
-          <p class="hint">Match the pairs</p>
+          <p class="hint">${by === 'meaning' ? 'Match words to meanings' : 'Match the pairs'}</p>
           <div class="cols"><div class="col left"></div><div class="col right"></div></div>
         </div>`);
       const leftEl = node.querySelector('.left');
@@ -223,11 +260,11 @@ const Session = (() => {
       ctx.exEl.appendChild(node);
 
       const matched = new Set();
-      const mistakes = new Set();
+      let mistakeMade = false;
       let selected = null; // { kind, id, btn }
 
       function token(kind, id, label) {
-        const b = el(`<button class="token">${label}</button>`);
+        const b = el(`<button class="token tok-${kind}">${label}</button>`);
         b.dataset.id = id;
         b.onclick = () => {
           if (matched.has(id) || (selected && selected.btn === b)) return;
@@ -248,11 +285,11 @@ const Session = (() => {
             matched.add(id);
             for (const t of [selected.btn, b]) { t.classList.add('done'); t.disabled = true; }
             if (matched.size === ids.length) {
-              for (const mid of ids) record(!mistakes.has(mid), [mid], ctx.ex);
+              record(!mistakeMade, ctx.ex);
               continueButton(ctx.footEl, ctx.title);
             }
           } else {
-            mistakes.add(selected.id); mistakes.add(id);
+            mistakeMade = true;
             for (const t of [selected.btn, b]) {
               t.classList.add('miss');
               setTimeout(() => t.classList.remove('miss'), 350);
@@ -264,21 +301,21 @@ const Session = (() => {
       }
 
       for (const id of shuffle(ids)) leftEl.appendChild(token('glyph', id, Data.get(id).glyph));
-      for (const id of shuffle(ids)) rightEl.appendChild(token('roman', id, Data.get(id).roman));
+      for (const id of shuffle(ids)) rightEl.appendChild(token('roman', id, rightLabel(id)));
     },
 
     tracing(ctx) {
       const c = Data.get(ctx.ex.id);
-      const strength = Data.peek(c.id)?.strength ?? 0;
-      // Scaffolding tied to strength: full guide first, fading as it's mastered.
-      const level = strength >= 5 ? 'blind' : strength >= 4 ? 'faint' : 'guide';
+      const strength = SRS.strength(Data.peek(c.id));
+      // Scaffolding fades as strength grows: guide → faint → blind.
+      const level = strength >= 4 ? 'blind' : strength >= 2 ? 'faint' : 'guide';
       const guideOpacity = level === 'guide' ? 0.33 : level === 'faint' ? 0.12 : 0;
       const label = level === 'guide' ? 'Trace over the guide'
         : level === 'faint' ? 'Faint guide — trace it'
         : 'Draw it from memory';
 
       const SIZE = 300;
-      const font = `${SIZE * 0.72}px system-ui, "Noto Sans Kannada", sans-serif`;
+      const font = fitFont(c.glyph, SIZE, 'system-ui, "Noto Sans Kannada", sans-serif');
       const node = el(`
         <div class="tracing">
           <div class="big-roman">${c.roman}</div>
@@ -352,7 +389,7 @@ const Session = (() => {
         const pass = coverage >= passCoverage && accuracy >= 0.55;
         node.querySelector('.trace-result').textContent =
           `${Math.round(coverage * 100)}% traced — ${pass ? 'nice!' : 'keep practicing'}`;
-        record(pass, [c.id], ctx.ex);
+        record(pass, ctx.ex);
         continueButton(ctx.footEl, ctx.title);
       };
       ctx.footEl.appendChild(checkBtn);
@@ -360,8 +397,18 @@ const Session = (() => {
   };
 
   function finish(title) {
-    const pct = stats.total ? Math.round((stats.correct / stats.total) * 100) : 100;
+    // Strength = distinct lessons encountered: credit every character that
+    // appeared anywhere in this completed session, once.
+    const encountered = new Set();
+    for (const ex of queue) {
+      if (ex.id) encountered.add(ex.id);
+      if (ex.ids) for (const id of ex.ids) encountered.add(id);
+    }
+    for (const id of encountered) SRS.encounter(Data.item(id));
+
     if (onComplete) onComplete(stats);
+
+    const pct = stats.total ? Math.round((stats.correct / stats.total) * 100) : 100;
     root.innerHTML = `
       <div class="session summary">
         <div class="big-glyph">🎉</div>
@@ -370,7 +417,7 @@ const Session = (() => {
         <div class="foot"></div>
       </div>`;
     const btn = el('<button class="action">Back to map</button>');
-    btn.onclick = () => { location.hash = '#/'; };
+    btn.onclick = () => { location.hash = returnTo; };
     root.querySelector('.foot').appendChild(btn);
   }
 

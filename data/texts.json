@@ -1,0 +1,52 @@
+{
+  "texts": [
+    {
+      "id": "my-village",
+      "title": "ನನ್ನ ಊರು — My Village",
+      "source": "sample",
+      "body": "ನನ್ನ ಹೆಸರು ರಾಮ. ನಾನು ಊರಿನಲ್ಲಿ ಇದ್ದೇನೆ. ನನಗೆ ಒಂದು ನಾಯಿ ಇದೆ. ನಾಯಿ ಬಿಳಿ ಬಣ್ಣ. ನಾನು ನಾಯಿಯನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ.",
+      "glossary": {
+        "ನನ್ನ": "my",
+        "ಹೆಸರು": "name",
+        "ರಾಮ": "Rama (a name)",
+        "ನಾನು": "I",
+        "ಊರಿನಲ್ಲಿ": "in the village",
+        "ಇದ್ದೇನೆ": "(I) live / am",
+        "ನನಗೆ": "to me / I have",
+        "ಒಂದು": "one / a",
+        "ನಾಯಿ": "dog",
+        "ಇದೆ": "(it) is / there is",
+        "ಬಿಳಿ": "white",
+        "ಬಣ್ಣ": "colour",
+        "ನಾಯಿಯನ್ನು": "the dog (object)",
+        "ಪ್ರೀತಿಸುತ್ತೇನೆ": "(I) love"
+      }
+    },
+    {
+      "id": "crow-and-water",
+      "title": "ಕಾಗೆ ಮತ್ತು ನೀರು — The Crow and the Water",
+      "source": "folk tale (simplified)",
+      "body": "ಒಂದು ಕಾಗೆ ಇತ್ತು. ಕಾಗೆಗೆ ಬಾಯಾರಿಕೆ ಆಯಿತು. ಕಾಗೆ ನೀರು ಹುಡುಕಿತು. ಒಂದು ಮಡಕೆಯಲ್ಲಿ ಸ್ವಲ್ಪ ನೀರು ಇತ್ತು. ಕಾಗೆ ಮಡಕೆಗೆ ಕಲ್ಲುಗಳನ್ನು ಹಾಕಿತು. ನೀರು ಮೇಲೆ ಬಂದಿತು. ಕಾಗೆ ನೀರು ಕುಡಿಯಿತು. ಕಾಗೆ ಸಂತೋಷವಾಯಿತು.",
+      "glossary": {
+        "ಒಂದು": "one / a",
+        "ಕಾಗೆ": "crow",
+        "ಇತ್ತು": "(there) was",
+        "ಕಾಗೆಗೆ": "to the crow",
+        "ಬಾಯಾರಿಕೆ": "thirst",
+        "ಆಯಿತು": "happened / became",
+        "ನೀರು": "water",
+        "ಹುಡುಕಿತು": "searched",
+        "ಮಡಕೆಯಲ್ಲಿ": "in a pot",
+        "ಸ್ವಲ್ಪ": "a little",
+        "ಮಡಕೆಗೆ": "into the pot",
+        "ಕಲ್ಲುಗಳನ್ನು": "stones (object)",
+        "ಹಾಕಿತು": "put / dropped",
+        "ಮೇಲೆ": "up / above",
+        "ಬಂದಿತು": "came",
+        "ಕುಡಿಯಿತು": "drank",
+        "ಸಂತೋಷವಾಯಿತು": "became happy",
+        "ಮತ್ತು": "and"
+      }
+    }
+  ]
+}
