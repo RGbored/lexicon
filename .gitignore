@@ -11,6 +11,12 @@ data/dictionary.json
 data/progress.json
 data/texts-user.json
 
+# SQLite database (per-user state) + one-time migration backups
+data/lexicon.db
+data/lexicon.db-wal
+data/lexicon.db-shm
+data/*.migrated
+
 # logs
 *.log
 npm-debug.log*

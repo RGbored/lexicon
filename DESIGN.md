@@ -17,7 +17,7 @@ and usage see [`README.md`](README.md).
 | **Form**    | Web app, **no build step** — vanilla HTML/CSS/JS, no bundler/framework. Edit file → refresh. |
 | **Hosting** | Small Node server in Termux on a phone, exposed at `lexicon.rgbored.com` via a Cloudflare tunnel. |
 | **Audio**   | Browser TTS (Web Speech API, Android `kn-IN` voice). Pre-recorded clips were considered and dropped — TTS is good enough. |
-| **Persistence** | Server-side JSON today (single user). Moving to **SQLite + accounts** for multi-user (see roadmap). |
+| **Persistence** | **SQLite** (`node:sqlite`, no native build) with **per-user accounts**; a seeded *default* user keeps local use login-free. |
 | **Offline** | No runtime dependence on external services; the dictionary is bundled, not an API. |
 
 ### Why these choices
@@ -163,22 +163,33 @@ Browser ──(HTML/CSS/vanilla JS, Web Speech API)──► Node + Express (Ter
 | `reading.js` | Reading mode: import, frequency paths, coverage, read view |
 | `translit.js` | Kannada → Latin transliteration |
 | `tts.js` | Web Speech API wrapper |
+| `auth.js` | Header account control: login / signup / logout |
 
-### Backend (`server.js`)
+### Backend (`server.js` + `db.js`)
 - Static serving with `Cache-Control: no-cache` (Cloudflare edge cache is bypassed via a
   Cache Rule on the hostname).
-- APIs: `GET /api/characters`, `GET/POST /api/progress`, `GET/POST /api/texts`.
+- APIs: `GET /api/characters`, `GET/POST /api/progress`, `GET/POST /api/texts`, plus auth:
+  `GET /api/me`, `POST /api/{signup,login,logout}`.
+- A `resolveUser` middleware maps the `sid` session cookie to a user, falling back to the
+  **default** user when there's no valid cookie — so local use never hits a login wall.
 - Loads the dictionary once at startup; auto-glosses texts on import.
 
-### Persistence model (`progress.json`, single user — to be replaced by SQLite)
-```js
-{
-  items:    { "ka": { lessons, seen, lastSeen, due }, "w:ಕಾಗೆ": { … } },
-  units:    { vowels: { lessonsDone }, "kagunita-ka": { lessonsDone }, … },
-  settings: { romanizationStyle },
-  stats:    { points, streak, lastDay, freezes, freezeWeek }
-}
+### Persistence model (`db.js` — SQLite, per user)
+`data/lexicon.db` via Node's built-in `node:sqlite` (no native build, key for Termux/ARM).
+The whole-blob progress object the frontend POSTs is **decomposed into normalized tables**
+and rebuilt on read, so the `GET/POST /api/progress` contract is unchanged.
+
 ```
+users(id, username, pw_hash, is_default, created)   sessions(token, user_id, created)
+progress_items(user_id, item_id, lessons, seen, last_seen, due)
+units(user_id, unit_id, lessons_done)               stats(user_id, points, streak, last_day, freezes, freeze_week)
+user_settings(user_id, romanization_style)          ottakshara(user_id, position, glyph)   -- ordered
+texts(id, user_id, title, source, body, glossary)   -- bundled samples stay in texts.json (shared)
+```
+
+Passwords are hashed with `crypto.scryptSync`; sessions are random tokens in an httpOnly
+cookie. On first boot `db.init()` seeds the default user and **migrates** any legacy
+`progress.json` / `texts-user.json` into it (renaming them `*.migrated` so it runs once).
 
 ---
 
@@ -187,13 +198,14 @@ Browser ──(HTML/CSS/vanilla JS, Web Speech API)──► Node + Express (Ter
 ```
 lexicon/
 ├── DESIGN.md  README.md
-├── server.js              # Express: static + progress/texts API
+├── server.js              # Express: static + progress/texts/auth API
+├── db.js                  # SQLite (node:sqlite): users, progress, texts, migration
 ├── deploy.sh  run.sh      # pull/rebuild/restart + start (Termux/tmux)
 ├── scripts/
 │   ├── generate-characters.js
 │   └── build-dictionary.js
 ├── data/                  # characters.json, dictionary.json, texts.json,
-│                          # texts-user.json, progress.json (most gitignored)
+│                          # lexicon.db (per-user state; gitignored)
 └── public/                # index.html, css/styles.css, js/*.js
 ```
 
@@ -201,18 +213,10 @@ lexicon/
 
 ## 9. Roadmap (remaining)
 
-### Multi-user — SQLite + accounts
-Let other people use the app with their own accounts and progress.
-- **Storage:** replace the per-file JSON (`progress.json`, `texts-user.json`) with
-  **SQLite**. Prefer Node's built-in `node:sqlite` to avoid a native build (better-sqlite3
-  compiles awkwardly on Termux/ARM).
-- **Schema (sketch):** `users(id, username, pw_hash, created)`, `progress(user_id, item_id,
-  lessons, seen, last_seen, due)`, `units(user_id, unit_id, lessons_done)`,
-  `stats(user_id, …)`, `texts(id, user_id NULL=shared, title, body, glossary)`.
-- **Auth:** lightweight username + password (hashed), session cookie. Optional —
-  single-user/local use stays frictionless via a default account.
-- **Scope:** `/api/progress` and `/api/texts` keyed to the logged-in user; bundled texts
-  shared. One-time migration of the existing `progress.json` into a user row.
+### Done — Multi-user via SQLite + accounts
+Storage moved from per-file JSON to SQLite (`db.js`, normalized tables), with
+username/password accounts, session cookies, and a frictionless default user. Progress and
+imported texts are keyed to the request's user; bundled texts stay shared. See §7.
 
 ### Dropped
 - **Baked audio clips** (former M6) — browser TTS is sufficient on the target devices.

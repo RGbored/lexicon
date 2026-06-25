@@ -318,7 +318,7 @@ const App = (() => {
 
   async function boot() {
     try {
-      await Promise.all([Data.load(), Reading.load()]);
+      await Promise.all([Data.load(), Reading.load(), Auth.init()]);
       units = Curriculum.build(Data.all());
       const ott = buildOttaksharaUnit(); // conjuncts derived from reading texts
       if (ott) units.push(ott);

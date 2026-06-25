@@ -3,26 +3,20 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const db = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 const DATA_DIR = path.join(__dirname, 'data');
 const CHARACTERS_FILE = path.join(DATA_DIR, 'characters.json');
-const PROGRESS_FILE = path.join(DATA_DIR, 'progress.json');
 const TEXTS_FILE = path.join(DATA_DIR, 'texts.json');            // bundled samples
-const USER_TEXTS_FILE = path.join(DATA_DIR, 'texts-user.json');  // imported texts
 const DICTIONARY_FILE = path.join(DATA_DIR, 'dictionary.json');  // Alar Kn→En
 
-// Progress is keyed by generic item id (a character today, a word later) so the
-// same store works once the Reading & Vocabulary module lands. See DESIGN.md §3.
-const DEFAULT_PROGRESS = {
-  items: {},                                   // id -> { lessons, seen, lastSeen, due }
-  units: {},                                   // unit -> { lessonsDone }
-  settings: { romanizationStyle: 'iso15919' },
-  stats: { points: 0, streak: 0, lastDay: null, freezes: 0, freezeWeek: null },
-  ottakshara: [],                              // derived conjunct curriculum order
-};
+const SESSION_COOKIE = 'sid';
+const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year, in seconds
+
+db.init(); // create tables, seed default user, migrate legacy JSON files
 
 app.use(express.json());
 // no-cache so the browser revalidates every load and always picks up the latest
@@ -30,6 +24,68 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public'), {
   setHeaders: (res) => res.setHeader('Cache-Control', 'no-cache'),
 }));
+
+// --- Cookies / current user --------------------------------------------------
+
+// Minimal cookie parsing (no cookie-parser dependency).
+function getCookie(req, name) {
+  const header = req.headers.cookie;
+  if (!header) return null;
+  for (const part of header.split(';')) {
+    const idx = part.indexOf('=');
+    if (idx === -1) continue;
+    if (part.slice(0, idx).trim() === name) return decodeURIComponent(part.slice(idx + 1).trim());
+  }
+  return null;
+}
+function setSessionCookie(res, token) {
+  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${COOKIE_MAX_AGE}`);
+}
+function clearSessionCookie(res) {
+  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0`);
+}
+
+// Resolve the request's user: a valid session cookie, else the default user so
+// local/single-user use stays login-free (DESIGN.md §9, "frictionless default").
+app.use((req, res, next) => {
+  const token = getCookie(req, SESSION_COOKIE);
+  req.sessionToken = token;
+  const uid = db.getUserIdByToken(token);
+  req.userId = uid || db.getDefaultUserId();
+  next();
+});
+
+// --- Auth --------------------------------------------------------------------
+
+app.get('/api/me', (req, res) => {
+  const user = db.getUser(req.userId);
+  res.json({ username: user.username, isDefault: !!user.is_default });
+});
+
+app.post('/api/signup', (req, res) => {
+  const { username, password } = req.body || {};
+  if (!username || !password) return res.status(400).json({ error: 'Username and password required.' });
+  const user = db.createUser(username, password);
+  if (!user) return res.status(409).json({ error: 'That username is taken.' });
+  setSessionCookie(res, db.createSession(user.id));
+  res.json({ username: user.username, isDefault: false });
+});
+
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body || {};
+  const user = db.verifyUser(username, password);
+  if (!user) return res.status(401).json({ error: 'Wrong username or password.' });
+  setSessionCookie(res, db.createSession(user.id));
+  res.json({ username: user.username, isDefault: !!user.is_default });
+});
+
+app.post('/api/logout', (req, res) => {
+  db.deleteSession(req.sessionToken);
+  clearSessionCookie(res);
+  res.json({ ok: true });
+});
+
+// --- Characters (shared, static) --------------------------------------------
 
 app.get('/api/characters', (req, res) => {
   fs.readFile(CHARACTERS_FILE, 'utf8', (err, data) => {
@@ -40,15 +96,10 @@ app.get('/api/characters', (req, res) => {
   });
 });
 
+// --- Progress (per user) -----------------------------------------------------
+
 app.get('/api/progress', (req, res) => {
-  fs.readFile(PROGRESS_FILE, 'utf8', (err, data) => {
-    if (err) return res.json(DEFAULT_PROGRESS); // none saved yet
-    try {
-      res.json(JSON.parse(data));
-    } catch {
-      res.json(DEFAULT_PROGRESS); // corrupt file -> start fresh rather than 500
-    }
-  });
+  res.json(db.getProgress(req.userId));
 });
 
 app.post('/api/progress', (req, res) => {
@@ -56,14 +107,16 @@ app.post('/api/progress', (req, res) => {
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
     return res.status(400).json({ error: 'Invalid progress payload.' });
   }
-  fs.mkdir(DATA_DIR, { recursive: true }, (mkErr) => {
-    if (mkErr) return res.status(500).json({ error: 'Could not prepare data directory.' });
-    fs.writeFile(PROGRESS_FILE, JSON.stringify(body, null, 2), (wErr) => {
-      if (wErr) return res.status(500).json({ error: 'Could not save progress.' });
-      res.json({ ok: true });
-    });
-  });
+  try {
+    db.saveProgress(req.userId, body);
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('saveProgress failed:', e.message);
+    res.status(500).json({ error: 'Could not save progress.' });
+  }
 });
+
+// --- Dictionary / glossary helpers (unchanged) -------------------------------
 
 function readJson(file, fallback) {
   try {
@@ -100,10 +153,11 @@ function buildGlossary(body) {
   return glossary;
 }
 
-// Bundled sample texts + any imported by the user.
+// --- Texts (bundled shared + per-user imported) -----------------------------
+
 app.get('/api/texts', (req, res) => {
   const bundled = readJson(TEXTS_FILE, { texts: [] }).texts || [];
-  const user = readJson(USER_TEXTS_FILE, { texts: [] }).texts || [];
+  const user = db.getUserTexts(req.userId);
   res.json({ texts: [...bundled, ...user] });
 });
 
@@ -112,23 +166,18 @@ app.post('/api/texts', (req, res) => {
   if (!body || typeof body !== 'string' || !/[ಀ-೿]/.test(body)) {
     return res.status(400).json({ error: 'Body must contain Kannada text.' });
   }
-  const store = readJson(USER_TEXTS_FILE, { texts: [] });
-  if (!Array.isArray(store.texts)) store.texts = [];
-  const text = {
-    id: `user-${Date.now()}`,
-    title: (typeof title === 'string' && title.trim()) || 'Untitled',
-    source: 'imported',
-    user: true,
-    body,
-    glossary: buildGlossary(body), // auto-filled from the bundled dictionary
-  };
-  store.texts.push(text);
-  fs.mkdir(DATA_DIR, { recursive: true }, () => {
-    fs.writeFile(USER_TEXTS_FILE, JSON.stringify(store, null, 2), (err) => {
-      if (err) return res.status(500).json({ error: 'Could not save text.' });
-      res.json({ text });
+  try {
+    const text = db.addText(req.userId, {
+      title: (typeof title === 'string' && title.trim()) || 'Untitled',
+      source: 'imported',
+      body,
+      glossary: buildGlossary(body), // auto-filled from the bundled dictionary
     });
-  });
+    res.json({ text });
+  } catch (e) {
+    console.error('addText failed:', e.message);
+    res.status(500).json({ error: 'Could not save text.' });
+  }
 });
 
 app.listen(PORT, () => {

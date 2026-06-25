@@ -61,6 +61,82 @@ body {
 .statsbar .stat.flame.on { color: var(--accent); }
 .statsbar:empty { display: none; }
 
+/* account control — top-right of the header */
+.account { position: absolute; top: 1rem; right: 1rem; }
+.account-btn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+}
+.account-btn:hover { color: var(--ink); border-color: var(--muted); }
+
+.account-menu {
+  position: fixed;
+  top: 3.2rem;
+  right: 1rem;
+  z-index: 20;
+  width: 15rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  padding: 0.9rem;
+}
+.account-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+.account-close {
+  border: none;
+  background: none;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: var(--muted);
+  cursor: pointer;
+}
+.account-form { display: flex; flex-direction: column; gap: 0.5rem; }
+.account-form input {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--ink);
+}
+.account-action {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+.account-action.ghost { color: var(--accent); background: var(--card); }
+.account-sep {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 0.7rem 0;
+}
+.account-err {
+  font-size: 0.8rem;
+  color: var(--red);
+  background: var(--red-soft);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
 /* import: file upload label */
 .text-file-label {
   display: inline-block;
