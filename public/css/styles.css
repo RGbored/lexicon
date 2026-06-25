@@ -90,7 +90,69 @@ body {
 }
 .review-banner .count { font-weight: 400; opacity: 0.9; }
 
+/* section cards (alphabet home) */
+.section-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 0.7rem;
+  cursor: pointer;
+  text-align: left;
+}
+.section-card.locked { opacity: 0.5; }
+.section-main { display: flex; flex-direction: column; }
+.section-title { font-size: 1.05rem; font-weight: 600; }
+.section-sub { font-size: 0.8rem; color: var(--muted); }
+.section-tag { font-size: 0.9rem; color: var(--muted); }
+
+/* page header with back button */
+.page-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
+.page-head h2 { margin: 0; font-size: 1.1rem; }
+.back {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.3rem 0.7rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* series grid (kagunita: one tile per consonant) */
+.series-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 0.6rem; }
+.series-tile {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 0.7rem 0.3rem 0.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+.series-tile.done { border-color: var(--green); background: var(--green-soft); }
+.series-tile.open { border-color: var(--accent); }
+.series-tile.locked { opacity: 0.5; }
+.series-glyph { display: block; font-size: 1.9rem; line-height: 1.1; }
+.series-prog { display: block; font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+
+.link-row {
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.9rem;
+  cursor: pointer;
+  text-align: center;
+}
+
 .unit { margin-bottom: 1.6rem; }
+.unit h3 { font-size: 0.95rem; margin: 0 0 0.55rem; color: var(--accent); display: flex; gap: 0.5rem; align-items: baseline; }
 .unit.locked { opacity: 0.5; }
 .unit h2 { font-size: 1rem; margin: 0 0 0.6rem; display: flex; gap: 0.5rem; align-items: baseline; }
 .unit-prog { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
