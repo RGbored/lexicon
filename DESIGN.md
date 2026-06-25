@@ -1,260 +1,221 @@
-# Lexicon — Kannada Alphabet Learner
+# Lexicon — Design
 
-A self-hosted web app for learning the Kannada script (ಕನ್ನಡ ಲಿಪಿ), modeled on
-Duolingo's alphabet learner. Built for personal use, served from a Node server
-running in Termux on an Android phone.
+A self-hosted web app for learning the **Kannada script** (ಕನ್ನಡ ಲಿಪಿ) and building
+**reading vocabulary from real texts**. Modeled on Duolingo's alphabet learner, then
+extended with a comprehensible-input reading mode.
+
+This document describes the system as it stands plus what's left to build. For setup
+and usage see [`README.md`](README.md).
 
 ---
 
-## 1. Goals & Constraints
+## 1. Goals & constraints
 
-| Area        | Decision                                                                 |
-|-------------|--------------------------------------------------------------------------|
-| **Purpose** | Learn the full Kannada script: vowels, consonants, kagunita, conjuncts.  |
-| **Form**    | Web app (no native app, no install/build cycle). Edit file → refresh.    |
-| **Hosting** | Small Node server in Termux, alongside an existing Go game server.        |
-| **Audio**   | Browser TTS (Web Speech API, Android `kn-IN` voice) for now. No audio files yet. |
-| **Devices** | Primary target Android (Chrome). Should degrade gracefully elsewhere.     |
-| **Build**   | No bundler, no framework. Vanilla HTML/CSS/JS. Zero build step.           |
+| Area        | Decision |
+|-------------|----------|
+| **Purpose** | Learn the Kannada script (vowels, consonants, kagunita, conjuncts) and read real texts. |
+| **Form**    | Web app, **no build step** — vanilla HTML/CSS/JS, no bundler/framework. Edit file → refresh. |
+| **Hosting** | Small Node server in Termux on a phone, exposed at `lexicon.rgbored.com` via a Cloudflare tunnel. |
+| **Audio**   | Browser TTS (Web Speech API, Android `kn-IN` voice). Pre-recorded clips were considered and dropped — TTS is good enough. |
+| **Persistence** | Server-side JSON today (single user). Moving to **SQLite + accounts** for multi-user (see roadmap). |
+| **Offline** | No runtime dependence on external services; the dictionary is bundled, not an API. |
 
 ### Why these choices
-- **Web over native:** no app store, no signing, no reinstall per change. Deploy = copy/pull files + restart server.
-- **Node over static:** user already runs a server in Termux; a tiny server lets us persist progress server-side (durable, not locked to one browser's localStorage) and leaves room for an API later.
-- **TTS now, baked audio later:** Android's Google `kn-IN` voice is good enough to start. Per-character pronunciation can be unreliable in TTS (engines are tuned for words, not isolated syllables), so the plan is to later **generate audio clips once** with a high-quality cloud TTS, verify them, and ship them as static files. The data model reserves an `audio` field per character so this is a drop-in upgrade, not a rearchitecture.
+- **Web over native:** no app store, no signing, no reinstall per change. Deploy = `git pull` + restart.
+- **Node over static:** durable server-side progress (not locked to one browser), and room for an API / accounts.
+- **No LLM at runtime:** meanings come from a bundled dictionary, so the app stays private, free, and offline.
 
 ---
 
-## 2. Content Model
+## 2. Content model
 
-Kannada is an abugida and its Unicode layout is regular, so the **entire character
-set is generated programmatically** from rules rather than hand-typed.
+Kannada is an abugida with a regular Unicode layout, so the **character set is generated
+programmatically** (`scripts/generate-characters.js`) rather than hand-typed.
 
 ### Character categories
+1. **Swaragalu** — independent vowels (13) + yogavaahaka (anusvara ಂ, visarga ಃ).
+2. **Vyanjanagalu** — consonants (34), grouped by *varga* (ಕ-varga … avargeeya).
+3. **Kagunita** — each consonant × each vowel sign (matra): ಕ → ಕಾ ಕಿ ಕೀ … (408 forms).
+4. **Ottakshara** — stacked conjuncts `consonant + virama (್) + consonant`. *Planned (M4).*
 
-1. **Swaragalu** (independent vowels, ~15) + yogavaahagalu (anusvara ಂ, visarga ಃ)
-2. **Vyanjanagalu** (consonants, ~34), grouped by *varga*:
-   - ಕ-varga: ಕ ಖ ಗ ಘ ಙ
-   - ಚ-varga: ಚ ಛ ಜ ಝ ಞ
-   - ಟ-varga: ಟ ಠ ಡ ಢ ಣ
-   - ತ-varga: ತ ಥ ದ ಧ ನ
-   - ಪ-varga: ಪ ಫ ಬ ಭ ಮ
-   - avargeeya: ಯ ರ ಲ ವ ಶ ಷ ಸ ಹ ಳ
-3. **Kagunita** — each consonant × each vowel sign (matra). The ka / kā / ki / kī / ku … grid.
-   Generated as `consonant + vowel-sign` Unicode sequences.
-4. **Ottakshara** — stacked conjuncts: `consonant + virama (್) + consonant`. The largest set; introduced last.
+### Item shape
+```js
+{ id: "ka", glyph: "ಕ", roman: "ka", category: "consonant", group: "ka-varga" }
+```
+Reading **words** are items of the same shape: `{ id: "w:ಕಾಗೆ", glyph, roman, meaning, category: "word" }`.
 
-### Data shape (per character)
+### Romanization
+ISO 15919-style (diacritics): vowels `a ā i ī u ū r̥ e ē ai o ō au`; consonants `ka kha ga
+… śa ṣa sa ha ḷa`. Whole-word transliteration is done deterministically in `translit.js`.
+
+---
+
+## 3. Learning loop & progress
+
+### Lessons
+Each lesson introduces a few new items one at a time, **interleaving** drills so two new
+items are never back-to-back and earlier items are mixed back in with a growing review
+load. Consolidation adds a matching exercise and (for characters) a tracing pass.
+
+### Spaced repetition — exposure-based strength
+- Strength reflects **exposure**: an item gains strength each distinct lesson/review it
+  appears in, reaching full (5/5) after ~15 sessions.
+- Each session pushes the item's next-review time further out, so well-known items
+  resurface less often. Review sessions surface the most-due items.
+
+> **Item-agnostic SRS.** The engine (`srs.js`) tracks generic *items* by id — a character
+> or a word — and never assumes which. This is what lets reading-mode words reuse the
+> exact same scheduling and exercises.
+
+### Motivation
+- **Daily streak** with **streak freezes** (2 granted/week, max 5) to bridge missed days.
+- **Points**: +5 per completed session (further uses TBD).
+- Tracked in `stats.js` / `progress.stats`, shown in a header bar.
+
+---
+
+## 4. Exercise types
+
+- **Intro** — show glyph + romanization (+ meaning for words), speak it.
+- **Multiple choice (recognize)** — show glyph → pick the answer. For characters the
+  answer is the romanization (sound); **for words it's the English meaning**, so the
+  spoken audio can't give it away.
+- **Multiple choice (recall)** — show the answer → pick the glyph.
+- **Match** — glyphs ↔ romanizations (characters) or **glyphs ↔ English meanings** (words).
+- **Tracing** (characters only) — handwrite the glyph on a `<canvas>` with **progressive
+  scaffolding**: full guide → faint guide → blind, fading as strength grows. Scored by
+  outline overlap (coverage + accuracy), not stroke order (no Kannada stroke dataset).
+  Excluded for words — multi-character words don't fit the small canvas.
+
+---
+
+## 5. Alphabet navigation
+
+To stay uncluttered as the set grows, the Alphabet tab **drills down** instead of listing
+everything at once:
+
+```
+#/                 → section cards: Vowels · Consonants · Kagunita · (Ottakshara)
+#/section/:id      → a section's lessons, OR a grid of series tiles (kagunita)
+#/unit/:id         → one series' lessons (e.g. the ಕ series)
+#/lesson/:unit/:i  → run a lesson
+#/strength         → per-character strength (only items you've started), grouped by section
+#/review           → review due items
+```
+
+Sections/units unlock sequentially (a unit opens once all earlier ones are complete).
+Ottakshara will slot in as just one more section card.
+
+---
+
+## 6. Reading mode
+
+A separate **Reading** tab (`reading.js`); routes `#/reading`, `#/text/:id`,
+`#/text/:id/lesson/:i`, `#/text/:id/read`. Model: comprehensible input (à la LingQ).
+
+- **Import** a Kannada text by pasting or uploading a `.txt` file. Bundled sample stories
+  ship with curated glossaries.
+- **Tokenize → frequency-rank → path of lessons** (most frequent words first).
+- Words are items reusing the SRS + exercises; meaning-based MCQ + word↔meaning match.
+- **Coverage** per text (frequency-weighted, based on lessons-encountered: moves after the
+  first lesson, full credit after 3) — "how much can I read".
+- **Read-it-yourself** view: full text with **new / learning / known** highlighting and
+  tap-to-reveal pronunciation + meaning.
+- **Vocabulary carries over** between texts automatically (shared `w:<word>` ids).
+
+### Meaning enrichment (no LLM)
+Imported words are auto-glossed server-side from a bundled **Kannada→English dictionary**
+built from the open **Alar** dataset (`scripts/build-dictionary.js` → `data/dictionary.json`,
+~106k headwords, pinned to a commit). Best-effort **suffix stemming** resolves inflected
+nouns to their headword.
+
+**Limits:** Alar glosses are descriptive/verbose; **verb conjugations** and complex
+inflections still miss (stemming covers noun case-endings only). PDF/OCR import is future
+work (legacy non-Unicode Kannada fonts make extraction unreliable).
+
+---
+
+## 7. Architecture
+
+```
+Browser ──(HTML/CSS/vanilla JS, Web Speech API)──► Node + Express (Termux) ──► JSON files
+                                                     serves static + JSON APIs
+```
+
+### Frontend modules (`public/js`)
+| File | Role |
+|---|---|
+| `app.js` | Router + alphabet navigation + stats bar |
+| `data.js` | Loads characters + progress; item registry (`registerItems`/`itemsByCategory`) |
+| `curriculum.js` | Builds alphabet units → lessons (tagged by section) |
+| `session.js` | Exercise queue + renderers (shared by alphabet & reading) |
+| `srs.js` | Exposure-based strength + review scheduling (item-agnostic) |
+| `stats.js` | Streak, freezes, points |
+| `reading.js` | Reading mode: import, frequency paths, coverage, read view |
+| `translit.js` | Kannada → Latin transliteration |
+| `tts.js` | Web Speech API wrapper |
+
+### Backend (`server.js`)
+- Static serving with `Cache-Control: no-cache` (Cloudflare edge cache is bypassed via a
+  Cache Rule on the hostname).
+- APIs: `GET /api/characters`, `GET/POST /api/progress`, `GET/POST /api/texts`.
+- Loads the dictionary once at startup; auto-glosses texts on import.
+
+### Persistence model (`progress.json`, single user — to be replaced by SQLite)
 ```js
 {
-  id: "ka",            // stable slug
-  glyph: "ಕ",          // the Kannada character (may be a multi-codepoint sequence)
-  roman: "ka",         // romanization (see scheme below)
-  category: "consonant", // vowel | yogavaahaka | consonant | kagunita | ottakshara
-  group: "ka-varga",   // sub-grouping for lesson ordering
-  audio: null          // reserved for future baked-in clip path
+  items:    { "ka": { lessons, seen, lastSeen, due }, "w:ಕಾಗೆ": { … } },
+  units:    { vowels: { lessonsDone }, "kagunita-ka": { lessonsDone }, … },
+  settings: { romanizationStyle },
+  stats:    { points, streak, lastDay, freezes, freezeWeek }
 }
 ```
 
-### Romanization scheme
-Readable **ISO 15919–style** transliteration (diacritics over ASCII digraphs where
-it aids clarity). Examples:
-
-- Vowels: `a ā i ī u ū r̥ e ē ai o ō au`
-- Consonants: `ka kha ga gha ṅa | ca cha ja jha ña | ṭa ṭha ḍa ḍha ṇa | ta tha da dha na | pa pha ba bha ma | ya ra la va śa ṣa sa ha ḷa`
-
-A simplified ASCII fallback (`ka kha ... sha sha`) can be offered as a display toggle later.
-
 ---
 
-## 3. Learning Loop
+## 8. Project structure
 
-Mirrors Duolingo's alphabet learner: small batches, heavy repetition, spaced review.
-
-### Unit progression (unlocks in order)
-1. **Vowels** — swaragalu in batches of ~5
-2. **Consonants** — one varga per lesson group
-3. **Kagunita** — vowel signs introduced progressively, applied to already-known consonants
-4. **Ottakshara** — common conjuncts
-
-Each **lesson** introduces 3–5 new characters, then drills them mixed with review of
-previously learned characters. Completing a lesson unlocks the next.
-
-### Spaced repetition / mastery
-- Strength reflects **exposure**: a character grows stronger each distinct lesson/
-  review session it appears in, reaching **full strength after 15 sessions** (shown
-  as a 0–5 meter on the home dashboard).
-- Each session pushes a character's next-review time further out the more often it
-  has been seen, so well-known characters resurface less often.
-- **Review sessions** surface the most-due characters across all unlocked units.
-
-> **Design note — item-type-agnostic SRS.** The scheduling engine tracks generic
-> *items* keyed by id, where an item is a *character* today. The future Reading &
-> Vocabulary module (§8) introduces *words* as items of the same shape, so the SRS
-> must not assume "character". Building it generically now avoids a rewrite later.
-
----
-
-## 4. Exercise Types
-
-### Phase 1 — core (build first)
-1. **Match pairs** — tap to match Kannada glyphs ↔ romanizations.
-2. **Multiple choice (recognize)** — show glyph, pick the correct romanization.
-3. **Multiple choice (recall)** — show romanization, pick the correct glyph.
-4. **Tap what you hear** — play TTS, pick the matching glyph.
-
-### Phase 2 — tracing (add after Phase 1)
-Handwriting practice on an HTML `<canvas>`, with **progressive scaffolding**:
-
-1. **Guided trace** — full glyph shown as a bold guide outline; user traces directly over it.
-2. **Faint trace** — guide reduced to a faint/dotted outline; user traces with less help.
-3. **Blind draw** — blank canvas; user reproduces the glyph from memory.
-
-**Scoring approach:** outline-overlap, not stroke order. We render the target glyph to
-an offscreen canvas and compare the user's drawn pixels against it — rewarding coverage
-of the glyph and penalizing strokes far outside it. (Stroke-order validation is out of
-scope: there is no readily available Kannada stroke-order dataset, unlike kana/kanji.)
-
-A character advances through the three scaffolding levels as the learner succeeds,
-matching the "trace → less guidance → blind" progression.
-
----
-
-## 5. Architecture
-
-```
-Browser (Android Chrome)
-   │  HTML + CSS + vanilla JS  (no build step)
-   │  Web Speech API for TTS
-   ▼
-Node server (Termux)
-   • serves static frontend
-   • GET/POST progress  → progress.json
-```
-
-### Frontend
-- Single-page app, hash-based routing (`#/`, `#/lesson/...`, `#/review`).
-- Vanilla JS modules; no React/bundler. State held in memory, synced to server.
-- Character data generated at build/start time into a JSON the frontend loads.
-
-### Backend (Node + Express)
-- Static file serving for the frontend.
-- Minimal progress API:
-  - `GET  /api/progress` → current progress JSON
-  - `POST /api/progress` → persist progress
-- Persistence: a single `progress.json` file (no DB needed for one user). SQLite is a possible upgrade later.
-
-### Persistence model (`progress.json`)
-```js
-{
-  items: { "ka": { lessons: 3, seen: true, lastSeen: 1719230000, due: 1719300000 }, ... },
-  units: { vowels: { lessonsDone: 4 }, consonants: { lessonsDone: 2 }, ... },
-  settings: { romanizationStyle: "iso15919" }
-}
-```
-
----
-
-## 6. Project Structure (proposed)
 ```
 lexicon/
-├── DESIGN.md
-├── package.json
-├── server.js                 # Express: static + progress API
+├── DESIGN.md  README.md
+├── server.js              # Express: static + progress/texts API
+├── deploy.sh  run.sh      # pull/rebuild/restart + start (Termux/tmux)
 ├── scripts/
-│   └── generate-characters.js # builds character data from Unicode rules
-├── data/
-│   ├── characters.json        # generated character set
-│   └── progress.json          # runtime progress (gitignored)
-└── public/
-    ├── index.html
-    ├── css/styles.css
-    └── js/
-        ├── app.js             # routing + bootstrap
-        ├── data.js            # loads characters + progress
-        ├── srs.js             # strength / scheduling logic
-        ├── exercises/         # match, multiple-choice, audio, tracing
-        └── tts.js             # Web Speech API wrapper
+│   ├── generate-characters.js
+│   └── build-dictionary.js
+├── data/                  # characters.json, dictionary.json, texts.json,
+│                          # texts-user.json, progress.json (most gitignored)
+└── public/                # index.html, css/styles.css, js/*.js
 ```
 
 ---
 
-## 7. Roadmap
+## 9. Roadmap (remaining)
 
-- **M1 — Foundation:** ✅ character generator, Node server, progress persistence, character data for vowels + consonants.
-- **M2 — Core loop (vowels + consonants):** ✅ unit/lesson map, Phase-1 exercises (intro, MC recognize/recall, audio, match), SRS, review sessions. *End-to-end usable here.*
-- **M3 — Kagunita:** ✅ generate the 408-cell grid; one unit per consonant series (ಕ → ಕಾ ಕಿ ಕೀ …), 6 forms per lesson.
-- **M4 — Ottakshara:** common conjuncts.
-- **M5 — Tracing:** canvas exercises with progressive scaffolding (Phase 2).
-- **M6 — Audio upgrade (optional):** generate + verify baked-in clips, swap TTS for files.
+### M4 — Ottakshara (conjuncts)
+Generate conjunct forms (`consonant + virama + consonant`) and add them as a new section,
+taught with the existing exercises. The combinatorial space is large (~1,150 pairs), so
+teach a **curated common set** (doubles ಕ್ಕ ತ್ತ ನ್ನ ಲ್ಲ ಮ್ಮ, frequent clusters ಸ್ತ ಸ್ವ ಕ್ಷ ಜ್ಞ …) —
+optionally seeded from conjuncts that actually appear in the reading texts.
 
----
+### Multi-user — SQLite + accounts
+Let other people use the app with their own accounts and progress.
+- **Storage:** replace the per-file JSON (`progress.json`, `texts-user.json`) with
+  **SQLite**. Prefer Node's built-in `node:sqlite` to avoid a native build (better-sqlite3
+  compiles awkwardly on Termux/ARM).
+- **Schema (sketch):** `users(id, username, pw_hash, created)`, `progress(user_id, item_id,
+  lessons, seen, last_seen, due)`, `units(user_id, unit_id, lessons_done)`,
+  `stats(user_id, …)`, `texts(id, user_id NULL=shared, title, body, glossary)`.
+- **Auth:** lightweight username + password (hashed), session cookie. Optional —
+  single-user/local use stays frictionless via a default account.
+- **Scope:** `/api/progress` and `/api/texts` keyed to the logged-in user; bundled texts
+  shared. One-time migration of the existing `progress.json` into a user row.
 
-## 8. Future Module — Reading & Vocabulary from Texts
+### Dropped
+- **Baked audio clips** (former M6) — browser TTS is sufficient on the target devices.
 
-A larger module to add **after** the alphabet learner ships. The model is
-comprehensible input (à la LingQ): import real content, learn its vocabulary in the
-existing learning flow, and reach the point of reading the text unaided.
-
-### Concept / flow
-1. **Import** a story or book as text (start with plain `.txt` / clean Unicode).
-2. **Tokenize** into words (Kannada uses spaces, so whitespace tokenization works).
-3. **Look up** each word's lemma + meaning + romanization.
-4. **Introduce** unknown words into the SRS / learning flow, prioritized by frequency.
-5. **Read mode** — read the text with tap-to-reveal meanings, tracking how much you know.
-6. **Goal:** reach high **known-word coverage** of the text ("you know 82% of this story") and read it unaided.
-
-### Prerequisite
-Assumes the learner can already decode the script — so this builds *on top of* the
-alphabet learner, reusing the same **item-type-agnostic SRS** (§3 design note): words
-are just items with a strength score, like characters.
-
-### Hard parts (Kannada-specific), in order of risk
-1. **Morphology (biggest).** Kannada is agglutinative and heavily inflected — case
-   endings, postpositions, and sandhi attach to stems, so a surface word ≠ dictionary
-   headword. Needs **lemmatization** to teach reusable vocabulary and to look words up.
-   Stemmers exist (IndicNLP etc.) but quality is limited.
-2. **PDF extraction.** Tokenization is easy; PDFs are not. Many Kannada PDFs are scanned
-   images (need OCR — Tesseract `kan`, mediocre) or use **legacy non-Unicode fonts**
-   (Nudi/Baraha) that extract as garbage. Start with `.txt` / clean Unicode; treat
-   PDF + OCR as a later, best-effort add-on.
-3. **Meaning source.** Two viable paths, likely hybrid:
-   - **Local dictionary** — e.g. the open *Alar* Kannada–English dataset (~150k entries).
-     Offline, fast, no rate limits; misses inflected/rare forms.
-   - **LLM API (preferred)** — a model like **Claude (Anthropic API)** can return, per
-     word in a sentence, the *lemma + meaning + contextual romanization* in one shot,
-     largely sidestepping the morphology problem. Needs network + costs at import time.
-   - **Hybrid:** local dictionary first, LLM for misses — keeps cost and latency down.
-
-### Status — v1 shipped
-Built as a separate **Reading** section (own tab). Implemented:
-- Import a Kannada text (paste); bundled sample stories with curated glossaries.
-- Tokenize → frequency-rank → path of lessons (most frequent first).
-- Words are items (category `word`, id `w:<word>`) reusing the SRS + exercises.
-  The English meaning is always shown during word exercises, and there's a
-  **word ↔ meaning** matching exercise. Tracing is excluded for words (the canvas
-  is too small for multi-character words). Deterministic transliteration (`translit.js`).
-- Per-text **coverage** bar, frequency-weighted and based on lessons-encountered
-  (so it moves after the first lesson; full credit after 3 lessons with a word).
-- **Read-it-yourself** view with known/unknown highlighting + tap-to-reveal.
-- Server: `GET/POST /api/texts`; imported texts persisted to `data/texts-user.json`.
-
-Meaning enrichment (no LLM):
-- Imported texts are auto-glossed server-side from a bundled **Kannada→English
-  dictionary** built from the open **Alar** dataset (`scripts/build-dictionary.js` →
-  `data/dictionary.json`, ~106k headwords). `server.js` loads it once and fills each
-  text's `glossary` on import, with best-effort **suffix stemming** so inflected forms
-  (case endings, postpositions) resolve to their headword.
-
-Still open:
-- Glosses are descriptive (Alar style) and sometimes verbose; **verb conjugations**
-  and complex inflections still miss (stemming only covers noun suffixes). An optional
-  LLM pass could refine glosses / handle verbs later.
-- **PDF/OCR import** remains future work.
-
----
-
-## 9. Open Questions / Future
-- **TTS verification:** TTS pronunciation of isolated syllables should be spot-checked by a native speaker before relying on it for learning.
-- **Romanization toggle:** offer simplified ASCII vs ISO 15919 display.
-- **Conjunct selection:** ottakshara set is large; start with the most common conjuncts rather than the full combinatorial space.
-- **Multi-device sync:** server-side progress already enables this; no extra work needed unless concurrent edits become a concern.
+### Smaller open items
+- Better dictionary coverage for **verbs / complex inflections** (a real lemmatizer, or an
+  optional LLM refinement pass).
+- Romanization display toggle (ISO 15919 vs simplified ASCII).
+- PDF/OCR import for texts.
