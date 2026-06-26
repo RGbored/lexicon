@@ -434,3 +434,17 @@ body {
 
 .summary { text-align: center; align-items: center; }
 .summary h2 { margin: 0.5rem 0 0; }
+
+/* footer — link back to the source */
+.app-footer {
+  text-align: center;
+  padding: 1.5rem 1rem 2rem;
+  margin-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.app-footer a {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+.app-footer a:hover { color: var(--accent); }

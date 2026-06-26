@@ -5,6 +5,8 @@ A self-hosted web app for learning the **Kannada script** (ಕನ್ನಡ ಲ�
 extended with a reading mode. Built to run from a small Node server — e.g. in Termux
 on a phone — so you can practice at your convenience with no app to install.
 
+**Live:** <https://lexicon.rgbored.com>
+
 See [`DESIGN.md`](DESIGN.md) for the full design and roadmap.
 
 ## Features
