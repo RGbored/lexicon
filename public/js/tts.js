@@ -1,40 +1,46 @@
 'use strict';
 
 /**
- * Thin wrapper over the Web Speech API for Kannada (kn-IN).
- * On Android Chrome this uses Google's kn-IN voice. Where no Kannada voice
- * exists (e.g. some iOS), speak() is a no-op and hasKannadaVoice() is false.
- * Audio files will later replace this (DESIGN.md §1); call sites stay the same.
+ * Thin wrapper over the Web Speech API supporting Kannada (kn-IN), Japanese (ja-JP), and German (de-DE).
+ * Automatically selects the appropriate voice based on target language.
  */
 const TTS = (() => {
   const synth = window.speechSynthesis;
-  let kannadaVoice = null;
+  let voices = [];
 
-  function pickVoice() {
+  function loadVoices() {
     if (!synth) return;
-    const voices = synth.getVoices();
-    kannadaVoice =
-      voices.find((v) => v.lang && v.lang.toLowerCase().startsWith('kn')) || null;
+    voices = synth.getVoices();
   }
 
   if (synth) {
-    pickVoice();
-    synth.addEventListener?.('voiceschanged', pickVoice); // voices load async
+    loadVoices();
+    synth.addEventListener?.('voiceschanged', loadVoices); // voices load async
   }
 
-  function hasKannadaVoice() {
-    return !!kannadaVoice;
+  function getVoiceForLang(langCode) {
+    if (!langCode) return null;
+    return voices.find((v) => v.lang && v.lang.toLowerCase().startsWith(langCode.toLowerCase())) || null;
   }
 
   function speak(text) {
     if (!synth || !text) return;
     synth.cancel();
+    
+    const activeLang = Data.progressData()?.settings?.targetLang || 'kn';
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'kn-IN';
-    if (kannadaVoice) u.voice = kannadaVoice;
-    u.rate = 0.85;
+    
+    let voiceLang = 'kn-IN';
+    if (activeLang === 'ja') voiceLang = 'ja-JP';
+    else if (activeLang === 'de') voiceLang = 'de-DE';
+    
+    u.lang = voiceLang;
+    const voice = getVoiceForLang(activeLang);
+    if (voice) u.voice = voice;
+    
+    u.rate = activeLang === 'kn' ? 0.85 : 0.95;
     synth.speak(u);
   }
 
-  return { speak, hasKannadaVoice };
+  return { speak };
 })();

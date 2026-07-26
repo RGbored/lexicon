@@ -95,6 +95,8 @@ const Session = (() => {
   // one. Two intros are never back-to-back, and the review load grows as you go.
   function buildLessonQueue(lesson, learnedPool, opts = {}) {
     const words = !!opts.words; // word lessons: match by meaning, no tracing
+    const activeLang = Data.progressData()?.settings?.targetLang || 'kn';
+    const hasTracing = activeLang !== 'de';
     const newIds = lesson.ids.slice();
     const q = [];
     const introduced = [];
@@ -110,18 +112,20 @@ const Session = (() => {
     });
     // Consolidation: match, (tracing for characters only), and a little review.
     q.push({ type: 'match', ids: newIds.slice(0, 5), by: words ? 'meaning' : 'roman' });
-    if (!words) for (const id of newIds) q.push({ type: 'tracing', id });
+    if (!words && hasTracing) for (const id of newIds) q.push({ type: 'tracing', id });
     for (const id of sample(learnedPool.filter((x) => !newIds.includes(x)), 3)) q.push(randDrill(id));
     return q;
   }
 
   function buildReviewQueue(dueIds) {
+    const activeLang = Data.progressData()?.settings?.targetLang || 'kn';
+    const hasTracing = activeLang !== 'de';
     return dueIds.map((id, i) => {
       const isWord = Data.get(id)?.category === 'word'; // no tracing for words
       const r = i % 3;
       if (r === 0) return { type: 'mc', mode: 'recognize', id };
       if (r === 1) return { type: 'mc', mode: 'recall', id };
-      return isWord ? { type: 'mc', mode: 'recall', id } : { type: 'tracing', id };
+      return (isWord || !hasTracing) ? { type: 'mc', mode: 'recall', id } : { type: 'tracing', id };
     });
   }
 
@@ -325,7 +329,11 @@ const Session = (() => {
         : 'Draw it from memory';
 
       const SIZE = 300;
-      const font = fitFont(c.glyph, SIZE, 'system-ui, "Noto Sans Kannada", sans-serif');
+      const activeLang = Data.progressData()?.settings?.targetLang || 'kn';
+      let fontStack = 'system-ui, "Noto Sans Kannada", sans-serif';
+      if (activeLang === 'ja') fontStack = 'system-ui, "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif';
+      else if (activeLang === 'de') fontStack = 'system-ui, sans-serif';
+      const font = fitFont(c.glyph, SIZE, fontStack);
       const node = el(`
         <div class="tracing">
           <div class="big-roman">${c.roman}</div>
