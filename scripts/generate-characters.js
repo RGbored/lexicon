@@ -99,17 +99,14 @@ const HIRAGANA_BASE = [
   ['わ', 'wa', 'wa', 'w-row'], ['を', 'wo', 'wo', 'w-row'], ['ん', 'n', 'n', 'w-row'],
   // Dakuten
   ['が', 'ga', 'ga', 'dakuten'], ['ぎ', 'gi', 'gi', 'dakuten'], ['ぐ', 'gu', 'gu', 'dakuten'], ['げ', 'ge', 'ge', 'dakuten'], ['ご', 'go', 'go', 'dakuten'],
-  ['ざ', 'za', 'za', 'dakuten'], ['じ', 'ji', 'ji', 'dakuten'], ['ず', 'zu', 'zu', 'dakuten'], ['ぜ', 'ze', 'ze', 'dakuten'], ['zo', 'zo', 'zo', 'dakuten'], // Wait, glyph 'ぞ' was typo 'zo'
+  ['ざ', 'za', 'za', 'dakuten'], ['じ', 'ji', 'ji', 'dakuten'], ['ず', 'zu', 'zu', 'dakuten'], ['ぜ', 'ze', 'ze', 'dakuten'], ['ぞ', 'zo', 'zo', 'dakuten'],
   ['だ', 'da', 'da', 'dakuten'], ['ぢ', 'ji', 'dji', 'dakuten'], ['づ', 'zu', 'dzu', 'dakuten'], ['で', 'de', 'de', 'dakuten'], ['ど', 'do', 'do', 'dakuten'],
   ['ば', 'ba', 'ba', 'dakuten'], ['び', 'bi', 'bi', 'dakuten'], ['ぶ', 'bu', 'bu', 'dakuten'], ['べ', 'be', 'be', 'dakuten'], ['ぼ', 'bo', 'bo', 'dakuten'],
   // Handakuten
   ['ぱ', 'pa', 'pa', 'handakuten'], ['ぴ', 'pi', 'pi', 'handakuten'], ['ぷ', 'pu', 'pu', 'handakuten'], ['ぺ', 'pe', 'pe', 'handakuten'], ['ぽ', 'po', 'po', 'handakuten'],
 ];
 
-// Fix the typo in base list
-for (let item of HIRAGANA_BASE) {
-  if (item[2] === 'zo') item[0] = 'ぞ';
-}
+
 
 function hiraganaToKatakana(h) {
   const code = h.charCodeAt(0);

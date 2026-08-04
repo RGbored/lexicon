@@ -359,11 +359,13 @@ const App = (() => {
 
   async function boot() {
     try {
-      await Promise.all([Data.load(), Reading.load(), Auth.init()]);
+      await Data.load();
+      await Promise.all([Reading.load(), Auth.init()]);
       renderLangSelector();
       renderHeaderLogo();
       units = Curriculum.build(Data.all());
-      const ott = buildOttaksharaUnit(); // conjuncts derived from reading texts
+      const lang = Data.progressData()?.settings?.targetLang || 'kn';
+      const ott = (lang === 'kn') ? buildOttaksharaUnit() : null;
       if (ott) units.push(ott);
       window.addEventListener('hashchange', route);
       document.getElementById('home-link').onclick = (e) => { e.preventDefault(); location.hash = '#/'; };

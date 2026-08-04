@@ -118,14 +118,14 @@ function init() {
 
   // Alter tables to add new columns if they don't exist
   try {
-    db.exec('ALTER TABLE user_settings ADD COLUMN target_lang TEXT NOT NULL DEFAULT "kn";');
+    db.exec("ALTER TABLE user_settings ADD COLUMN target_lang TEXT NOT NULL DEFAULT 'kn';");
   } catch (e) {
-    // Column already exists
+    if (!String(e.message).includes('duplicate column')) throw e;
   }
   try {
-    db.exec('ALTER TABLE texts ADD COLUMN lang TEXT NOT NULL DEFAULT "kn";');
+    db.exec("ALTER TABLE texts ADD COLUMN lang TEXT NOT NULL DEFAULT 'kn';");
   } catch (e) {
-    // Column already exists
+    if (!String(e.message).includes('duplicate column')) throw e;
   }
 
   // Seed the default (frictionless) user if it doesn't exist yet.
@@ -139,7 +139,7 @@ function init() {
   migrateLegacyFiles(def.id);
   return db;
 }
-` + `
+
 // One-time import of the legacy single-user JSON files into the default user.
 // Idempotent: only runs when the user has no rows yet, and renames the source
 // file to *.migrated afterwards so it never re-imports (and survives as a backup).

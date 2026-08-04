@@ -24,11 +24,11 @@ fi
 echo "→ regenerating character data…"
 npm run generate
 
-# Build the Kannada dictionary once (gitignored, ~6 MB). Best-effort: the app works
-# without it, and it only changes when the pinned Alar version is bumped — so a dead
-# download link can never break a deploy.
-if [ ! -f data/dictionary_kn.json ]; then
-  echo "→ building dictionary (first run)…"
+# Build dictionaries for all languages if any are missing (gitignored). Best-effort:
+# the app works without them, and they only change when the pinned source versions
+# are bumped — so a dead download link can never break a deploy.
+if [ ! -f data/dictionary_kn.json ] || [ ! -f data/dictionary_ja.json ] || [ ! -f data/dictionary_de.json ]; then
+  echo "→ building dictionaries…"
   npm run dictionary || echo "⚠ dictionary build failed — continuing without auto-meanings"
 fi
 

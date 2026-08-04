@@ -9,6 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const DATA_DIR = path.join(__dirname, 'data');
+const VALID_LANGS = new Set(['kn', 'ja', 'de']);
 const TEXTS_FILE = path.join(DATA_DIR, 'texts.json');            // bundled samples
 
 const SESSION_COOKIE = 'sid';
@@ -87,6 +88,7 @@ app.post('/api/logout', (req, res) => {
 
 app.get('/api/characters', (req, res) => {
   const lang = req.query.lang || 'kn';
+  if (!VALID_LANGS.has(lang)) return res.status(400).json({ error: 'Invalid language.' });
   const charFile = path.join(DATA_DIR, `characters_${lang}.json`);
   fs.readFile(charFile, 'utf8', (err, data) => {
     if (err) {
@@ -191,6 +193,7 @@ function buildGlossary(body, lang = 'kn') {
 
 app.get('/api/texts', (req, res) => {
   const lang = req.query.lang || 'kn';
+  if (!VALID_LANGS.has(lang)) return res.status(400).json({ error: 'Invalid language.' });
   const bundled = readJson(TEXTS_FILE, { texts: [] }).texts || [];
   const filteredBundled = bundled.filter(t => (t.lang || 'kn') === lang);
   const user = db.getUserTexts(req.userId, lang);
@@ -199,6 +202,7 @@ app.get('/api/texts', (req, res) => {
 
 app.post('/api/texts', (req, res) => {
   const { title, body, lang = 'kn' } = req.body || {};
+  if (!VALID_LANGS.has(lang)) return res.status(400).json({ error: 'Invalid language.' });
   if (!body || typeof body !== 'string') {
     return res.status(400).json({ error: 'Body must be a string.' });
   }

@@ -75,7 +75,9 @@ function buildKannadaDict() {
 }
 
 // --- Japanese (JLPT N5 Words) ---
-const JA_URL = 'https://raw.githubusercontent.com/9elt/jlpt-n5-word-list/main/src/wordlist.js';
+// Pinned to a specific commit to prevent supply-chain attacks (same policy as Alar/Kannada).
+const JA_SHA = 'cc5e3480b3d6195677cbbfc525ba39ef533bf1b2';
+const JA_URL = `https://raw.githubusercontent.com/9elt/jlpt-n5-word-list/${JA_SHA}/src/wordlist.js`;
 const JA_OUT = path.join(DATA_DIR, 'dictionary_ja.json');
 
 function buildJapaneseDict() {
@@ -98,7 +100,7 @@ function buildJapaneseDict() {
           const jsonText = body.substring(startIdx, endIdx);
           
           // Evaluate safely
-          const list = new Function(`return ${jsonText}`)();
+          const list = JSON.parse(jsonText);
           const dict = Object.create(null);
           
           for (const item of list) {
@@ -136,7 +138,8 @@ function buildJapaneseDict() {
 }
 
 // --- German (Mr. Honey's German-English Dictionary) ---
-const DE_URL = 'https://raw.githubusercontent.com/hathibelagal/German-English-JSON-Dictionary/master/german_english.json';
+const DE_SHA = 'c3e495175d86f6680b23dc45cf5c4f4e2fd0c5c9';
+const DE_URL = `https://raw.githubusercontent.com/hathibelagal/German-English-JSON-Dictionary/${DE_SHA}/german_english.json`;
 const DE_OUT = path.join(DATA_DIR, 'dictionary_de.json');
 
 function buildGermanDict() {
@@ -161,8 +164,11 @@ function buildGermanDict() {
               cleanGloss = cleanGloss.slice(3).trim(); // "to open" -> "open"
             }
             dict[word] = cleanGloss;
-            // Also store lowercase version for easier lookup
-            dict[word.toLowerCase()] = cleanGloss;
+            // Only add lowercase alias when it won't overwrite a distinct entry
+            // (German: Sie/sie, Weg/weg have different meanings)
+            if (!dict[word.toLowerCase()]) {
+              dict[word.toLowerCase()] = cleanGloss;
+            }
           }
           
           fs.writeFileSync(DE_OUT, JSON.stringify(dict, null, 2));
