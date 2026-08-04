@@ -261,3 +261,23 @@ imported texts are keyed to the request's user; bundled texts stay shared. See Â
   optional LLM refinement pass).
 - Romanization display toggle (ISO 15919 vs simplified ASCII).
 - PDF/OCR import for texts.
+
+---
+
+## 10. Adding a new language
+
+To add support for a new language (e.g., French with code `fr`), you need to update the following files:
+
+### 1. Data Generation (`scripts/`)
+- **`scripts/generate-characters.js`**: Define the character set (alphabet, categories) and add a function to write it to `data/characters_fr.json`. Call it at the end of the file.
+- **`scripts/build-dictionary.js`**: Add a function to download, parse, and write the dictionary to `data/dictionary_fr.json`. Call it at the end of the file.
+- **`deploy.sh`**: Add a check to build the dictionary if `data/dictionary_fr.json` is missing.
+
+### 2. Backend (`server.js`)
+- Add your language code (`fr`) to the `VALID_LANGS` Set at the top of the file.
+
+### 3. Frontend (`public/js/`)
+- **`app.js`**: Add an `<option>` for the language in `renderLangSelector()`.
+- **`reading.js`**: Update `tokenize()` to correctly split words for the language. For space-separated languages like French, you can use a regex similar to the German one (or `Intl.Segmenter` for languages like Chinese/Japanese).
+- **`tts.js`**: Update the TTS voice selection logic to match the correct language prefix (e.g., `fr-FR` or `fr-`).
+- **`translit.js`**: If the language uses a non-Latin script, add transliteration rules. If it uses the Latin script, you can just return the characters as-is (like German).

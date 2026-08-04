@@ -9,7 +9,7 @@ convenience with no app to install.
 
 **Live:** <https://lexicon.rgbored.com>
 
-See [`DESIGN.md`](DESIGN.md) for the full design and roadmap.
+See [`DESIGN.md`](DESIGN.md) for the full design, roadmap, and instructions on how to add a new language.
 
 ## Features
 
