@@ -61,8 +61,29 @@ body {
 .statsbar .stat.flame.on { color: var(--accent); }
 .statsbar:empty { display: none; }
 
-/* account control — top-right of the header */
-.account { position: absolute; top: 1rem; right: 1rem; }
+.header-controls {
+  position: absolute;
+  top: 1.05rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.lang-select-dropdown {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.lang-select-dropdown:hover { color: var(--ink); border-color: var(--muted); }
 .account-btn {
   font-size: 0.8rem;
   font-weight: 600;

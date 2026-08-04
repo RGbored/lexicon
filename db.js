@@ -68,7 +68,8 @@ CREATE TABLE IF NOT EXISTS stats (
 );
 CREATE TABLE IF NOT EXISTS user_settings (
   user_id           INTEGER PRIMARY KEY,
-  romanization_style TEXT NOT NULL DEFAULT 'iso15919'
+  romanization_style TEXT NOT NULL DEFAULT 'iso15919',
+  target_lang        TEXT NOT NULL DEFAULT 'kn'
 );
 CREATE TABLE IF NOT EXISTS ottakshara (
   user_id  INTEGER NOT NULL,
@@ -82,7 +83,8 @@ CREATE TABLE IF NOT EXISTS texts (
   title    TEXT,
   source   TEXT,
   body     TEXT,
-  glossary TEXT
+  glossary TEXT,
+  lang     TEXT NOT NULL DEFAULT 'kn'
 );
 `;
 
@@ -113,6 +115,18 @@ function init() {
   db = new DatabaseSync(DB_FILE);
   db.exec('PRAGMA journal_mode = WAL;');
   db.exec(SCHEMA);
+
+  // Alter tables to add new columns if they don't exist
+  try {
+    db.exec("ALTER TABLE user_settings ADD COLUMN target_lang TEXT NOT NULL DEFAULT 'kn';");
+  } catch (e) {
+    if (!String(e.message).includes('duplicate column')) throw e;
+  }
+  try {
+    db.exec("ALTER TABLE texts ADD COLUMN lang TEXT NOT NULL DEFAULT 'kn';");
+  } catch (e) {
+    if (!String(e.message).includes('duplicate column')) throw e;
+  }
 
   // Seed the default (frictionless) user if it doesn't exist yet.
   let def = db.prepare('SELECT id FROM users WHERE is_default = 1').get();
@@ -148,7 +162,7 @@ function migrateLegacyFiles(defaultUserId) {
     try {
       const store = JSON.parse(fs.readFileSync(USER_TEXTS_FILE, 'utf8'));
       for (const t of store.texts || []) {
-        addText(defaultUserId, { id: t.id, title: t.title, source: t.source, body: t.body, glossary: t.glossary });
+        addText(defaultUserId, { id: t.id, title: t.title, source: t.source, body: t.body, glossary: t.glossary, lang: t.lang || 'kn' });
       }
       fs.renameSync(USER_TEXTS_FILE, `${USER_TEXTS_FILE}.migrated`);
       console.log('Migrated texts-user.json → SQLite (default user).');
@@ -250,8 +264,11 @@ function getProgress(userId) {
   const stats = s
     ? { points: s.points, streak: s.streak, lastDay: s.last_day, freezes: s.freezes, freezeWeek: s.freeze_week }
     : { points: 0, streak: 0, lastDay: null, freezes: 0, freezeWeek: null };
-  const cfg = db.prepare('SELECT romanization_style FROM user_settings WHERE user_id = ?').get(userId);
-  const settings = { romanizationStyle: cfg ? cfg.romanization_style : 'iso15919' };
+  const cfg = db.prepare('SELECT romanization_style, target_lang FROM user_settings WHERE user_id = ?').get(userId);
+  const settings = {
+    romanizationStyle: cfg ? cfg.romanization_style : 'iso15919',
+    targetLang: cfg ? cfg.target_lang : 'kn'
+  };
   const ottakshara = db.prepare('SELECT glyph FROM ottakshara WHERE user_id = ? ORDER BY position').all(userId).map((r) => r.glyph);
 
   return { items, units, settings, stats, ottakshara };
@@ -295,10 +312,12 @@ function saveProgress(userId, blob) {
         stats.freezes || 0,
         stats.freezeWeek == null ? null : stats.freezeWeek);
 
-    db.prepare(`INSERT INTO user_settings (user_id, romanization_style)
-                VALUES (?, ?)
-                ON CONFLICT(user_id) DO UPDATE SET romanization_style = excluded.romanization_style`)
-      .run(userId, settings.romanizationStyle || 'iso15919');
+    db.prepare(`INSERT INTO user_settings (user_id, romanization_style, target_lang)
+                VALUES (?, ?, ?)
+                ON CONFLICT(user_id) DO UPDATE SET
+                  romanization_style = excluded.romanization_style,
+                  target_lang = excluded.target_lang`)
+      .run(userId, settings.romanizationStyle || 'iso15919', settings.targetLang || 'kn');
 
     db.exec('COMMIT');
   } catch (e) {
@@ -311,8 +330,8 @@ function saveProgress(userId, blob) {
 // Texts
 // ---------------------------------------------------------------------------
 
-function getUserTexts(userId) {
-  return db.prepare('SELECT id, title, source, body, glossary FROM texts WHERE user_id = ? ORDER BY rowid').all(userId)
+function getUserTexts(userId, lang = 'kn') {
+  return db.prepare('SELECT id, title, source, body, glossary FROM texts WHERE user_id = ? AND lang = ? ORDER BY rowid').all(userId, lang)
     .map((r) => ({
       id: r.id,
       title: r.title,
@@ -320,13 +339,14 @@ function getUserTexts(userId) {
       user: true,
       body: r.body,
       glossary: r.glossary ? JSON.parse(r.glossary) : {},
+      lang,
     }));
 }
 
-function addText(userId, { id, title, source, body, glossary }) {
+function addText(userId, { id, title, source, body, glossary, lang = 'kn' }) {
   const textId = id || `user-${Date.now()}`;
-  db.prepare('INSERT INTO texts (id, user_id, title, source, body, glossary) VALUES (?, ?, ?, ?, ?, ?)')
-    .run(textId, userId, title || 'Untitled', source || 'imported', body, JSON.stringify(glossary || {}));
+  db.prepare('INSERT INTO texts (id, user_id, title, source, body, glossary, lang) VALUES (?, ?, ?, ?, ?, ?, ?)')
+    .run(textId, userId, title || 'Untitled', source || 'imported', body, JSON.stringify(glossary || {}), lang);
   return {
     id: textId,
     title: title || 'Untitled',
@@ -334,6 +354,7 @@ function addText(userId, { id, title, source, body, glossary }) {
     user: true,
     body,
     glossary: glossary || {},
+    lang,
   };
 }
 

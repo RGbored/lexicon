@@ -11,7 +11,6 @@
  * vocabulary learned in one text counts everywhere.
  */
 const Reading = (() => {
-  const KANNADA = /[ಀ-೿]+/g;
   const READ_FULL = 3;      // lessons a word has appeared in for full reading credit
   const LESSON_SIZE = 6;
 
@@ -27,7 +26,8 @@ const Reading = (() => {
   const wid = (w) => 'w:' + w;
 
   async function load() {
-    const r = await fetch('/api/texts').then((x) => x.json()).catch(() => ({ texts: [] }));
+    const lang = Data.progressData()?.settings?.targetLang || 'kn';
+    const r = await fetch(`/api/texts?lang=${lang}`).then((x) => x.json()).catch(() => ({ texts: [] }));
     texts = r.texts || [];
   }
 
@@ -49,11 +49,25 @@ const Reading = (() => {
     return freq;
   }
 
+  function tokenize(textStr, lang = 'kn') {
+    if (lang === 'ja') {
+      const segmenter = new Intl.Segmenter('ja', { granularity: 'word' });
+      return [...segmenter.segment(textStr)]
+        .filter(s => s.isWordLike)
+        .map(s => s.segment);
+    } else if (lang === 'de') {
+      return textStr.match(/[A-Za-zÄäÖöÜüß]+/g) || [];
+    } else {
+      return textStr.match(/[ಀ-೿]+/g) || [];
+    }
+  }
+
   // Tokenize → frequency-rank → word items + lesson path. Registers items so the
   // shared engine can resolve them. Cached per text.
   function derive(text) {
     if (cache.has(text.id)) return cache.get(text.id);
-    const tokens = text.body.match(KANNADA) || [];
+    const lang = text.lang || Data.progressData()?.settings?.targetLang || 'kn';
+    const tokens = tokenize(text.body, lang);
     const freq = new Map();
     const firstAt = new Map();
     tokens.forEach((t, i) => {
@@ -97,12 +111,14 @@ const Reading = (() => {
   // ── reading home: import + text list ─────────────────────────────────────
   function home(root) {
     root.innerHTML = '';
+    const lang = Data.progressData()?.settings?.targetLang || 'kn';
+    const langName = lang === 'ja' ? 'Japanese' : lang === 'de' ? 'German' : 'Kannada';
 
     const imp = el(`
       <section class="unit">
         <h2>Import a text</h2>
         <input class="text-title" placeholder="Title (optional)" />
-        <textarea class="text-body" rows="4" placeholder="Paste Kannada text here…"></textarea>
+        <textarea class="text-body" rows="4" placeholder="Paste ${langName} text here…"></textarea>
         <label class="text-file-label">📄 …or upload a .txt file
           <input type="file" class="text-file" accept=".txt,text/plain" hidden />
         </label>
@@ -206,6 +222,16 @@ const Reading = (() => {
     });
   }
 
+  function getWordRegex(lang = 'kn') {
+    if (lang === 'ja') {
+      return /([\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\uFF00-\uFFEF\u4E00-\u9FAF]+)/;
+    } else if (lang === 'de') {
+      return /([A-Za-zÄäÖöÜüß]+)/;
+    } else {
+      return /([ಀ-೿]+)/;
+    }
+  }
+
   // ── read-it-yourself view ────────────────────────────────────────────────
   function read(id, root) {
     const t = texts.find((x) => x.id === id);
@@ -215,9 +241,18 @@ const Reading = (() => {
 
     const info = el('<div class="read-info hint">Tap a word to hear it and see its meaning</div>');
     const body = el('<div class="read-body"></div>');
-    for (const part of t.body.split(/([ಀ-೿]+)/)) {
+    const lang = t.lang || Data.progressData()?.settings?.targetLang || 'kn';
+    const wordRegex = getWordRegex(lang);
+    
+    for (const part of t.body.split(wordRegex)) {
       if (!part) continue;
-      if (/[ಀ-೿]/.test(part)) {
+      const isWord = lang === 'ja'
+        ? /[\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\uFF00-\uFFEF\u4E00-\u9FAF]/.test(part)
+        : lang === 'de'
+        ? /[A-Za-zÄäÖöÜüß]/.test(part)
+        : /[ಀ-೿]/.test(part);
+        
+      if (isWord) {
         const lessons = Data.peek(wid(part))?.lessons || 0;
         const cls = lessons >= READ_FULL ? 'known' : lessons >= 1 ? 'learning' : 'unknown';
         const span = el(`<span class="rw ${cls}">${part}</span>`);
@@ -245,10 +280,11 @@ const Reading = (() => {
   }
 
   async function importText(title, body) {
+    const lang = Data.progressData()?.settings?.targetLang || 'kn';
     const r = await fetch('/api/texts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: title || 'Untitled', body }),
+      body: JSON.stringify({ title: title || 'Untitled', body, lang }),
     }).then((x) => x.json()).catch(() => null);
     if (r && r.text) {
       texts.push(r.text);

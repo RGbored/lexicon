@@ -9,9 +9,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const DATA_DIR = path.join(__dirname, 'data');
-const CHARACTERS_FILE = path.join(DATA_DIR, 'characters.json');
+const VALID_LANGS = new Set(['kn', 'ja', 'de']);
 const TEXTS_FILE = path.join(DATA_DIR, 'texts.json');            // bundled samples
-const DICTIONARY_FILE = path.join(DATA_DIR, 'dictionary.json');  // Alar Kn→En
 
 const SESSION_COOKIE = 'sid';
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year, in seconds
@@ -88,9 +87,12 @@ app.post('/api/logout', (req, res) => {
 // --- Characters (shared, static) --------------------------------------------
 
 app.get('/api/characters', (req, res) => {
-  fs.readFile(CHARACTERS_FILE, 'utf8', (err, data) => {
+  const lang = req.query.lang || 'kn';
+  if (!VALID_LANGS.has(lang)) return res.status(400).json({ error: 'Invalid language.' });
+  const charFile = path.join(DATA_DIR, `characters_${lang}.json`);
+  fs.readFile(charFile, 'utf8', (err, data) => {
     if (err) {
-      return res.status(500).json({ error: 'Character data not generated. Run `npm run generate`.' });
+      return res.status(500).json({ error: `Character data for language '${lang}' not generated. Run \`npm run generate\`.` });
     }
     res.type('application/json').send(data);
   });
@@ -116,7 +118,7 @@ app.post('/api/progress', (req, res) => {
   }
 });
 
-// --- Dictionary / glossary helpers (unchanged) -------------------------------
+// --- Dictionary / glossary helpers -------------------------------------------
 
 function readJson(file, fallback) {
   try {
@@ -126,28 +128,62 @@ function readJson(file, fallback) {
   }
 }
 
-// Kannada → English dictionary (built from Alar via `npm run dictionary`).
-// Loaded once; used to auto-fill meanings for imported texts. Empty if not built.
-const DICTIONARY = readJson(DICTIONARY_FILE, {});
-console.log(`Dictionary: ${Object.keys(DICTIONARY).length} entries`);
+// Dictionaries loaded once at startup; used to auto-fill meanings for imported texts.
+const DICTIONARY_KN = readJson(path.join(DATA_DIR, 'dictionary_kn.json'), {});
+const DICTIONARY_JA = readJson(path.join(DATA_DIR, 'dictionary_ja.json'), {});
+const DICTIONARY_DE = readJson(path.join(DATA_DIR, 'dictionary_de.json'), {});
 
-// Common inflectional suffixes, longest first — best-effort stemming so inflected
-// surface forms still resolve to their dictionary headword.
-const SUFFIXES = ['ಗಳನ್ನು', 'ಗಳಲ್ಲಿ', 'ಗಳಿಗೆ', 'ವನ್ನು', 'ಯನ್ನು', 'ನ್ನು', 'ಗಳು', 'ಗಳ', 'ದಲ್ಲಿ', 'ಯಲ್ಲಿ', 'ಅಲ್ಲಿ', 'ಲ್ಲಿ', 'ದಿಂದ', 'ಯಿಂದ', 'ಇಂದ', 'ಕ್ಕೆ', 'ಗೆ'];
-function lookupMeaning(word) {
-  if (DICTIONARY[word]) return DICTIONARY[word];
-  for (const suf of SUFFIXES) {
-    if (word.length > suf.length + 1 && word.endsWith(suf)) {
-      const base = word.slice(0, -suf.length);
-      if (DICTIONARY[base]) return DICTIONARY[base];
+console.log(`Dictionaries loaded: Kannada (${Object.keys(DICTIONARY_KN).length}), Japanese (${Object.keys(DICTIONARY_JA).length}), German (${Object.keys(DICTIONARY_DE).length})`);
+
+const SUFFIXES_KN = ['ಗಳನ್ನು', 'ಗಳಲ್ಲಿ', 'ಗಳಿಗೆ', 'ವನ್ನು', 'ಯನ್ನು', 'ನ್ನು', 'ಗಳು', 'ಗಳ', 'ದಲ್ಲಿ', 'ಯಲ್ಲಿ', 'ಅಲ್ಲಿ', 'ಲ್ಲಿ', 'ದಿಂದ', 'ಯಿಂದ', 'ಇಂದ', 'ಕ್ಕೆ', 'ಗೆ'];
+const SUFFIXES_DE = ['en', 'em', 'er', 'es', 'e', 'n'];
+
+function lookupMeaning(word, lang = 'kn') {
+  const dict = lang === 'ja' ? DICTIONARY_JA : lang === 'de' ? DICTIONARY_DE : DICTIONARY_KN;
+  
+  if (dict[word]) return dict[word];
+  
+  // Case-insensitive lookup (important for German/Japanese input)
+  const lowerWord = word.toLowerCase();
+  if (dict[lowerWord]) return dict[lowerWord];
+  
+  if (lang === 'kn') {
+    for (const suf of SUFFIXES_KN) {
+      if (word.length > suf.length + 1 && word.endsWith(suf)) {
+        const base = word.slice(0, -suf.length);
+        if (dict[base]) return dict[base];
+      }
+    }
+  } else if (lang === 'de') {
+    for (const suf of SUFFIXES_DE) {
+      if (word.length > suf.length + 2 && word.endsWith(suf)) {
+        const base = word.slice(0, -suf.length);
+        if (dict[base]) return dict[base];
+        if (dict[base.toLowerCase()]) return dict[base.toLowerCase()];
+      }
     }
   }
   return '';
 }
-function buildGlossary(body) {
+
+function tokenize(textStr, lang = 'kn') {
+  if (lang === 'ja') {
+    const segmenter = new Intl.Segmenter('ja', { granularity: 'word' });
+    return [...segmenter.segment(textStr)]
+      .filter(s => s.isWordLike)
+      .map(s => s.segment);
+  } else if (lang === 'de') {
+    return textStr.match(/[A-Za-zÄäÖöÜüß]+/g) || [];
+  } else {
+    return textStr.match(/[ಀ-೿]+/g) || [];
+  }
+}
+
+function buildGlossary(body, lang = 'kn') {
   const glossary = {};
-  for (const w of new Set(body.match(/[ಀ-೿]+/g) || [])) {
-    const m = lookupMeaning(w);
+  const tokens = tokenize(body, lang);
+  for (const w of new Set(tokens)) {
+    const m = lookupMeaning(w, lang);
     if (m) glossary[w] = m;
   }
   return glossary;
@@ -156,22 +192,42 @@ function buildGlossary(body) {
 // --- Texts (bundled shared + per-user imported) -----------------------------
 
 app.get('/api/texts', (req, res) => {
+  const lang = req.query.lang || 'kn';
+  if (!VALID_LANGS.has(lang)) return res.status(400).json({ error: 'Invalid language.' });
   const bundled = readJson(TEXTS_FILE, { texts: [] }).texts || [];
-  const user = db.getUserTexts(req.userId);
-  res.json({ texts: [...bundled, ...user] });
+  const filteredBundled = bundled.filter(t => (t.lang || 'kn') === lang);
+  const user = db.getUserTexts(req.userId, lang);
+  res.json({ texts: [...filteredBundled, ...user] });
 });
 
 app.post('/api/texts', (req, res) => {
-  const { title, body } = req.body || {};
-  if (!body || typeof body !== 'string' || !/[ಀ-೿]/.test(body)) {
-    return res.status(400).json({ error: 'Body must contain Kannada text.' });
+  const { title, body, lang = 'kn' } = req.body || {};
+  if (!VALID_LANGS.has(lang)) return res.status(400).json({ error: 'Invalid language.' });
+  if (!body || typeof body !== 'string') {
+    return res.status(400).json({ error: 'Body must be a string.' });
   }
+  
+  // Validation based on script/language
+  let isValid = false;
+  if (lang === 'ja') {
+    isValid = /[\u3000-\u303F\u3040-\u309F\u30A0-\u30FF\uFF00-\uFFEF\u4E00-\u9FAF]/.test(body);
+  } else if (lang === 'de') {
+    isValid = /[a-zA-ZäöüÄÖÜß]/.test(body);
+  } else {
+    isValid = /[ಀ-೿]/.test(body);
+  }
+
+  if (!isValid) {
+    return res.status(400).json({ error: `Body must contain text matching target language '${lang}'.` });
+  }
+
   try {
     const text = db.addText(req.userId, {
       title: (typeof title === 'string' && title.trim()) || 'Untitled',
       source: 'imported',
       body,
-      glossary: buildGlossary(body), // auto-filled from the bundled dictionary
+      glossary: buildGlossary(body, lang),
+      lang,
     });
     res.json({ text });
   } catch (e) {

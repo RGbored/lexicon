@@ -4,6 +4,7 @@
       "id": "my-village",
       "title": "ನನ್ನ ಊರು — My Village",
       "source": "sample",
+      "lang": "kn",
       "body": "ನನ್ನ ಹೆಸರು ರಾಮ. ನಾನು ಊರಿನಲ್ಲಿ ಇದ್ದೇನೆ. ನನಗೆ ಒಂದು ನಾಯಿ ಇದೆ. ನಾಯಿ ಬಿಳಿ ಬಣ್ಣ. ನಾನು ನಾಯಿಯನ್ನು ಪ್ರೀತಿಸುತ್ತೇನೆ.",
       "glossary": {
         "ನನ್ನ": "my",
@@ -26,6 +27,7 @@
       "id": "crow-and-water",
       "title": "ಕಾಗೆ ಮತ್ತು ನೀರು — The Crow and the Water",
       "source": "folk tale (simplified)",
+      "lang": "kn",
       "body": "ಒಂದು ಕಾಗೆ ಇತ್ತು. ಕಾಗೆಗೆ ಬಾಯಾರಿಕೆ ಆಯಿತು. ಕಾಗೆ ನೀರು ಹುಡುಕಿತು. ಒಂದು ಮಡಕೆಯಲ್ಲಿ ಸ್ವಲ್ಪ ನೀರು ಇತ್ತು. ಕಾಗೆ ಮಡಕೆಗೆ ಕಲ್ಲುಗಳನ್ನು ಹಾಕಿತು. ನೀರು ಮೇಲೆ ಬಂದಿತು. ಕಾಗೆ ನೀರು ಕುಡಿಯಿತು. ಕಾಗೆ ಸಂತೋಷವಾಯಿತು.",
       "glossary": {
         "ಒಂದು": "one / a",
@@ -46,6 +48,64 @@
         "ಕುಡಿಯಿತು": "drank",
         "ಸಂತೋಷವಾಯಿತು": "became happy",
         "ಮತ್ತು": "and"
+      }
+    },
+    {
+      "id": "ja-self-intro",
+      "title": "私の家族 — My Family",
+      "source": "sample",
+      "lang": "ja",
+      "body": "私の名前はタロウです。私の家族は三人です。父と母と私です。私たちは東京に住んでいます。犬が二匹います。毎日楽しいです。",
+      "glossary": {
+        "私": "I / me",
+        "の": "of / 's",
+        "名前": "name",
+        "は": "(topic marker)",
+        "タロウ": "Taro (name)",
+        "です": "is / am / are",
+        "家族": "family",
+        "三人": "three people",
+        "父": "father",
+        "と": "and",
+        "母": "mother",
+        "東京": "Tokyo",
+        "に": "in / at",
+        "住んでいます": "live / reside",
+        "犬": "dog",
+        "が": "(subject marker)",
+        "二匹": "two (animals)",
+        "います": "have / exist (living things)",
+        "毎日": "every day",
+        "楽しい": "fun / enjoyable"
+      }
+    },
+    {
+      "id": "de-family",
+      "title": "Meine Familie — My Family",
+      "source": "sample",
+      "lang": "de",
+      "body": "Ich heiße Max. Ich wohne in Berlin. Das ist meine Familie. Ich habe eine Katze. Meine Katze heißt Luna. Luna ist sehr süß. Wir sind glücklich.",
+      "glossary": {
+        "Ich": "I",
+        "heiße": "am called",
+        "Max": "Max (name)",
+        "wohne": "live / reside",
+        "in": "in",
+        "Berlin": "Berlin (city)",
+        "Das": "That / This",
+        "ist": "is",
+        "meine": "my (feminine)",
+        "Familie": "family",
+        "habe": "have",
+        "eine": "a / one (feminine)",
+        "Katze": "cat",
+        "heißt": "is called",
+        "Luna": "Luna (name)",
+        "sehr": "very",
+        "süß": "sweet / cute",
+        "Wir": "We",
+        "sind": "are",
+        "glücklich": "happy"
       }
     }
   ]

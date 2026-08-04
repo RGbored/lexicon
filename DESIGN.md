@@ -1,8 +1,10 @@
 # Lexicon — Design
 
-A self-hosted web app for learning the **Kannada script** (ಕನ್ನಡ ಲಿಪಿ) and building
-**reading vocabulary from real texts**. Modeled on Duolingo's alphabet learner, then
-extended with a comprehensible-input reading mode.
+A self-hosted web app for learning the **Kannada** (ಕನ್ನಡ ಲಿಪಿ), **Japanese** (日本語),
+or **German** script and building **reading vocabulary from real texts**. Modeled on
+Duolingo's alphabet learner, then extended with a comprehensible-input reading mode.
+Choose your language with a dropdown — each has its own character set, dictionary, and
+TTS voice.
 
 This document describes the system as it stands plus what's left to build. For setup
 and usage see [`README.md`](README.md).
@@ -13,12 +15,12 @@ and usage see [`README.md`](README.md).
 
 | Area        | Decision |
 |-------------|----------|
-| **Purpose** | Learn the Kannada script (vowels, consonants, kagunita, conjuncts) and read real texts. |
+| **Purpose** | Learn the Kannada, Japanese, or German script and read real texts. Language is user-selectable at runtime. |
 | **Form**    | Web app, **no build step** — vanilla HTML/CSS/JS, no bundler/framework. Edit file → refresh. |
 | **Hosting** | Small Node server in Termux on a phone, exposed at `lexicon.rgbored.com` via a Cloudflare tunnel. |
-| **Audio**   | Browser TTS (Web Speech API, Android `kn-IN` voice). Pre-recorded clips were considered and dropped — TTS is good enough. |
+| **Audio**   | Browser TTS (Web Speech API; auto-selects `kn-IN`, `ja-JP`, or `de-DE` voice). Pre-recorded clips were considered and dropped — TTS is good enough. |
 | **Persistence** | **SQLite** (`node:sqlite`, no native build) with **per-user accounts**; a seeded *default* user keeps local use login-free. |
-| **Offline** | No runtime dependence on external services; the dictionary is bundled, not an API. |
+| **Offline** | No runtime dependence on external services; the dictionaries are bundled, not an API. |
 
 ### Why these choices
 - **Web over native:** no app store, no signing, no reinstall per change. Deploy = `git pull` + restart.
@@ -29,25 +31,44 @@ and usage see [`README.md`](README.md).
 
 ## 2. Content model
 
-Kannada is an abugida with a regular Unicode layout, so the **character set is generated
-programmatically** (`scripts/generate-characters.js`) rather than hand-typed.
+Each language's **character set is generated programmatically**
+(`scripts/generate-characters.js` → `data/characters_{kn,ja,de}.json`) rather than hand-typed.
 
 ### Character categories
+
+#### Kannada
 1. **Swaragalu** — independent vowels (13) + yogavaahaka (anusvara ಂ, visarga ಃ).
 2. **Vyanjanagalu** — consonants (34), grouped by *varga* (ಕ-varga … avargeeya).
 3. **Kagunita** — each consonant × each vowel sign (matra): ಕ → ಕಾ ಕಿ ಕೀ … (408 forms).
 4. **Ottakshara** — stacked conjuncts `consonant + virama (್) + consonant` (e.g. ಸ್ತ).
    **Auto-derived from the reading texts** rather than the full ~1,150-pair space (see §6).
+   Only built when the active language is Kannada.
+
+#### Japanese
+1. **Hiragana** — the 46 basic hiragana plus dakuten (voiced) and handakuten (semi-voiced) variants (71 characters).
+2. **Katakana** — the corresponding katakana set (71 characters).
+
+#### German
+1. **Alphabet** — the 26 Latin letters (displayed as upper + lower, e.g. "A a") (26 characters).
+2. **Umlauts & Special** — Ä, Ö, Ü, and ß (4 characters).
 
 ### Item shape
 ```js
+// Kannada:
 { id: "ka", glyph: "ಕ", roman: "ka", category: "consonant", group: "ka-varga" }
+// Japanese:
+{ id: "ja:h_ka", glyph: "か", roman: "ka", category: "hiragana", group: "hiragana-k-row" }
+// German:
+{ id: "de:a", glyph: "A a", roman: "ah", category: "alphabet", group: "de-group1" }
 ```
 Reading **words** are items of the same shape: `{ id: "w:ಕಾಗೆ", glyph, roman, meaning, category: "word" }`.
 
 ### Romanization
-ISO 15919-style (diacritics): vowels `a ā i ī u ū r̥ e ē ai o ō au`; consonants `ka kha ga
-… śa ṣa sa ha ḷa`. Whole-word transliteration is done deterministically in `translit.js`.
+Kannada uses ISO 15919-style (diacritics): vowels `a ā i ī u ū r̥ e ē ai o ō au`;
+consonants `ka kha ga … śa ṣa sa ha ḷa`. Japanese uses modified Hepburn romanization
+(し→shi, ち→chi, つ→tsu, ふ→fu). German characters are already Latin script;
+`translit.js` returns them as-is. Whole-word transliteration is done deterministically
+in `translit.js`.
 
 ---
 
@@ -90,6 +111,7 @@ load. Consolidation adds a matching exercise and (for characters) a tracing pass
   scaffolding**: full guide → faint guide → blind, fading as strength grows. Scored by
   outline overlap (coverage + accuracy), not stroke order (no Kannada stroke dataset).
   Excluded for words — multi-character words don't fit the small canvas.
+  **Disabled for German** (Latin script — users already know how to write the letters).
 
 ---
 
@@ -122,8 +144,8 @@ reshuffling completed ones. New imports show up after the next load.
 A separate **Reading** tab (`reading.js`); routes `#/reading`, `#/text/:id`,
 `#/text/:id/lesson/:i`, `#/text/:id/read`. Model: comprehensible input (à la LingQ).
 
-- **Import** a Kannada text by pasting or uploading a `.txt` file. Bundled sample stories
-  ship with curated glossaries.
+- **Import** a text in the active language by pasting or uploading a `.txt` file. Bundled
+  sample stories ship with curated glossaries.
 - **Tokenize → frequency-rank → path of lessons** (most frequent words first).
 - Words are items reusing the SRS + exercises; meaning-based MCQ + word↔meaning match.
 - **Coverage** per text (frequency-weighted, based on lessons-encountered: moves after the
@@ -132,11 +154,22 @@ A separate **Reading** tab (`reading.js`); routes `#/reading`, `#/text/:id`,
   tap-to-reveal pronunciation + meaning.
 - **Vocabulary carries over** between texts automatically (shared `w:<word>` ids).
 
+### Tokenization
+Tokenization is language-aware: Kannada uses a Unicode range regex (`[ಀ-೿]+`), Japanese
+uses `Intl.Segmenter` for word boundary detection, and German uses a Latin+umlaut regex.
+
 ### Meaning enrichment (no LLM)
-Imported words are auto-glossed server-side from a bundled **Kannada→English dictionary**
-built from the open **Alar** dataset (`scripts/build-dictionary.js` → `data/dictionary.json`,
-~106k headwords, pinned to a commit). Best-effort **suffix stemming** resolves inflected
-nouns to their headword.
+Imported words are auto-glossed server-side from bundled dictionaries
+(`scripts/build-dictionary.js` → `data/dictionary_{kn,ja,de}.json`):
+- **Kannada→English** from the open **Alar** dataset (~106k headwords, pinned to commit
+  `8651ccf`). Best-effort **suffix stemming** resolves inflected nouns to their headword.
+- **Japanese→English** from the JLPT N5 word list (pinned to commit `cc5e348`).
+- **German→English** from the Hathibelagal dictionary (pinned to commit `c3e4951`).
+  Lowercase aliases are only added when they don't overwrite a distinct entry (German
+  capitalisation is semantic: `Sie`/`sie`, `Weg`/`weg`).
+
+All sources are pinned to specific commit SHAs to prevent supply-chain attacks; the
+download URL encodes the hash, not a branch name.
 
 **Limits:** Alar glosses are descriptive/verbose; **verb conjugations** and complex
 inflections still miss (stemming covers noun case-endings only). PDF/OCR import is future
@@ -161,18 +194,20 @@ Browser ──(HTML/CSS/vanilla JS, Web Speech API)──► Node + Express (Ter
 | `srs.js` | Exposure-based strength + review scheduling (item-agnostic) |
 | `stats.js` | Streak, freezes, points |
 | `reading.js` | Reading mode: import, frequency paths, coverage, read view |
-| `translit.js` | Kannada → Latin transliteration |
-| `tts.js` | Web Speech API wrapper |
+| `translit.js` | Kannada/Japanese/German transliteration |
+| `tts.js` | Web Speech API wrapper (auto-selects voice per language) |
 | `auth.js` | Header account control: login / signup / logout |
 
 ### Backend (`server.js` + `db.js`)
 - Static serving with `Cache-Control: no-cache` (Cloudflare edge cache is bypassed via a
   Cache Rule on the hostname).
-- APIs: `GET /api/characters`, `GET/POST /api/progress`, `GET/POST /api/texts`, plus auth:
-  `GET /api/me`, `POST /api/{signup,login,logout}`.
+- APIs: `GET /api/characters?lang=`, `GET/POST /api/progress`, `GET/POST /api/texts?lang=`,
+  plus auth: `GET /api/me`, `POST /api/{signup,login,logout}`. All endpoints that accept
+  a `lang` parameter validate it against a whitelist (`kn`, `ja`, `de`); invalid values
+  return HTTP 400.
 - A `resolveUser` middleware maps the `sid` session cookie to a user, falling back to the
   **default** user when there's no valid cookie — so local use never hits a login wall.
-- Loads the dictionary once at startup; auto-glosses texts on import.
+- Loads all dictionaries once at startup; auto-glosses texts on import.
 
 ### Persistence model (`db.js` — SQLite, per user)
 `data/lexicon.db` via Node's built-in `node:sqlite` (no native build, key for Termux/ARM).
@@ -183,7 +218,7 @@ and rebuilt on read, so the `GET/POST /api/progress` contract is unchanged.
 users(id, username, pw_hash, is_default, created)   sessions(token, user_id, created)
 progress_items(user_id, item_id, lessons, seen, last_seen, due)
 units(user_id, unit_id, lessons_done)               stats(user_id, points, streak, last_day, freezes, freeze_week)
-user_settings(user_id, romanization_style)          ottakshara(user_id, position, glyph)   -- ordered
+user_settings(user_id, romanization_style, target_lang)  ottakshara(user_id, position, glyph)  -- ordered
 texts(id, user_id, title, source, body, glossary)   -- bundled samples stay in texts.json (shared)
 ```
 
@@ -204,8 +239,8 @@ lexicon/
 ├── scripts/
 │   ├── generate-characters.js
 │   └── build-dictionary.js
-├── data/                  # characters.json, dictionary.json, texts.json,
-│                          # lexicon.db (per-user state; gitignored)
+├── data/                  # characters_{kn,ja,de}.json, dictionary_{kn,ja,de}.json,
+│                          # texts.json, lexicon.db (per-user state; gitignored)
 └── public/                # index.html, css/styles.css, js/*.js
 ```
 
@@ -226,3 +261,23 @@ imported texts are keyed to the request's user; bundled texts stay shared. See �
   optional LLM refinement pass).
 - Romanization display toggle (ISO 15919 vs simplified ASCII).
 - PDF/OCR import for texts.
+
+---
+
+## 10. Adding a new language
+
+To add support for a new language (e.g., French with code `fr`), you need to update the following files:
+
+### 1. Data Generation (`scripts/`)
+- **`scripts/generate-characters.js`**: Define the character set (alphabet, categories) and add a function to write it to `data/characters_fr.json`. Call it at the end of the file.
+- **`scripts/build-dictionary.js`**: Add a function to download, parse, and write the dictionary to `data/dictionary_fr.json`. Call it at the end of the file.
+- **`deploy.sh`**: Add a check to build the dictionary if `data/dictionary_fr.json` is missing.
+
+### 2. Backend (`server.js`)
+- Add your language code (`fr`) to the `VALID_LANGS` Set at the top of the file.
+
+### 3. Frontend (`public/js/`)
+- **`app.js`**: Add an `<option>` for the language in `renderLangSelector()`.
+- **`reading.js`**: Update `tokenize()` to correctly split words for the language. For space-separated languages like French, you can use a regex similar to the German one (or `Intl.Segmenter` for languages like Chinese/Japanese).
+- **`tts.js`**: Update the TTS voice selection logic to match the correct language prefix (e.g., `fr-FR` or `fr-`).
+- **`translit.js`**: If the language uses a non-Latin script, add transliteration rules. If it uses the Latin script, you can just return the characters as-is (like German).

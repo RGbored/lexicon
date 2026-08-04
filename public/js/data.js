@@ -12,20 +12,21 @@ const Data = (() => {
   let saveTimer = null;
 
   async function load() {
-    const [cd, pg] = await Promise.all([
-      fetch('/api/characters').then((r) => r.json()),
-      fetch('/api/progress').then((r) => r.json()),
-    ]);
+    const pg = await fetch('/api/progress').then((r) => r.json());
+    progress = pg || {};
+    progress.items = progress.items || {};
+    progress.units = progress.units || {};
+    progress.settings = progress.settings || { romanizationStyle: 'iso15919', targetLang: 'kn' };
+    progress.settings.targetLang = progress.settings.targetLang || 'kn';
+    progress.ottakshara = progress.ottakshara || []; // derived conjunct curriculum order
+    Stats.ensure(progress);
+
+    const lang = progress.settings.targetLang;
+    const cd = await fetch(`/api/characters?lang=${lang}`).then((r) => r.json());
     if (cd.error) throw new Error(cd.error);
     characters = cd.characters;
     byId.clear();
     for (const c of characters) byId.set(c.id, c);
-    progress = pg || {};
-    progress.items = progress.items || {};
-    progress.units = progress.units || {};
-    progress.settings = progress.settings || { romanizationStyle: 'iso15919' };
-    progress.ottakshara = progress.ottakshara || []; // derived conjunct curriculum order
-    Stats.ensure(progress);
   }
 
   const all = () => characters; // alphabet only (curriculum + dashboard)

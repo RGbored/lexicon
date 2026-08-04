@@ -14,11 +14,28 @@
 const App = (() => {
   let units = [];
   const SECTION_TITLES = {
-    vowels: 'Vowels', consonants: 'Consonants', kagunita: 'Kagunita', ottakshara: 'Ottakshara',
+    kn: { vowels: 'Vowels', consonants: 'Consonants', kagunita: 'Kagunita', ottakshara: 'Ottakshara' },
+    ja: { hiragana: 'Hiragana', katakana: 'Katakana' },
+    de: { alphabet: 'Alphabet', umlauts: 'Umlauts & Special' }
   };
 
   const statusEl = () => document.getElementById('status');
   const contentEl = () => document.getElementById('content');
+
+  function getSectionTitle(sid) {
+    const lang = Data.progressData()?.settings?.targetLang || 'kn';
+    const titles = SECTION_TITLES[lang] || SECTION_TITLES.kn;
+    return titles[sid] || sid;
+  }
+
+  function renderHeaderLogo() {
+    const homeLink = document.getElementById('home-link');
+    if (!homeLink) return;
+    const lang = Data.progressData()?.settings?.targetLang || 'kn';
+    if (lang === 'ja') homeLink.textContent = 'レキシコン';
+    else if (lang === 'de') homeLink.textContent = 'Lexikon';
+    else homeLink.textContent = 'ಲೆಕ್ಸಿಕಾನ್';
+  }
 
   function el(html) {
     const t = document.createElement('template');
@@ -107,7 +124,7 @@ const App = (() => {
       const card = el(`
         <button class="section-card ${unlocked ? '' : 'locked'}">
           <div class="section-main">
-            <span class="section-title">${SECTION_TITLES[sid] || sid}</span>
+            <span class="section-title">${getSectionTitle(sid)}</span>
             <span class="section-sub">${done}/${total} lessons</span>
           </div>
           <div class="cov">
@@ -133,7 +150,7 @@ const App = (() => {
     const sUnits = unitsOf(sid);
     if (!sUnits.length) return home();
     root.innerHTML = '';
-    root.appendChild(backRow('#/', SECTION_TITLES[sid] || sid));
+    root.appendChild(backRow('#/', getSectionTitle(sid)));
 
     if (sUnits.length === 1) {
       renderLessonMap(root, sUnits[0]);
@@ -150,10 +167,10 @@ const App = (() => {
         grid.appendChild(tile);
       }
       root.appendChild(grid);
-      const rt = reviewTile(sUnits.flatMap((u) => u.lessons.flatMap((l) => l.ids)), `${SECTION_TITLES[sid] || sid} review`);
+      const rt = reviewTile(sUnits.flatMap((u) => u.lessons.flatMap((l) => l.ids)), `${getSectionTitle(sid)} review`);
       if (rt) { rt.classList.add('section-review'); root.appendChild(rt); }
     }
-    statusEl().textContent = SECTION_TITLES[sid] || sid;
+    statusEl().textContent = getSectionTitle(sid);
   }
 
   function renderUnit(unitId) {
@@ -197,7 +214,7 @@ const App = (() => {
       const seen = [...ids].filter((id) => Data.peek(id)?.seen);
       if (!seen.length) continue;
       any = true;
-      const sec = el(`<section class="unit"><h3>${SECTION_TITLES[sid] || sid} <span class="unit-prog">full at ${SRS.FULL_LESSONS} lessons</span></h3><div class="strength-grid"></div></section>`);
+      const sec = el(`<section class="unit"><h3>${getSectionTitle(sid)} <span class="unit-prog">full at ${SRS.FULL_LESSONS} lessons</span></h3><div class="strength-grid"></div></section>`);
       const grid = sec.querySelector('.strength-grid');
       for (const id of seen) {
         const c = Data.get(id);
@@ -297,11 +314,35 @@ const App = (() => {
       `<span class="stat">❄️ ${s.freezes}</span>`;
   }
 
+  function renderLangSelector() {
+    const el = document.getElementById('lang-selector');
+    if (!el) return;
+    const lang = Data.progressData()?.settings?.targetLang || 'kn';
+    el.innerHTML = `
+      <select id="lang-select" class="lang-select-dropdown">
+        <option value="kn" ${lang === 'kn' ? 'selected' : ''}>🌾 Kannada</option>
+        <option value="ja" ${lang === 'ja' ? 'selected' : ''}>🇯🇵 Japanese</option>
+        <option value="de" ${lang === 'de' ? 'selected' : ''}>🇩🇪 German</option>
+      </select>
+    `;
+    const select = el.querySelector('#lang-select');
+    select.onchange = async () => {
+      const newLang = select.value;
+      const progress = Data.progressData();
+      progress.settings.targetLang = newLang;
+      if (newLang === 'kn') progress.settings.romanizationStyle = 'iso15919';
+      else progress.settings.romanizationStyle = 'default';
+      await Data.saveNow();
+      location.reload();
+    };
+  }
+
   function route() {
     const hash = location.hash || '#/';
     const parts = hash.split('/'); // ['#', 'section', 'kagunita']
     setActiveTab(hash);
     renderStats();
+    renderHeaderLogo();
     if (parts[1] === 'lesson' && parts[2] != null && parts[3] != null) startLesson(parts[2], parseInt(parts[3], 10));
     else if (parts[1] === 'review') startReview();
     else if (parts[1] === 'section' && parts[2] != null) renderSection(parts[2]);
@@ -318,9 +359,13 @@ const App = (() => {
 
   async function boot() {
     try {
-      await Promise.all([Data.load(), Reading.load(), Auth.init()]);
+      await Data.load();
+      await Promise.all([Reading.load(), Auth.init()]);
+      renderLangSelector();
+      renderHeaderLogo();
       units = Curriculum.build(Data.all());
-      const ott = buildOttaksharaUnit(); // conjuncts derived from reading texts
+      const lang = Data.progressData()?.settings?.targetLang || 'kn';
+      const ott = (lang === 'kn') ? buildOttaksharaUnit() : null;
       if (ott) units.push(ott);
       window.addEventListener('hashchange', route);
       document.getElementById('home-link').onclick = (e) => { e.preventDefault(); location.hash = '#/'; };
