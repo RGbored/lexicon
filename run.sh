@@ -1,6 +1,6 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 #
-# Start the Lexicon server (Termux). Used by init_server.sh and deploy.sh.
+# Start the Lexicon server. Run by the lexicon systemd service on the server.
 #
 set -euo pipefail
 cd "$(dirname "$0")"

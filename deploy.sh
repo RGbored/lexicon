@@ -1,12 +1,12 @@
-#!/data/data/com.termux/files/usr/bin/bash
+#!/usr/bin/env bash
 #
-# Pull the latest Lexicon and restart the service (Termux + tmux).
-# Run from the phone:  ~/lexicon/deploy.sh
+# Pull the latest Lexicon and restart the systemd service.
+# Run on the server:  ~/lexicon/deploy.sh
 #
 set -euo pipefail
 
 cd "$(dirname "$0")"            # project dir, wherever it was cloned
-SESSION="lexicon"
+SERVICE="lexicon"
 
 echo "→ pulling latest…"
 before=$(git rev-parse HEAD)
@@ -32,8 +32,7 @@ if [ ! -f data/dictionary.json ]; then
   npm run dictionary || echo "⚠ dictionary build failed — continuing without auto-meanings"
 fi
 
-echo "→ restarting '$SESSION' service…"
-tmux kill-session -t "$SESSION" 2>/dev/null || true
-tmux new-session -d -s "$SESSION" "$(pwd)/run.sh"
+echo "→ restarting '$SERVICE' service…"
+sudo systemctl restart "$SERVICE"
 
 echo "✓ deployed ($after). verify: curl -I https://lexicon.rgbored.com"
